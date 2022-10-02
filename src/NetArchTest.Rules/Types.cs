@@ -4,35 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using NetArchTest.Rules.Extensions;
 using Mono.Cecil;
-using NetArchTest.Rules.Dependencies;
-using NetArchTest.Rules.Dependencies.DataStructures;
+using NetArchTest.Rules.Assemblies;
+using NetArchTest.Rules.Extensions;
+
+[assembly: InternalsVisibleTo("NetArchTest.Rules.UnitTests")]
 
 namespace NetArchTest.Rules
-{   
+{
     /// <summary>
     /// Creates a list of types that can have predicates and conditions applied to it.
     /// </summary>
     public sealed class Types
     {
         /// <summary> The list of types represented by this instance. </summary>
-        private readonly List<TypeDefinition> _types;
+        private readonly List<TypeDefinition> types;  
 
-        /// <summary> The list of namespaces to exclude from the current domain. </summary>
-        private static readonly List<string> _exclusionList = new List<string>
-        { "System", "Microsoft", "Mono.Cecil", "netstandard", "NetArchTest.Rules", "<Module>", "xunit", "<PrivateImplementationDetails>" };
 
-        private static readonly NamespaceTree _exclusionTree = new NamespaceTree(_exclusionList);
-
-        /// <summary>
-        /// Prevents any external class initializing a new instance of the <see cref="Types"/> class.
-        /// </summary>
-        /// <param name="types">The list of types for the instance.</param>
-        private Types(IEnumerable<TypeDefinition> types)
+        private Types(IEnumerable<IType> types)
         {
-            _types = types.ToList();
+            this.types = types.Select(x => x.Definition).ToList();
         }
+
 
         /// <summary>
         /// Creates a list of types based on all the assemblies in the current AppDomain
@@ -40,16 +33,8 @@ namespace NetArchTest.Rules
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         public static Types InCurrentDomain()
         {
-            var currentDomain = new List<Assembly>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (!_exclusionTree.GetAllMatchingNames(assembly.FullName).Any())                   
-                {
-                    currentDomain.Add(assembly);
-                }
-            }
-
-            return Types.InAssemblies(currentDomain);
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            return InAssemblies(assemblies);
         }
 
         /// <summary>
@@ -76,77 +61,31 @@ namespace NetArchTest.Rules
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         public static Types InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
         {
-            var types = new List<TypeDefinition>();
-
-            foreach (var assembly in assemblies)
-            {
-                if (!assembly.IsDynamic)
-                {
-                    // Load the assembly using Mono.Cecil.
-
-
-                    AssemblyDefinition assemblyDef = null;
-                    if (searchDirectories?.Any() ?? false)
-                    {
-                        var defaultAssemblyResolver = new DefaultAssemblyResolver();
-                        foreach (var searchDirectory in searchDirectories)
-                        {
-                            defaultAssemblyResolver.AddSearchDirectory(searchDirectory);
-                        }
-
-                        assemblyDef = ReadAssemblyDefinition(assembly.Location, new ReaderParameters { AssemblyResolver = defaultAssemblyResolver });
-                    }
-                    else
-                    { 
-                        assemblyDef = ReadAssemblyDefinition(assembly.Location);
-                    }
-
-                    // Read all the types in the assembly 
-                    if (assemblyDef != null)
-                    {
-                        types.AddRange(Types.GetAllTypes(assemblyDef.Modules.SelectMany(t => t.Types)));
-                    }
-                }
-            }
-
-            return new Types(types);
-        }
-
-    
+            return new Types(TypeSource.FromAssemblies(assemblies, searchDirectories));
+        }    
 
         /// <summary>
         /// Creates a list of all the types in a particular module file.
         /// </summary>
-        /// <param name="filename">The filename of the module. This is case insensitive.</param>
+        /// <param name="fileName">The filename of the module. This is case insensitive.</param>
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         /// <remarks>Assumes that the module is in the same directory as the executing assembly.</remarks>
-        public static Types FromFile(string filename)
+        public static Types FromFile(string fileName)
         {
-            if (string.IsNullOrEmpty(filename))
+            if (string.IsNullOrEmpty(fileName))
             {
-                throw new ArgumentNullException(nameof(filename));
+                throw new ArgumentNullException(nameof(fileName));
             }
 
             // Load the assembly from the current directory
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var path = Path.Combine(dir, filename);
+            var path = Path.Combine(dir, fileName);
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException($"Could not find the assembly file {path}.");
             }
-            var assemblyDef = ReadAssemblyDefinition(path);
 
-            if (assemblyDef != null)
-            {
-                // Read all the types in the assembly 
-                var list = Types.GetAllTypes(assemblyDef.Modules.SelectMany(t => t.Types));
-                return new Types(list);
-            }
-            else
-            {
-                // Return an empty list
-                return new Types(new List<TypeDefinition>());
-            }
+            return new Types(TypeSource.FromFiles(new string[] { path }, null));           
         }
 
         /// <summary>
@@ -162,67 +101,15 @@ namespace NetArchTest.Rules
                 throw new ArgumentNullException(nameof(path));
             }
 
-            var types = new List<TypeDefinition>();
-
-            if (Directory.Exists(path))
-            {
-                var files = Directory.GetFiles(path, "*.dll");
-                var readerParams = new ReaderParameters();
-
-                if (searchDirectories?.Any() ?? false)
-                {
-                    var defaultAssemblyResolver = new DefaultAssemblyResolver();
-                    foreach (var searchDirectory in searchDirectories)
-                    {
-                        defaultAssemblyResolver.AddSearchDirectory(searchDirectory);
-                    }
-                    readerParams.AssemblyResolver = defaultAssemblyResolver;
-                }
-
-                foreach (var file in files)
-                {
-                    var assembly = ReadAssemblyDefinition(file, readerParams);
-                 
-                    if (assembly != null && !_exclusionTree.GetAllMatchingNames(assembly.FullName).Any())
-                    {
-                        types.AddRange(assembly.Modules.SelectMany(t => t.Types));
-                    }
-                }
-            }
-            else
+            if (!Directory.Exists(path))
             {
                 throw new DirectoryNotFoundException($"Could not find the path {path}.");
             }
 
-            var list = Types.GetAllTypes(types);
-            return new Types(list);
+            var files = Directory.GetFiles(path, "*.dll");
+            return new Types(TypeSource.FromFiles(files, searchDirectories));
         }
-
-
-        /// <summary>
-        /// Recursively fetch all the nested types in a collection of types.
-        /// </summary>
-        /// <returns>The expanded collection of types</returns>
-        private static IEnumerable<TypeDefinition> GetAllTypes(IEnumerable<TypeDefinition> types)
-        {
-            var output = new List<TypeDefinition>(types.Where(x => !_exclusionTree.GetAllMatchingNames(x.FullName).Any()));          
-
-            for (int i = 0; i < output.Count; ++i)
-            {
-                var type = output[i];
-
-                foreach (var nested in type.NestedTypes)
-                {                   
-                    // Ignore all compiler-generated nested classes
-                    if (!nested.CustomAttributes.Any(x => x?.AttributeType?.FullName == typeof(CompilerGeneratedAttribute).FullName))
-                    {
-                        output.Add(nested);
-                    }                   
-                }
-            }
-
-            return output;
-        }
+       
 
         /// <summary>
         /// Returns the list of <see cref="TypeDefinition"/> objects describing the types in this list.
@@ -230,7 +117,7 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="TypeDefinition"/> objects in this list.</returns>
         internal IEnumerable<TypeDefinition> GetTypeDefinitions()
         {
-            return _types;
+            return types;
         }
 
         /// <summary>
@@ -239,8 +126,9 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
         public IEnumerable<Type> GetTypes()
         {
-            return (_types.Select(t => t.ToType()));
+            return (types.Select(t => t.ToType()));
         }
+
 
         /// <summary>
         /// Allows a list of types to be applied to one or more filters.
@@ -248,7 +136,7 @@ namespace NetArchTest.Rules
         /// <returns>A list of types onto which you can apply a series of filters.</returns>
         public Predicates That()
         {
-            return new Predicates(_types);
+            return new Predicates(types);
         }
 
         /// <summary>
@@ -257,7 +145,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Conditions Should()
         {
-            return new Conditions(_types, true);
+            return new Conditions(types, true);
         }
 
         /// <summary>
@@ -266,32 +154,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Conditions ShouldNot()
         {
-            return new Conditions(_types, false);
-        }
-
-        /// <summary>
-        /// Reads the assembly, ignoring a BadImageFormatException
-        /// </summary>
-        /// <param name="path">The path to the exception</param>
-        /// <param name="parameters">A set of optional parameters - normally used to specify custom assembly resolvers. </param>
-        /// <returns>The assembly definition for the path (if it exists).</returns>
-        private static AssemblyDefinition ReadAssemblyDefinition(string path, ReaderParameters parameters = null)
-        {
-            try
-            {
-                if (parameters == null)
-                {
-                    return AssemblyDefinition.ReadAssembly(path);
-                }
-                else
-                {
-                    return AssemblyDefinition.ReadAssembly(path, parameters);
-                }
-            }
-            catch (BadImageFormatException)
-            {
-                return null;
-            }
+            return new Conditions(types, false);
         }
     }
 }
