@@ -70,22 +70,7 @@ namespace NetArchTest.Rules.UnitTests
             Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.Nested.NestedPrivate/NestedPrivateClass"));
         }
 
-        [Fact(DisplayName = "A types collection can be created from a namespace.")]
-        public void InNamespace_TypesReturned()
-        {
-            var result = Types.InNamespace("NetArchTest.TestStructure.NameMatching").GetTypes();
-
-            Assert.Equal(9, result.Count()); // Nine types found
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
-        }
+       
 
         [Fact(DisplayName = "A types collection can be created from a filename.")]
         public void FromFile_TypesReturned()
@@ -125,15 +110,6 @@ namespace NetArchTest.Rules.UnitTests
             Assert.Empty(result);
         }
 
-        [Fact(DisplayName = "Any compiler generated classes will be ignored in a types list.")]
-        public void InNamespace_CompilerGeneratedClasses_NotReturned()
-        {
-            // Act
-            var result = Types.InNamespace("NetArchTest.TestStructure.Dependencies.Search").GetTypes();
-
-            // Assert
-            var generated = result.Any(r => r.CustomAttributes.Any(x => x?.AttributeType?.FullName == typeof(CompilerGeneratedAttribute).FullName));
-            Assert.False(generated);
-        }
+       
     }
 }

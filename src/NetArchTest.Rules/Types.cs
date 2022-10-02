@@ -1,16 +1,16 @@
-﻿namespace NetArchTest.Rules
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using NetArchTest.Rules.Extensions;
-    using Mono.Cecil;
-    using NetArchTest.Rules.Dependencies;
-    using NetArchTest.Rules.Dependencies.DataStructures;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using NetArchTest.Rules.Extensions;
+using Mono.Cecil;
+using NetArchTest.Rules.Dependencies;
+using NetArchTest.Rules.Dependencies.DataStructures;
 
+namespace NetArchTest.Rules
+{   
     /// <summary>
     /// Creates a list of types that can have predicates and conditions applied to it.
     /// </summary>
@@ -112,48 +112,7 @@
             return new Types(types);
         }
 
-        /// <summary>
-        /// Creates a list of all the types in a particular namespace.
-        /// </summary>
-        /// <param name="name">The namespace to list types for. This is case insensitive.</param>
-        /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
-        public static Types InNamespace(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            // We need to check all the assemblies in the domain
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var types = new List<TypeDefinition>();
-
-            foreach (var assembly in assemblies)
-            {
-                if (!assembly.IsDynamic)
-                {
-                    // Load the assembly using Mono.Cecil.
-                    var assemblyDef = ReadAssemblyDefinition(assembly.Location);
-
-                    if (assemblyDef != null)
-                    {
-                        // Read all the types in the assembly 
-                        var matches = (assemblyDef.Modules
-                            .SelectMany(t => t.Types)
-                            .Where(t => t.Namespace != null && t.Namespace.StartsWith(name, StringComparison.InvariantCultureIgnoreCase)))
-                            .ToList();
-
-                        if (matches.Count > 0)
-                        {
-                            types.AddRange(matches);
-                        }
-                    }
-                }
-            }
-
-            var list = Types.GetAllTypes(types);
-            return new Types(list);
-        }
+    
 
         /// <summary>
         /// Creates a list of all the types in a particular module file.
