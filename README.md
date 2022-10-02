@@ -1,6 +1,4 @@
-﻿# NetArchTest
-
-[![Build status](https://dev.azure.com/ben-morris-uk/Open-Source/_apis/build/status/NetArchTest-CI-Build)](https://dev.azure.com/ben-morris-uk/Open-Source/_build/latest?definitionId=2)
+﻿# NetArchTest.eNhancedEdition
 
 A fluent API for .Net Standard that can enforce architectural rules in unit tests. 
 
@@ -112,16 +110,6 @@ var architecturePolicy = Policy.Define("Example Policy", "This is an example pol
 The rules are loaded lazily and executed when the `Evaluate()` method is called. This method returns a `PolicyResults` instance that can be passed to a reporting mechanism.
 
 The [ExamplePolicies](https://github.com/BenMorris/NetArchTest/blob/master/samples/NetArchTest.SampleRules/ExamplePolicies.cs) class in the samples demonstrates how to do this.
-
-## Source code
-
-> I welcome contributions. Please refer to the [contributing guidelines](CONTRIBUTING.md).
-
-The solution contains projects in three directories:
-
- - *src*: The main Rules library that is available as a package on NuGet. The main dependency is Mono.Cecil.
- - *test*: A set of unit tests for the rules based on XUnit.
- - *samples*: A couple of sample projects that demonstrate some of the possible usage scenarios.
 
 ## Further reading
 

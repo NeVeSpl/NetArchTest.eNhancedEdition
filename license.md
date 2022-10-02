@@ -1,5 +1,6 @@
 MIT License
 
+Copyright (c) 2022 NetArchTest.eNhancedEdition
 Copyright (c) 2018 Ben Morris (www.ben-morris.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
