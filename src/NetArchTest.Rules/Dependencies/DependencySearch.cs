@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Mono.Cecil;
+    using NetArchTest.Rules.Assemblies;
     using NetArchTest.Rules.Dependencies.DataStructures;
 
 
@@ -18,7 +19,7 @@
         /// <param name="input">The set of type definitions to search.</param>
         /// <param name="dependencies">The set of dependencies to look for.</param>
         /// <returns>A list of found types.</returns>
-        public IReadOnlyList<TypeDefinition> FindTypesThatHaveDependencyOnAny(IEnumerable<TypeDefinition> input, IEnumerable<string> dependencies)
+        public IReadOnlyList<TypeSpec> FindTypesThatHaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {  
             return FindTypes(input, TypeDefinitionCheckingResult.SearchType.HaveDependencyOnAny, dependencies, true);           
         }
@@ -29,7 +30,7 @@
         /// <param name="input">The set of type definitions to search.</param>
         /// <param name="dependencies">The set of dependencies to look for.</param>
         /// <returns>A list of found types.</returns>
-        public IReadOnlyList<TypeDefinition> FindTypesThatHaveDependencyOnAll(IEnumerable<TypeDefinition> input, IEnumerable<string> dependencies)
+        public IReadOnlyList<TypeSpec> FindTypesThatHaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {  
             return FindTypes(input, TypeDefinitionCheckingResult.SearchType.HaveDependencyOnAll, dependencies, true);         
         }
@@ -40,7 +41,7 @@
         /// <param name="input">The set of type definitions to search.</param>
         /// <param name="dependencies">The set of dependencies to look for.</param>
         /// <returns>A list of found types.</returns>
-        public IReadOnlyList<TypeDefinition> FindTypesThatOnlyHaveDependenciesOnAnyOrNone(IEnumerable<TypeDefinition> input, IEnumerable<string> dependencies)
+        public IReadOnlyList<TypeSpec> FindTypesThatOnlyHaveDependenciesOnAnyOrNone(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {           
             return FindTypes(input, TypeDefinitionCheckingResult.SearchType.OnlyHaveDependenciesOnAnyOrNone, dependencies, false);
         }
@@ -51,7 +52,7 @@
         /// <param name="input">The set of type definitions to search.</param>
         /// <param name="dependencies">The set of dependencies to look for.</param>
         /// <returns>A list of found types.</returns>
-        public IReadOnlyList<TypeDefinition> FindTypesThatOnlyHaveDependenciesOnAny(IEnumerable<TypeDefinition> input, IEnumerable<string> dependencies)
+        public IReadOnlyList<TypeSpec> FindTypesThatOnlyHaveDependenciesOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
             return FindTypes(input, TypeDefinitionCheckingResult.SearchType.OnlyHaveDependenciesOnAny, dependencies, false);
         }
@@ -62,14 +63,14 @@
         /// <param name="input">The set of type definitions to search.</param>
         /// <param name="dependencies">The set of dependencies to look for.</param>
         /// <returns>A list of found types.</returns>
-        public IReadOnlyList<TypeDefinition> FindTypesThatOnlyOnlyHaveDependenciesOnAll(IEnumerable<TypeDefinition> input, IEnumerable<string> dependencies)
+        public IReadOnlyList<TypeSpec> FindTypesThatOnlyOnlyHaveDependenciesOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
             return FindTypes(input, TypeDefinitionCheckingResult.SearchType.OnlyHaveDependenciesOnAll, dependencies, false);
         }
 
-        private List<TypeDefinition> FindTypes(IEnumerable<TypeDefinition> input, TypeDefinitionCheckingResult.SearchType searchType, IEnumerable<string> dependencies, bool serachForDependencyInFieldConstant)
+        private List<TypeSpec> FindTypes(IEnumerable<TypeSpec> input, TypeDefinitionCheckingResult.SearchType searchType, IEnumerable<string> dependencies, bool serachForDependencyInFieldConstant)
         {
-            var output = new List<TypeDefinition>();
+            var output = new List<TypeSpec>();
             var searchTree = new CachedNamespaceTree(dependencies);
 
             foreach (var type in input)

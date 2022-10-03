@@ -21,11 +21,11 @@
             .InAssembly(Assembly.GetAssembly(typeof(AbstractClass)))
             .That()
             .ResideInNamespace("NetArchTest.TestStructure.Abstract")
-            .GetTypeDefinitions();
+            .GetTypeSpecifications();
 
             // Act
-            var resultSelected = sequence.Execute(types).Select(t => t.ToType());
-            var resultNotSelected = sequence.Execute(types, selected: false).Select(t => t.ToType());
+            var resultSelected = sequence.Execute(types).Select(t => t.Definition.ToType());
+            var resultNotSelected = sequence.ExecuteExtended(types, selected: false).Select(t => t.Definition.ToType());
 
             // Assert
             // The default behaviour is to return the types that were selected
@@ -53,11 +53,11 @@
             .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
             .And()
             .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-            .GetTypeDefinitions();
+            .GetTypeSpecifications();
 
             // Act
-            var resultSelected = sequence.Execute(types).Select(t => t.ToType());
-            var resultNotSelected = sequence.Execute(types, selected: false).Select(t => t.ToType());
+            var resultSelected = sequence.Execute(types).Select(t => t.Definition.ToType());
+            var resultNotSelected = sequence.ExecuteExtended(types, selected: false).Select(t => t.Definition.ToType());
 
             // Assert
             // The default behaviour is to return the types that were selected - i.e. everything except ClassB2

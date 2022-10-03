@@ -63,7 +63,7 @@
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
                 .HaveName("ClassMatchingExample")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).FullName });
@@ -83,7 +83,7 @@
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
                 .HaveName("NamespaceMatchingExample")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).Namespace });

@@ -15,7 +15,7 @@ namespace NetArchTest.Rules.Assemblies
 
 
        
-        public static IEnumerable<IType> FromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
+        public static IEnumerable<TypeSpec> FromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
         {
             foreach (var assembly in assemblies)
             {
@@ -30,7 +30,7 @@ namespace NetArchTest.Rules.Assemblies
                 }
             }
         }
-        public static IEnumerable<IType> FromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
+        public static IEnumerable<TypeSpec> FromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
         {
             foreach (var fileName in fileNames)
             {
@@ -41,7 +41,7 @@ namespace NetArchTest.Rules.Assemblies
             }
         }
 
-        private static IEnumerable<IType> ReadTypes(string assemblyLocation, IEnumerable<string> searchDirectories = null)
+        private static IEnumerable<TypeSpec> ReadTypes(string assemblyLocation, IEnumerable<string> searchDirectories = null)
         {
             ReaderParameters readerParameters = null;
 
@@ -87,7 +87,7 @@ namespace NetArchTest.Rules.Assemblies
                 return null;
             }
         }
-        private static IEnumerable<IType> GetAllTypes(IEnumerable<TypeDefinition> types)
+        private static IEnumerable<TypeSpec> GetAllTypes(IEnumerable<TypeDefinition> types)
         {
             foreach (var type in types)
             {
@@ -96,7 +96,7 @@ namespace NetArchTest.Rules.Assemblies
                     continue;
                 }
 
-                yield return new TypeImpl(type);
+                yield return new TypeSpec(type);
 
                 if (type.NestedTypes?.Any() == true)
                 {

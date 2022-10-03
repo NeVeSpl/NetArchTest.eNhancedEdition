@@ -1,18 +1,17 @@
-﻿namespace NetArchTest.Rules
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Mono.Cecil;
-    using NetArchTest.Rules.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NetArchTest.Rules.Assemblies;
+using NetArchTest.Rules.Extensions;
 
+namespace NetArchTest.Rules
+{
     /// <summary>
     /// Defines a result from a test carried out on a <see cref="ConditionList"/>.
     /// </summary>
     public sealed class TestResult
-    {
-        /// <summary> The list of types that failed the test. </summary>
-        private IReadOnlyList<TypeDefinition> _failingTypes;
+    {       
+        private IReadOnlyList<TypeSpec> _failingTypes;
 
         private TestResult()
         {
@@ -35,7 +34,7 @@
             {
                 if (_failingTypes != null)
                 {
-                    return _failingTypes.Select(t => t.ToType()).ToList();
+                    return _failingTypes.Select(t => t.Definition.ToType()).ToList();
                 }
                 else
                 {
@@ -82,7 +81,7 @@
         /// Creates a new instance of <see cref="TestResult"/> indicating a failed test.
         /// </summary>
         /// <returns>Instance of <see cref="TestResult"/></returns>
-        internal static TestResult Failure(IReadOnlyList<TypeDefinition> failingTypes)
+        internal static TestResult Failure(IReadOnlyList<TypeSpec> failingTypes)
         {
             return new TestResult
             {

@@ -26,7 +26,7 @@
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAny(typeList, dependecies);
@@ -53,7 +53,7 @@
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAll(typeList, dependecies);
@@ -74,7 +74,7 @@
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
                 .HaveNameStartingWith("Class")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName });
@@ -100,7 +100,7 @@
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
                 .HaveNameStartingWith("Class")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName });
@@ -122,7 +122,7 @@
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
                 .HaveNameStartingWith("Class")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });
@@ -146,7 +146,7 @@
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
                 .HaveNameStartingWith("Class")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatOnlyHaveDependenciesOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });
@@ -170,7 +170,7 @@
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
                 .HaveNameStartingWith("Class")
-                .GetTypeDefinitions();
+                .GetTypeSpecifications();
 
             // Act
             var result = search.FindTypesThatOnlyOnlyHaveDependenciesOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reflection;
     using Mono.Cecil;
+    using NetArchTest.Rules.Assemblies;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Search;
     using NetArchTest.TestStructure.Dependencies.Search.DependencyLocation;
@@ -24,12 +25,12 @@
 
         public static void RunDependencyTest(Type input, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
         {
-            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeDefinitions();
+            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeSpecifications();
 
             RunDependencyTest(subject, dependencyToSearch, expectToFindClass, expectToFindNamespace);
         }
 
-        public static void RunDependencyTest(IEnumerable<Mono.Cecil.TypeDefinition> inputs, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
+        public static void RunDependencyTest(IEnumerable<TypeSpec> inputs, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
         {
             // Search against the type name and its namespace - this demonstrates that namespace based searches also work
             FindTypesWithAnyDependencies(inputs, new List<string> { dependencyToSearch.FullName }, expectToFindClass);
@@ -38,17 +39,17 @@
 
         public static void RunDependencyTest(Type input, IEnumerable<string> dependenciesToSearch, bool expectToFind)
         {
-            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeDefinitions();
+            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeSpecifications();
 
             RunDependencyTest(subject, dependenciesToSearch, expectToFind);
         }
 
-        public static void RunDependencyTest(IEnumerable<Mono.Cecil.TypeDefinition> inputs, IEnumerable<string> dependenciesToSearch, bool expectToFind)
+        public static void RunDependencyTest(IEnumerable<TypeSpec> inputs, IEnumerable<string> dependenciesToSearch, bool expectToFind)
         {
             FindTypesWithAnyDependencies(inputs, dependenciesToSearch, expectToFind);
         }
                 
-        public static IEnumerable<Mono.Cecil.TypeDefinition> GetTypesThatResideInTheSameNamespaceButWithoutGivenType(params Type[] type)
+        public static IEnumerable<TypeSpec> GetTypesThatResideInTheSameNamespaceButWithoutGivenType(params Type[] type)
         {
             var types = Types.InAssembly(Assembly.GetAssembly(type.First()))
                      .That()
@@ -57,10 +58,10 @@
             {
                 types = types.And().DoNotHaveName(item.Name);
             }
-            return types.GetTypeDefinitions();
+            return types.GetTypeSpecifications();
         }
 
-        private static void FindTypesWithAnyDependencies(IEnumerable<Mono.Cecil.TypeDefinition> subjects, IEnumerable<string> dependencies, bool expectToFind)
+        private static void FindTypesWithAnyDependencies(IEnumerable<TypeSpec> subjects, IEnumerable<string> dependencies, bool expectToFind)
         {
             // Arrange
             var search = new global::NetArchTest.Rules.Dependencies.DependencySearch();

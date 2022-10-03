@@ -1,43 +1,30 @@
-﻿namespace NetArchTest.Rules
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Mono.Cecil;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NetArchTest.Rules.Assemblies;
 
+namespace NetArchTest.Rules
+{
     /// <summary>
     /// A set of conditions that can be applied to a list of types.
     /// </summary>
-    public sealed class Conditions
-    {
-        /// <summary> A list of types that conditions can be applied to. </summary>
-        private readonly IEnumerable<TypeDefinition> _types;
-
-        /// <summary> The sequence of conditions that is applied to the type of list. </summary>
+    public sealed class Condition
+    {        
+        private readonly IEnumerable<TypeSpec> _types;     
         private readonly FunctionSequence _sequence;
 
+
         /// <summary> Determines the polarity of the selection, i.e. "should" or "should not". </summary>
-        private readonly bool _should;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Conditions"/> class.
-        /// </summary>
-        internal Conditions(IEnumerable<TypeDefinition> types, bool should)
+        private readonly bool _should;       
+      
+       
+        internal Condition(IEnumerable<TypeSpec> types, bool should, FunctionSequence calls = null)
         {
-            _types = types.ToList();
+            _types = types;
             _should = should;
-            _sequence = new FunctionSequence();
+            _sequence = calls ?? new FunctionSequence();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Conditions"/> class.
-        /// </summary>
-        internal Conditions(IEnumerable<TypeDefinition> types, bool should, FunctionSequence calls)
-        {
-            _types = types.ToList();
-            _should = should;
-            _sequence = calls;
-        }
 
         /// <summary>
         /// Selects types that have a specific name.

@@ -1,17 +1,17 @@
-﻿namespace NetArchTest.Rules
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Mono.Cecil;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NetArchTest.Rules.Assemblies;
 
+namespace NetArchTest.Rules
+{
     /// <summary>
     /// A sequence of function calls that are combined to select types.
     /// </summary>
-    public sealed class FunctionSequence
-    {
-        /// <summary> Holds the groups of function calls. </summary>
+    internal sealed class FunctionSequence
+    {        
         private readonly List<List<FunctionCall>> _groups;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionSequence"/> class.
@@ -21,6 +21,7 @@
             _groups = new List<List<FunctionCall>>();
             _groups.Add(new List<FunctionCall>());
         }
+
 
         /// <summary>
         /// Adds a function call to the current list.
@@ -42,45 +43,60 @@
         /// Executes all the function calls that have been specified.
         /// </summary>
         /// <returns>A list of types that are selected by the predicates (or not selected if optional reversing flag is passed).</returns>
-        internal IEnumerable<TypeDefinition> Execute(IEnumerable<TypeDefinition> input, bool selected = true)
+        public IReadOnlyList<TypeSpec> ExecuteExtended(IEnumerable<TypeSpec> inputTypes, bool selected = true)
         {
-            var resultSets = new List<List<TypeDefinition>>();
+            var resultSets = new List<List<TypeSpec>>();
 
             // Execute each group of calls - each group represents a separate "or"
             foreach (var group in _groups)
-            {
-                // Create a copy of the class collection
-                var results = new List<TypeDefinition>();
-                foreach (var type in input)
-                {
-                    results.Add(type);
-                }
+            {                
+                var passingTypes = new List<TypeSpec>(inputTypes);               
 
                 // Invoke the functions iteratively - functions within a group are treated as "and" statements
                 foreach (var func in group)
                 {
-                    var funcResults = func.FunctionDelegate.DynamicInvoke(results, func.Value, func.Condition) as IEnumerable<TypeDefinition>;
-                    results = funcResults.ToList();
+                    var funcResults = func.FunctionDelegate.DynamicInvoke(passingTypes, func.Value, func.Condition) as IEnumerable<TypeSpec>;
+                    passingTypes = funcResults.ToList();
                 }
 
-                if (results.Count > 0)
+                if (passingTypes.Count > 0)
                 {
-                    resultSets.Add(results);
+                    resultSets.Add(passingTypes);
                 }
             }
 
             if (selected)
             {
                 // Return all the types that appear in at least one of the result sets
-                return resultSets.SelectMany(list => list.Select(def => def)).Distinct();
+                return resultSets.SelectMany(list => list.Select(def => def)).Distinct().ToList();
             }
             else
             {
                 // Return all the types that *do not* appear in at least one of the result sets
-                var selectedTypes = resultSets.SelectMany(list => list.Select(def => def)).Distinct().Select(t => t.FullName);
-                var notSelected = input.Where(t => !selectedTypes.Contains(t.FullName));
+                var selectedTypes = resultSets.SelectMany(list => list.Select(def => def)).Distinct().Select(t => t.Definition.FullName);
+                var notSelected = inputTypes.Where(t => !selectedTypes.Contains(t.Definition.FullName)).ToList();
                 return notSelected;
             }
+        }
+
+        public IReadOnlyList<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
+        {
+            var resultSets = new List<IEnumerable<TypeSpec>>();
+            
+            foreach (var group in _groups)
+            {
+                IEnumerable<TypeSpec> passingTypes = inputTypes;
+                
+                foreach (var func in group)
+                {
+                    var funcResults = func.FunctionDelegate.DynamicInvoke(passingTypes, func.Value, func.Condition) as IEnumerable<TypeSpec>;
+                    passingTypes = funcResults;
+                }
+
+                resultSets.Add(passingTypes);                
+            }
+           
+            return resultSets.SelectMany(list => list.Select(def => def)).Distinct().ToList();            
         }
 
 

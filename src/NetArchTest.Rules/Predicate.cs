@@ -1,39 +1,27 @@
-﻿namespace NetArchTest.Rules
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using NetArchTest.Rules.Extensions;
-    using Mono.Cecil;
+﻿using System;
+using System.Collections.Generic;
+using NetArchTest.Rules.Assemblies;
 
+namespace NetArchTest.Rules
+{
     /// <summary>
     /// A set of predicates that can be applied to a list of types.
     /// </summary>
-    public sealed class Predicates
-    {
-        /// <summary> A list of types that conditions can be applied to. </summary>
-        private readonly IEnumerable<TypeDefinition> _types;
-
-        /// <summary> The sequence of conditions that is applied to the type of list. </summary>
+    public sealed class Predicate
+    {       
+        private readonly IEnumerable<TypeSpec> _types;
         private readonly FunctionSequence _sequence;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Predicates"/> class.
-        /// </summary>
-        internal Predicates(IEnumerable<TypeDefinition> types)
-        {
-            _types = types.ToList();
-            _sequence = new FunctionSequence();
-        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Predicates"/> class.
+        /// Initializes a new instance of the <see cref="Predicate"/> class.
         /// </summary>
-        internal Predicates(IEnumerable<TypeDefinition> types, FunctionSequence calls)
+        internal Predicate(IEnumerable<TypeSpec> types, FunctionSequence calls = null)
         {
-            _types = types.ToList();
-            _sequence = calls;
+            _types = types;
+            _sequence = calls ?? new FunctionSequence();
         }
+
 
         /// <summary>
         /// Selects types that have a specific name.

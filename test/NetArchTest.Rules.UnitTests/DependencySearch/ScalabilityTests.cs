@@ -1,6 +1,7 @@
 ﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
 {
     using Mono.Cecil;
+    using NetArchTest.Rules.Assemblies;
     using NetArchTest.Rules.Dependencies;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
@@ -38,9 +39,9 @@
     public class ScalabilityTests
     {
         // Type definitions input sets of different size
-        private static IList<TypeDefinition> _inputTypesSmallSet;
-        private static IList<TypeDefinition> _inputTypesMediumSet;
-        private static IList<TypeDefinition> _inputTypesLargeSet;
+        private static IList<TypeSpec> _inputTypesSmallSet;
+        private static IList<TypeSpec> _inputTypesMediumSet;
+        private static IList<TypeSpec> _inputTypesLargeSet;
 
         // Total number of members of all types from input sets.
         private static int _inputMembersSmallSetCount;
@@ -169,7 +170,7 @@
                 $"{k1}+-{dk1}; {k2}+-{dk2}\nSize; Ellapsed Ticks:\n{n0}; {ellapsed0.Mean}+-{ellapsed0.Margins}\n{n1}; {ellapsed1.Mean}+-{ellapsed1.Margins}\n{n2}; {ellapsed2.Mean}+-{ellapsed2.Margins}");
         }
 
-        private void FindTypesWithAnyDependencies(IEnumerable<TypeDefinition> inputTypes, IEnumerable<string> dependenciesToSearch)
+        private void FindTypesWithAnyDependencies(IEnumerable<TypeSpec> inputTypes, IEnumerable<string> dependenciesToSearch)
         {
             var search = new DependencySearch();
 
@@ -179,7 +180,7 @@
             Assert.Equal(inputTypes.Count(), result.Count());
         }
 
-        private void FindTypesWithAllDependencies(IEnumerable<TypeDefinition> inputTypes, IEnumerable<string> dependenciesToSearch)
+        private void FindTypesWithAllDependencies(IEnumerable<TypeSpec> inputTypes, IEnumerable<string> dependenciesToSearch)
         {
             // Arrange
             var search = new DependencySearch();
@@ -212,7 +213,7 @@
         /// <param name="dependenciesFullNames">List of dependencies for each type to reference</param>
         /// <param name="totalCountOfMembers">Returns total number of members in all generated type definitions</param>
         /// <returns>List of type definitions, each of them refers to all dependencies from given list</returns>
-        static private IList<TypeDefinition> StubTypeDefinitionWithDependencies(int typesCount, IReadOnlyCollection<string> dependenciesFullNames,
+        static private IList<TypeSpec> StubTypeDefinitionWithDependencies(int typesCount, IReadOnlyCollection<string> dependenciesFullNames,
             out int totalCountOfMembers)
         {
             var types = new List<TypeDefinition>(typesCount);
@@ -239,7 +240,7 @@
             }
 
             totalCountOfMembers = typesCount * dependenciesFullNames.Count;
-            return types;
+            return types.Select(x => new TypeSpec(x)).ToList();
         }
 
         /// <summary>

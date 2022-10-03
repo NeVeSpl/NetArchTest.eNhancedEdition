@@ -16,14 +16,13 @@ namespace NetArchTest.Rules
     /// Creates a list of types that can have predicates and conditions applied to it.
     /// </summary>
     public sealed class Types
-    {
-        /// <summary> The list of types represented by this instance. </summary>
-        private readonly List<TypeDefinition> types;  
+    {        
+        private readonly IReadOnlyList<TypeSpec> types;  
 
 
-        private Types(IEnumerable<IType> types)
+        private Types(IEnumerable<TypeSpec> types)
         {
-            this.types = types.Select(x => x.Definition).ToList();
+            this.types = types.ToList();
         }
 
 
@@ -115,7 +114,7 @@ namespace NetArchTest.Rules
         /// Returns the list of <see cref="TypeDefinition"/> objects describing the types in this list.
         /// </summary>
         /// <returns>The list of <see cref="TypeDefinition"/> objects in this list.</returns>
-        internal IEnumerable<TypeDefinition> GetTypeDefinitions()
+        internal IEnumerable<TypeSpec> GetTypeSpecifications()
         {
             return types;
         }
@@ -126,7 +125,7 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
         public IEnumerable<Type> GetTypes()
         {
-            return (types.Select(t => t.ToType()));
+            return (types.Select(t => t.Definition.ToType()));
         }
 
 
@@ -134,27 +133,27 @@ namespace NetArchTest.Rules
         /// Allows a list of types to be applied to one or more filters.
         /// </summary>
         /// <returns>A list of types onto which you can apply a series of filters.</returns>
-        public Predicates That()
+        public Predicate That()
         {
-            return new Predicates(types);
+            return new Predicate(types);
         }
 
         /// <summary>
         /// Applies a set of conditions to the list of types.
         /// </summary>
         /// <returns></returns>
-        public Conditions Should()
+        public Condition Should()
         {
-            return new Conditions(types, true);
+            return new Condition(types, true);
         }
 
         /// <summary>
         /// Applies a negative set of conditions to the list of types.
         /// </summary>
         /// <returns></returns>
-        public Conditions ShouldNot()
+        public Condition ShouldNot()
         {
-            return new Conditions(types, false);
+            return new Condition(types, false);
         }
     }
 }

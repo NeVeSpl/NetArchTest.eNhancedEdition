@@ -19,7 +19,7 @@ namespace NetArchTest.Rules.UnitTests
         [Fact(DisplayName = "System types should be excluded from the current domain.")]
         public void InCurrentDomain_SystemTypesExcluded()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
 
             Assert.DoesNotContain(result, t => t.FullName.StartsWith("System.") || t.FullName.Equals("System"));
             Assert.DoesNotContain(result, t => t.FullName.StartsWith("Microsoft.") || t.FullName.Equals("Microsoft"));
@@ -28,21 +28,21 @@ namespace NetArchTest.Rules.UnitTests
         [Fact(DisplayName = "Types that reside in namespace that has \"System\" prefix but is not system namespace should be included in the current domain. ")]
         public void InCurrentDomain_TypesWithPrefixSystemInclude()
         {          
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
 
             Assert.Contains(result, t => t.FullName == typeof(SystemAsNamespacePrefix.ExampleClass).FullName);           
         }
         [Fact(DisplayName = "Types that reside in namespace that has \"Module\" prefix but is not <Module> namespace should be included in the current domain. ")]
         public void InCurrentDomain_TypesWithPrefixModuleInclude()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
 
             Assert.Contains(result, t => t.FullName == typeof(ModuleAsNamespacePrefix.ExampleClass).FullName);
         }
         [Fact(DisplayName = "<Module> types should be excluded from the current domain.")]
         public void InCurrentDomain_SystemTypesExcludedModule()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
             Assert.DoesNotContain(result, t => t.FullName.StartsWith("<Module>") | t.FullName.Equals("<Module>"));
         }
 
@@ -50,7 +50,7 @@ namespace NetArchTest.Rules.UnitTests
         [Fact(DisplayName = "NetArchTest types should be excluded from the current domain.")]
         public void InCurrentDomain_NetArchTestTypesExcluded()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
 
             Assert.DoesNotContain(result, t => t.FullName.StartsWith("NetArchTest.Rules"));
             Assert.DoesNotContain(result, t => t.FullName.StartsWith("Mono.Cecil"));
@@ -59,14 +59,14 @@ namespace NetArchTest.Rules.UnitTests
         [Fact(DisplayName = "Nested public types should be included in the current domain.")]
         public void InCurrentDomain_NestedPublicTypesPresent_Returned()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
             Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.Nested.NestedPublic/NestedPublicClass"));
         }
 
         [Fact(DisplayName = "Nested private types should be included in the current domain.")]
         public void InCurrentDomain_NestedPrivateTypesPresent_Returned()
         {
-            var result = Types.InCurrentDomain().GetTypeDefinitions();
+            var result = Types.InCurrentDomain().GetTypeSpecifications();
             Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.Nested.NestedPrivate/NestedPrivateClass"));
         }
 
@@ -76,7 +76,7 @@ namespace NetArchTest.Rules.UnitTests
         public void FromFile_TypesReturned()
         {
             // Arrange
-            var expected = Types.InCurrentDomain().That().ResideInNamespace("NetArchTest.TestStructure").GetTypeDefinitions().Count();
+            var expected = Types.InCurrentDomain().That().ResideInNamespace("NetArchTest.TestStructure").GetTypeSpecifications().Count();
 
             // Act
             var result = Types.FromFile("NetArchTest.TestStructure.dll").That().ResideInNamespace("NetArchTest.TestStructure").GetTypes();
@@ -90,7 +90,7 @@ namespace NetArchTest.Rules.UnitTests
         public void FromPath_TypesReturned()
         {
             // Arrange
-            var expected = Types.InCurrentDomain().That().ResideInNamespace("NetArchTest.TestStructure").GetTypeDefinitions().Count();
+            var expected = Types.InCurrentDomain().That().ResideInNamespace("NetArchTest.TestStructure").GetTypeSpecifications().Count();
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Act

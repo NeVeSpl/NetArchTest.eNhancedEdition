@@ -1,7 +1,7 @@
-﻿namespace NetArchTest.Rules
-{
-    using Mono.Cecil;
+﻿using Mono.Cecil;
 
+namespace NetArchTest.Rules
+{
     /// <summary>
     /// An externally defined rule that can be applied as a condition or a predicate.
     /// </summary>
