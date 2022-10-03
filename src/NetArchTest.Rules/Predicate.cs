@@ -421,7 +421,6 @@ namespace NetArchTest.Rules
             return new PredicateList(_types, _sequence);
         }
 
-
         /// <summary>
         /// Selects types that have public scope.
         /// </summary>

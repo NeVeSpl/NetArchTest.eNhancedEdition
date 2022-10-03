@@ -10,7 +10,7 @@ namespace NetArchTest.Rules
     /// </summary>
     internal sealed class FunctionSequence
     {        
-        private readonly List<List<FunctionCall>> _groups;
+        private readonly List<List<IFunctionCall>> _groups;
 
 
         /// <summary>
@@ -18,8 +18,8 @@ namespace NetArchTest.Rules
         /// </summary>
         internal FunctionSequence()
         {
-            _groups = new List<List<FunctionCall>>();
-            _groups.Add(new List<FunctionCall>());
+            _groups = new List<List<IFunctionCall>>();
+            _groups.Add(new List<IFunctionCall>());
         }
 
 
@@ -36,7 +36,7 @@ namespace NetArchTest.Rules
         /// </summary>
         internal void CreateGroup()
         {
-            _groups.Add(new List<FunctionCall>());
+            _groups.Add(new List<IFunctionCall>());
         }
 
         /// <summary>
@@ -45,65 +45,39 @@ namespace NetArchTest.Rules
         /// <returns>A list of types that are selected by the predicates (or not selected if optional reversing flag is passed).</returns>
         public IReadOnlyList<TypeSpec> ExecuteExtended(IEnumerable<TypeSpec> inputTypes, bool selected = true)
         {
-            var resultSets = new List<List<TypeSpec>>();
+            MarkPassingTypes(inputTypes);
 
-            // Execute each group of calls - each group represents a separate "or"
-            foreach (var group in _groups)
-            {                
-                var passingTypes = new List<TypeSpec>(inputTypes);               
-
-                // Invoke the functions iteratively - functions within a group are treated as "and" statements
-                foreach (var func in group)
-                {
-                    var funcResults = func.FunctionDelegate.DynamicInvoke(passingTypes, func.Value, func.Condition) as IEnumerable<TypeSpec>;
-                    passingTypes = funcResults.ToList();
-                }
-
-                if (passingTypes.Count > 0)
-                {
-                    resultSets.Add(passingTypes);
-                }
-            }
-
-            if (selected)
-            {
-                // Return all the types that appear in at least one of the result sets
-                return resultSets.SelectMany(list => list.Select(def => def)).Distinct().ToList();
-            }
-            else
-            {
-                // Return all the types that *do not* appear in at least one of the result sets
-                var selectedTypes = resultSets.SelectMany(list => list.Select(def => def)).Distinct().Select(t => t.Definition.FullName);
-                var notSelected = inputTypes.Where(t => !selectedTypes.Contains(t.Definition.FullName)).ToList();
-                return notSelected;
-            }
+            return inputTypes.Where(x => x.IsSelected == selected).ToList();
         }
 
         public IReadOnlyList<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
         {
-            var resultSets = new List<IEnumerable<TypeSpec>>();
-            
+            MarkPassingTypes(inputTypes);
+
+            return inputTypes.Where(x => x.IsSelected == true).ToList();            
+        }
+        private void MarkPassingTypes(IEnumerable<TypeSpec> inputTypes)
+        {
+            inputTypes.ForEach(x => x.IsSelected = false);
+
             foreach (var group in _groups)
             {
                 IEnumerable<TypeSpec> passingTypes = inputTypes;
-                
+
                 foreach (var func in group)
                 {
-                    var funcResults = func.FunctionDelegate.DynamicInvoke(passingTypes, func.Value, func.Condition) as IEnumerable<TypeSpec>;
+                    var funcResults = func.Execute(passingTypes);
                     passingTypes = funcResults;
                 }
 
-                resultSets.Add(passingTypes);                
+                passingTypes.ForEach(x => x.IsSelected = true);
             }
-           
-            return resultSets.SelectMany(list => list.Select(def => def)).Distinct().ToList();            
         }
-
 
         /// <summary>
         /// Represents a single function call.
         /// </summary>
-        internal class FunctionCall
+        internal class FunctionCall : IFunctionCall
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="FunctionCall"/> class.
@@ -114,6 +88,13 @@ namespace NetArchTest.Rules
                 this.Value = value;
                 this.Condition = condition;
             }
+
+
+            public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
+            {
+                return FunctionDelegate.DynamicInvoke(inputTypes, Value, Condition) as IEnumerable<TypeSpec>;
+            }
+
 
             /// <summary>
             /// A delegate for a function call.
@@ -130,6 +111,11 @@ namespace NetArchTest.Rules
             /// </summary>
             public bool Condition { get; private set; }
 
+        }
+
+        internal interface IFunctionCall
+        {
+            IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes);
         }
     }
 }
