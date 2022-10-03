@@ -940,7 +940,7 @@ namespace NetArchTest.Rules.UnitTests
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .And()
-                .HaveDependencyOn(typeof(ExampleDependency).FullName)
+                .HaveDependencyOnAny(typeof(ExampleDependency).FullName)
                 .GetTypes();
 
             Assert.Equal(2, result.Count()); // Two types found
@@ -1004,7 +1004,7 @@ namespace NetArchTest.Rules.UnitTests
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .And()
-                .DoNotHaveDependencyOn(typeof(ExampleDependency).FullName)
+                .DoNotHaveDependencyOnAny(typeof(ExampleDependency).FullName)
                 .GetTypes();
 
             Assert.Equal(2, result.Count()); // Two types found

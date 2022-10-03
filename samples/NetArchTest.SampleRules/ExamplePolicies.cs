@@ -22,11 +22,11 @@
                    t.That()
                    .ResideInNamespace("NetArchTest.SampleLibrary.Presentation")
                    .ShouldNot()
-                   .HaveDependencyOn("NetArchTest.SampleLibrary.Data"),
+                   .HaveDependencyOnAny("NetArchTest.SampleLibrary.Data"),
                    "Enforcing layered architecture", "Controllers should not directly reference repositories"
                 )
                 .Add(t =>
-                    t.That().HaveDependencyOn("System.Data")
+                    t.That().HaveDependencyOnAny("System.Data")
                     .And().ResideInNamespace(("ArchTest"))
                     .Should().ResideInNamespace("NetArchTest.SampleLibrary.Data"),
                     "Controlling external dependencies", "Only classes in the data namespace can have a dependency on System.Data"

@@ -599,18 +599,7 @@ namespace NetArchTest.Rules
         {
             _sequence.AddFunctionCall(FunctionDelegates.ResideInNamespaceMatching, $"^.*{name}.*$", false);
             return new ConditionList(_types, _should, _sequence);
-        }
-
-        /// <summary>
-        /// Selects types that have a dependency on a particular type.
-        /// </summary>
-        /// <param name="dependency">The dependency to match against. This can be a namespace or a specific type.</param>
-        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
-        public ConditionList HaveDependencyOn(string dependency)
-        {
-            _sequence.AddFunctionCall(FunctionDelegates.HaveDependencyOnAny, new List<string> { dependency }, true);
-            return new ConditionList(_types, _should, _sequence);
-        }
+        }        
 
         /// <summary>
         /// Selects types that have a dependency on any of the supplied types.
@@ -644,17 +633,7 @@ namespace NetArchTest.Rules
             _sequence.AddFunctionCall(FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone, dependencies, true);
             return new ConditionList(_types, _should, _sequence);
         }
-
-        /// <summary>
-        /// Selects types that do not have a dependency on a particular type.
-        /// </summary>
-        /// <param name="dependency">The dependency type to match against. This can be a namespace or a specific type.</param>
-        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
-        public ConditionList NotHaveDependencyOn(string dependency)
-        {
-            _sequence.AddFunctionCall(FunctionDelegates.HaveDependencyOnAny, new List<string> { dependency }, false);
-            return new ConditionList(_types, _should, _sequence);
-        }
+      
         /// <summary>
         /// Selects types that do not have a dependency on any of the particular types.
         /// </summary>

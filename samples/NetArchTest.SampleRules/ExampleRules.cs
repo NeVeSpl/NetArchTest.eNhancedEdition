@@ -20,7 +20,7 @@
                 .That()
                 .ResideInNamespace("NetArchTest.SampleLibrary.Presentation")
                 .ShouldNot()
-                .HaveDependencyOn("NetArchTest.SampleLibrary.Data")
+                .HaveDependencyOnAny("NetArchTest.SampleLibrary.Data")
                 .GetResult().IsSuccessful;
 
             //****************************************************
@@ -29,7 +29,7 @@
             // Only classes in the data namespace can have a dependency on System.Data
 
             result = Types.InCurrentDomain()
-                .That().HaveDependencyOn("System.Data")
+                .That().HaveDependencyOnAny("System.Data")
                 .And().ResideInNamespace(("ArchTest"))
                 .Should().ResideInNamespace(("NetArchTest.SampleLibrary.Data"))
                 .GetResult().IsSuccessful;

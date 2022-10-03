@@ -826,7 +826,7 @@ namespace NetArchTest.Rules.UnitTests
                 .And()
                 .HaveNameStartingWith("HasDepend")
                 .Should()
-                .HaveDependencyOn(typeof(ExampleDependency).FullName)
+                .HaveDependencyOnAny(typeof(ExampleDependency).FullName)
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -890,7 +890,7 @@ namespace NetArchTest.Rules.UnitTests
                 .And()
                 .HaveNameStartingWith("NoDependency")
                 .Should()
-                .NotHaveDependencyOn(typeof(ExampleDependency).FullName)
+                .NotHaveDependencyOnAny(typeof(ExampleDependency).FullName)
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
