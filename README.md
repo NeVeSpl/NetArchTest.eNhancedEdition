@@ -15,23 +15,38 @@ The library is available as a package on NuGet: [NetArchTest.eNhancedEdition](ht
 ## Examples
 
 ```csharp
-// Classes in the presentation should not directly reference repositories
-var result = Types.InCurrentDomain()
-    .That()
-    .ResideInNamespace("NetArchTest.SampleLibrary.Presentation")
-    .ShouldNot()
-    .HaveDependencyOnAny("NetArchTest.SampleLibrary.Data")
-    .GetResult()
-    .IsSuccessful;
+static readonly Assembly TestCreationAssembly = typeof(Foo).Assembly;
 
-// All the service classes should be sealed
-var result = Types.InCurrentDomain()
-    .That()
-    .ImplementInterface(typeof(IWidgetService))
-    .Should()
-    .BeSealed()
-    .GetResult()
-    .IsSuccessful;
+[TestMethod]
+public void DomainIsNotAccessibleFromOutsideOfModule()
+{
+    var result = Types.InAssembly(AssemblyUnderTest)
+                      .That()
+                      .ResideInNamespace("MyApp.Domain")
+                      .And()
+                      .DoNotHaveNameEndingWith("Const")
+                      .Should()
+                      .NotBePublic()
+                      .GetResult();
+    Assert.IsTrue(result.IsSuccessful);
+}
+
+[TestMethod]
+public void DomainIsIndependent()
+{
+    var result = Types.InAssembly(AssemblyUnderTest)
+                      .That()
+                      .ResideInNamespace("MyApp.Domain")
+                      .ShouldNot()
+                      .HaveDependenciesOtherThan( 
+                        "System",                       
+                        "MyApp.SharedKernel.Domain",
+                        "MyApp.BuildingBlocks.Domain"
+                      ) 
+                      .GetResult(); 
+   
+    Assert.IsTrue(result.IsSuccessful, "Domain has lost its independence!");                           
+}
 ```
 
 
