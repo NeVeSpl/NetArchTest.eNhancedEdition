@@ -6,7 +6,7 @@ NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/
 
 ## Rationale
 
-
+NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** has born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. The main goal is to offer more, and not to be a replacement.
 
 ## Getting started
 
@@ -38,9 +38,9 @@ var result = Types.InCurrentDomain()
 
 ## Writing rules
 
-The fluent API should direct you in building up a rule based on a combination of predicates, conditions and conjunctions. 
+The fluent API should direct you in building up a rule, based on a combination of predicates, conditions and conjunctions. 
 
-The starting point for any rule is the static `Types` class, where you load a set of types from a path, assembly or namespace.
+The starting point for any rule is the static `Types` class, where you load a set of types from a path, assembly.
 
 ```csharp
 var types = Types.InAssembly(typeof(MyClass).Assembly);
@@ -55,7 +55,9 @@ types.That().ResideInNamespace(“MyProject.Data”).Should().BeSealed();
 ```
 Finally, you obtain a result from the rule by using an executor, i.e. use `GetTypes()` to return the types that match the rule or `GetResult()` to determine whether the rule has been met. Note that the result will also return a list of types that failed to meet the conditions.
 ```csharp
-var isValid = types.That().ResideInNamespace(“MyProject.Data”).Should().BeSealed().GetResult().IsSuccessful;
+var result = types.That().ResideInNamespace(“MyProject.Data”).Should().BeSealed().GetResult();
+var isValid = result.IsSuccessful;
+var types = result.FailingTypes;
 ```
 
 
