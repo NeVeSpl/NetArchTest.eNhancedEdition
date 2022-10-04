@@ -22,7 +22,7 @@
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
                 .Or()
                 .ResideInNamespace("NetArchTest.TestStructure.Generic")
-                .GetTypes();
+                .GetNetTypes();
 
             Assert.Equal(7, result.Count()); // seven types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -45,7 +45,7 @@
                 .HaveNameStartingWith("Class")
                 .And()
                 .HaveNameEndingWith("1")
-                .GetTypes();
+                .GetNetTypes();
 
             Assert.Equal(2, result.Count()); // two types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -67,7 +67,7 @@
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
                 .And()
                 .HaveNameStartingWith("ClassB")
-                .GetTypes();
+                .GetNetTypes();
 
             // Results will be everything returned by both groups of statements
             Assert.Equal(3, result.Count()); // five types found

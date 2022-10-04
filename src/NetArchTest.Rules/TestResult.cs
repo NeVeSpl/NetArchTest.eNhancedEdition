@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Extensions;
 
 namespace NetArchTest.Rules
 {
     /// <summary>
     /// Defines a result from a test carried out on a <see cref="ConditionList"/>.
     /// </summary>
+    [DebuggerDisplay("FailingTypes = {FailingTypes.Count}")]
     public sealed class TestResult
-    {       
-        private IReadOnlyList<TypeSpec> _failingTypes;
-
+    {   
         private TestResult()
         {
         }
+
 
         /// <summary>
         /// Gets a flag indicating the success or failure of the test.
@@ -28,41 +27,7 @@ namespace NetArchTest.Rules
         /// <remarks>
         /// This method loads all the types and may throw dependency loading errors if the test project does not have a direct dependency on the type being loaded.
         /// </remarks>
-        public IReadOnlyList<Type> FailingTypes
-        {
-            get
-            {
-                if (_failingTypes != null)
-                {
-                    return _failingTypes.Select(t => t.Definition.ToType()).ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of the type nmames that failed the test.
-        /// </summary>
-        /// <remarks>
-        /// This is a "safer" way of getting a list of failed types as it does not load the types when enumerating the list. This can lead to dependency loading errors.
-        /// </remarks>
-        public IReadOnlyList<string> FailingTypeNames
-        {
-            get
-            {
-                if (_failingTypes != null)
-                {
-                    return _failingTypes.Select(t => t.FullName).ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public IReadOnlyList<IType> FailingTypes { get; private set; }
 
 
         /// <summary>
@@ -81,12 +46,12 @@ namespace NetArchTest.Rules
         /// Creates a new instance of <see cref="TestResult"/> indicating a failed test.
         /// </summary>
         /// <returns>Instance of <see cref="TestResult"/></returns>
-        internal static TestResult Failure(IReadOnlyList<TypeSpec> failingTypes)
+        internal static TestResult Failure(IEnumerable<TypeSpec> failingTypes)
         {
             return new TestResult
             {
                 IsSuccessful = false,
-                _failingTypes = failingTypes
+                FailingTypes = failingTypes.Select(x => x.CreateWrapper()).ToArray()
             };
         }
     }

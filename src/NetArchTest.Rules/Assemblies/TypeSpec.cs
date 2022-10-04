@@ -15,6 +15,13 @@ namespace NetArchTest.Rules.Assemblies
         }
 
 
+
+        public TypeWrapper CreateWrapper()
+        {
+            return new TypeWrapper(Definition);
+        }
+
+
         public static implicit operator TypeDefinition(TypeSpec type)
         {
             return type.Definition;

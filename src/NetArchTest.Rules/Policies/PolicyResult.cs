@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using NetArchTest.Rules.Assemblies;
 
     /// <summary>
     /// A single test result for a policy.
@@ -27,7 +28,7 @@
         /// <summary>
         /// Gets a collection populated with a list of any types that failed the test.
         /// </summary>
-        public IEnumerable<Type> FailingTypes { get; private set; }
+        public IEnumerable<IType> FailingTypes { get; private set; }
 
         /// <summary>
         /// Gets the simple name associated with the test.

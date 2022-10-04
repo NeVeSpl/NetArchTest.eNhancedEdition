@@ -61,9 +61,14 @@ namespace NetArchTest.Rules
         /// Returns the list of types that satisfy the conditions.
         /// </summary>
         /// <returns>A list of types.</returns>
-        public IEnumerable<Type> GetTypes()
+        public IEnumerable<IType> GetTypes()
         {
-            return _sequence.Execute(_types).Select(t => t.Definition.ToType());
+            return _sequence.Execute(_types).Select(t => t.CreateWrapper());
+        }
+
+        internal IEnumerable<Type> GetNetTypes()
+        {
+            return GetTypes().Select(x => x.Type);
         }
 
         /// <summary>

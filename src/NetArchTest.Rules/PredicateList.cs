@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetArchTest.Rules.Assemblies;
 using NetArchTest.Rules.Extensions;
+using NetArchTest.Rules.Slices;
 
 namespace NetArchTest.Rules
 {
@@ -44,21 +45,31 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Returns the type definitions returned by these predicate.
+        /// Allows dividing types into groups, also called slices.
         /// </summary>
-        /// <returns>A list of type definitions.</returns>
+        /// <returns></returns>
+        public SlicePredicate Slice()
+        {
+            return new SlicePredicate(GetTypeSpecifications());
+        }
+
+       
         internal IEnumerable<TypeSpec> GetTypeSpecifications()
         { 
             return _sequence.Execute(_types);
+        }
+        internal IEnumerable<Type> GetNetTypes()
+        {
+            return GetTypes().Select(x => x.Type);
         }
 
         /// <summary>
         /// Returns the types returned by these predicates.
         /// </summary>
         /// <returns>A list of types.</returns>
-        public IEnumerable<Type> GetTypes()
+        public IEnumerable<IType> GetTypes()
         {
-            return GetTypeSpecifications().Select(t => t.Definition.ToType());
+            return GetTypeSpecifications().Select(t => t.CreateWrapper());
         }
 
         /// <summary>

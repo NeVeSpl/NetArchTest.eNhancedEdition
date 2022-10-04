@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Mono.Cecil;
 using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Extensions;
+using NetArchTest.Rules.Slices;
 
 [assembly: InternalsVisibleTo("NetArchTest.Rules.UnitTests")]
 
@@ -110,22 +110,23 @@ namespace NetArchTest.Rules
         }
        
 
-        /// <summary>
-        /// Returns the list of <see cref="TypeDefinition"/> objects describing the types in this list.
-        /// </summary>
-        /// <returns>The list of <see cref="TypeDefinition"/> objects in this list.</returns>
+       
         internal IEnumerable<TypeSpec> GetTypeSpecifications()
         {
             return types;
+        }
+        internal IEnumerable<Type> GetNetTypes()
+        {
+            return GetTypes().Select(x => x.Type);
         }
 
         /// <summary>
         /// Returns the list of <see cref="Type"/> objects describing the types in this list.
         /// </summary>
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
-        public IEnumerable<Type> GetTypes()
+        public IEnumerable<IType> GetTypes()
         {
-            return (types.Select(t => t.Definition.ToType()));
+            return (types.Select(t => t.CreateWrapper()));
         }
 
 
@@ -154,6 +155,15 @@ namespace NetArchTest.Rules
         public Condition ShouldNot()
         {
             return new Condition(types, false);
+        }
+
+        /// <summary>
+        /// Allows dividing types into groups, also called slices.
+        /// </summary>
+        /// <returns></returns>
+        public SlicePredicate Slice()
+        {
+            return new SlicePredicate(types);
         }
     }
 }

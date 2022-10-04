@@ -959,8 +959,8 @@ namespace NetArchTest.Rules.UnitTests
 
             var failingTypes = result.FailingTypes.ToList();
             Assert.Equal(2, failingTypes.Count);
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].ToString());
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].ToString());
+            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].Type.ToString());
+            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].Type.ToString());
         }
 
         [Fact(DisplayName = "Types can be selected according to a custom rule.")]

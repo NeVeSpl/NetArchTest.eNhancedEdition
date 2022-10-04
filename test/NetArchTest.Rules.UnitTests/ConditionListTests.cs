@@ -24,7 +24,7 @@
                 .HaveNameEndingWith("1")
                 .Or()
                 .HaveNameEndingWith("2")
-                .GetTypes();
+                .GetNetTypes();
 
             Assert.Equal(5, result.Count()); // five types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -47,7 +47,7 @@
                 .HaveNameEndingWith("1")
                 .And()
                 .BeClasses()
-                .GetTypes();
+                .GetNetTypes();
 
             Assert.Equal(2, result.Count()); // two types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -71,7 +71,7 @@
                 .HaveNameStartingWith("ClassB")
                 .And()
                 .HaveNameEndingWith("2")
-                .GetTypes();
+                .GetNetTypes();
 
             // Results will be everything returned by both groups of statements
             Assert.Equal(2, result.Count()); // five types found
@@ -121,8 +121,8 @@
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(2, result.FailingTypes.Count()); // two types found
-            Assert.Contains<Type>(typeof(ClassB1), result.FailingTypes);
-            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes);
+            Assert.Contains<Type>(typeof(ClassB1), result.FailingTypes.Select(x => x.Type));
+            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes.Select(x => x.Type));
         }
 
         [Fact(DisplayName = "If a condition fails using ShouldNot logic then a list of failing types should be returned.")]
@@ -138,9 +138,9 @@
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(3, result.FailingTypes.Count()); // three types found
-            Assert.Contains<Type>(typeof(ClassA1), result.FailingTypes);
-            Assert.Contains<Type>(typeof(ClassA2), result.FailingTypes);
-            Assert.Contains<Type>(typeof(ClassA3), result.FailingTypes);
+            Assert.Contains<Type>(typeof(ClassA1), result.FailingTypes.Select(x => x.Type));
+            Assert.Contains<Type>(typeof(ClassA2), result.FailingTypes.Select(x => x.Type));
+            Assert.Contains<Type>(typeof(ClassA3), result.FailingTypes.Select(x => x.Type));
         }
 
         [Fact(DisplayName = "If a condition succeeds then a list of failing types should be null.")]
