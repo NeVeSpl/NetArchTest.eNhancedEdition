@@ -60,7 +60,7 @@ namespace NetArchTest.Rules
         }
         internal IEnumerable<Type> GetNetTypes()
         {
-            return GetTypes().Select(x => x.Type);
+            return GetTypeSpecifications().Select(x => x.Definition.ToType());
         }
 
         /// <summary>
