@@ -80,6 +80,32 @@ var types = result.FailingTypes;
 
 ## Slices 
 
+```csharp
+var result = Types.InAssembly(typeof(ExampleDependency).Assembly)
+                  .Slice()
+                  .ByNamespacePrefix("MyApp.Features")
+                  .Should()
+                  .NotHaveDependenciesBetweenSlices()
+                  .GetResult();
+
+```
+
+There is only one way, at least for now, to divide types into slices `ByNamespacePrefix(string prefix)` and it works as follows:
+
+1) Selects types which namespace starts with a given prefix, rest of the types are ignored.
+2) Slices are defined by the first part of the namespace that comes right after the prefix:
+`namespacePrefix.(sliceName).restOfNamespace`
+3) Types with the same `sliceName` part will be placed in the same slice. If `sliceName` is empty for a given type, the type will be also ignored (`BaseFeature` class from folowing image)
+
+![Slices](docs/slices.png)
+
+When we already have our types divided into slices, we can apply only one available right now condition: `NotHaveDependenciesBetweenSlices()`. As the name suggest it detects if any dependencies exist between slices. Any dependency from slice to type that is not part of any other slice is allowed.
+
+allowed | not allowed
+--|---
+![Slices](docs/slices.ok.png)|![Slices](docs/slices.not.png)
+
+
 ## Custom rules
 
 You can extend the library by writing custom rules that implement the `ICustomRule` interface. These can be applied as both predicates and conditions using a `MeetsCustomRule()` method, e.g.
