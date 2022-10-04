@@ -26,8 +26,8 @@ namespace NetArchTest.Rules
         /// <summary> The base delegate type used by every function. </summary>
         internal delegate IEnumerable<TypeSpec> FunctionDelegate<T>(IEnumerable<TypeSpec> input, T arg, bool condition);
 
-       
-        internal static FunctionDelegate<string> HaveName = delegate (IEnumerable<TypeSpec> input, string name, bool condition)
+
+        public static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
             {
@@ -37,7 +37,7 @@ namespace NetArchTest.Rules
             {
                 return input.Where(c => !c.Definition.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
             }
-        };
+        }
 
         /// <summary> Function for matching a type name using a regular expression. </summary>
         internal static FunctionDelegate<string> HaveNameMatching = delegate (IEnumerable<TypeSpec> input, string pattern, bool condition)

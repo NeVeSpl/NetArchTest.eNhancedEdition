@@ -10,34 +10,25 @@ namespace NetArchTest.Rules
     /// </summary>
     internal sealed class FunctionSequence
     {        
-        private readonly List<List<IFunctionCall>> _groups;
+        private readonly List<List<IFunctionCall>> groups;
 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSequence"/> class.
-        /// </summary>
-        internal FunctionSequence()
+        public FunctionSequence()
         {
-            _groups = new List<List<IFunctionCall>>();
-            _groups.Add(new List<IFunctionCall>());
+            groups = new List<List<IFunctionCall>>();
+            groups.Add(new List<IFunctionCall>());
         }
 
 
-        /// <summary>
-        /// Adds a function call to the current list.
-        /// </summary>
-        internal void AddFunctionCall<T>(FunctionDelegates.FunctionDelegate<T> method, T value, bool condition)
+        public void AddFunctionCall<T>(FunctionDelegates.FunctionDelegate<T> method, T value, bool condition)
         {
-            _groups.Last().Add(new FunctionCall(method, value, condition));
+            groups.Last().Add(new FunctionCall<T>(method, value, condition));
+        }
+        public void CreateGroup()
+        {
+            groups.Add(new List<IFunctionCall>());
         }
 
-        /// <summary>
-        /// Creates a new logical grouping of function calls.
-        /// </summary>
-        internal void CreateGroup()
-        {
-            _groups.Add(new List<IFunctionCall>());
-        }
 
         /// <summary>
         /// Executes all the function calls that have been specified.
@@ -60,7 +51,7 @@ namespace NetArchTest.Rules
         {
             inputTypes.ForEach(x => x.IsSelected = false);
 
-            foreach (var group in _groups)
+            foreach (var group in groups)
             {
                 IEnumerable<TypeSpec> passingTypes = inputTypes;
 
@@ -74,43 +65,26 @@ namespace NetArchTest.Rules
             }
         }
 
-        /// <summary>
-        /// Represents a single function call.
-        /// </summary>
-        internal class FunctionCall : IFunctionCall
+
+        internal class FunctionCall<T> : IFunctionCall
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="FunctionCall"/> class.
-            /// </summary>
-            internal FunctionCall(Delegate func, object value, bool condition)
+            public FunctionDelegates.FunctionDelegate<T> FunctionDelegate { get; }
+            public T FunctionArgument { get; }
+            public bool Condition { get;  }
+
+
+            public FunctionCall(FunctionDelegates.FunctionDelegate<T> func, T argument, bool condition)
             {
                 this.FunctionDelegate = func;
-                this.Value = value;
+                this.FunctionArgument = argument;
                 this.Condition = condition;
             }
 
 
             public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
             {
-                return FunctionDelegate.DynamicInvoke(inputTypes, Value, Condition) as IEnumerable<TypeSpec>;
+                return FunctionDelegate(inputTypes, FunctionArgument, Condition);
             }
-
-
-            /// <summary>
-            /// A delegate for a function call.
-            /// </summary>
-            public Delegate FunctionDelegate { get; private set; }
-
-            /// <summary>
-            /// The input value for the function call.
-            /// </summary>
-            public object Value { get; private set; }
-
-            /// <summary>
-            /// The Condition to apply to the call - i.e. "is" or "is not".
-            /// </summary>
-            public bool Condition { get; private set; }
-
         }
 
         internal interface IFunctionCall
