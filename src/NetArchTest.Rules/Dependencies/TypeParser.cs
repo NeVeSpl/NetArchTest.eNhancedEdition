@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.Rules.Dependencies
+﻿namespace NetArchTest.Dependencies
 {
     using System;
     using System.Collections.Generic;

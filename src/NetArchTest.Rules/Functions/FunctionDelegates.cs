@@ -1,20 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Mono.Cecil.Rocks;
-using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Dependencies;
+using NetArchTest.Assemblies;
+using NetArchTest.Rules;
+using NetArchTest.Dependencies;
 using NetArchTest.Rules.Extensions;
 
-namespace NetArchTest.Rules
+namespace NetArchTest.Functions
 {
-    internal class StringAndComparisonStrategy
-    {
-		public string Value { get; }
-        public StringComparison Comparer { get; }
-    }
-
     /// <summary>
     /// Defines the various functions that can be applied to a collection of types.
     /// </summary>
@@ -54,34 +50,30 @@ namespace NetArchTest.Rules
         };
 
         /// <summary> Function for matching the start of a type name. </summary>
-        internal static FunctionDelegate<string> HaveNameStartingWith = MakeFunctionDelegateUsingStringComparerForHaveNameStartingWith(StringComparison.InvariantCultureIgnoreCase);
-
-        internal static FunctionDelegate<string> MakeFunctionDelegateUsingStringComparerForHaveNameStartingWith(StringComparison comparer) => delegate (IEnumerable<TypeSpec> input, string start, bool condition)
+        internal static IEnumerable<TypeSpec> HaveNameStartingWith(IEnumerable<TypeSpec> input, string start, bool condition, StringComparison comparer = StringComparison.InvariantCultureIgnoreCase)
         {
-	        if (condition)
-	        {
-		        return input.Where(c => c.Definition.Name.StartsWith(start, comparer));
-	        }
-		    else
-	        {
-		        return input.Where(c => !c.Definition.Name.StartsWith(start, comparer));
-	        }
-        };
+            if (condition)
+            {
+                return input.Where(c => c.Definition.Name.StartsWith(start, comparer));
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.Name.StartsWith(start, comparer));
+            }
+        }
 
         /// <summary> Function for matching the end of a type name. </summary>
-        internal static FunctionDelegate<string> HaveNameEndingWith = MakeFunctionDelegateUsingStringComparerForHaveNameEndingWith(StringComparison.InvariantCultureIgnoreCase);
-
-        internal static FunctionDelegate<string> MakeFunctionDelegateUsingStringComparerForHaveNameEndingWith(StringComparison comparer) => delegate (IEnumerable<TypeSpec> input, string end, bool condition)
+        internal static IEnumerable<TypeSpec> HaveNameEndingWith(IEnumerable<TypeSpec> input, string end, bool condition, StringComparison comparer = StringComparison.InvariantCultureIgnoreCase)
         {
-	        if (condition)
-	        {
-		        return input.Where(c => c.Definition.Name.EndsWith(end, comparer));
-	        }
-	        else
-	        {
-		        return input.Where(c => !c.Definition.Name.EndsWith(end, comparer));
-	        }
-        };
+            if (condition)
+            {
+                return input.Where(c => c.Definition.Name.EndsWith(end, comparer));
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.Name.EndsWith(end, comparer));
+            }
+        }
 
         /// <summary> Function for finding classes with a particular custom attribute. </summary>
         internal static FunctionDelegate<Type> HaveCustomAttribute = delegate (IEnumerable<TypeSpec> input, Type attribute, bool condition)
@@ -107,7 +99,7 @@ namespace NetArchTest.Rules
             }
             else
             {
-                return input.Where(c => !(c.Definition.CustomAttributes.Any(a => a.AttributeType.Resolve().IsSubclassOf(target) || attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase))));
+                return input.Where(c => !c.Definition.CustomAttributes.Any(a => a.AttributeType.Resolve().IsSubclassOf(target) || attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase)));
             }
         };
 
@@ -196,18 +188,18 @@ namespace NetArchTest.Rules
         };
 
         /// <summary> Function for finding static classes. </summary>
-        internal static FunctionDelegate<bool> BeStatic = delegate(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static FunctionDelegate<bool> BeStatic = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
-	        if (condition)
-	        {
-		        return input.Where(ClassIsStatic);
-	        }
-	        else
-	        {
-		        return input.Where(c => !ClassIsStatic(c));
-	        }
+            if (condition)
+            {
+                return input.Where(ClassIsStatic);
+            }
+            else
+            {
+                return input.Where(c => !ClassIsStatic(c));
+            }
 
-	        bool ClassIsStatic(TypeSpec c) => c.Definition.IsAbstract && c.Definition.IsSealed && !c.Definition.IsInterface && !c.Definition.GetConstructors().Any(m => m.IsPublic);
+            bool ClassIsStatic(TypeSpec c) => c.Definition.IsAbstract && c.Definition.IsSealed && !c.Definition.IsInterface && !c.Definition.GetConstructors().Any(m => m.IsPublic);
         };
 
         /// <summary> Function for finding types with generic parameters. </summary>
@@ -379,7 +371,7 @@ namespace NetArchTest.Rules
 
         /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
         internal static FunctionDelegate<IEnumerable<string>> OnlyHaveDependenciesOnAnyOrNone = delegate (IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
-        {            
+        {
             var search = new DependencySearch();
             var results = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(input, dependencies);
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using Mono.Cecil;
+using NetArchTest.Rules;
 using NetArchTest.Rules.Extensions;
 
-namespace NetArchTest.Rules.Assemblies
+namespace NetArchTest.Assemblies
 {
-    /// <summary>
-    /// Type wrapper.
-    /// </summary>
     [DebuggerDisplay("{FullName}")]
     internal sealed class TypeWrapper : IType
     {
@@ -31,28 +29,15 @@ namespace NetArchTest.Rules.Assemblies
             });
         }
 
-        /// <summary>
-        /// System.Type
-        /// </summary>
-        /// <remarks>
-        /// This property may be null if the test project does not have a direct dependency on the type.
-        /// </remarks>
-        public Type Type { get => _type.Value; }
 
-        /// <summary>
-        /// FullName of the type
-        /// </summary>       
-        public string FullName { get => _monoTypeDefinition.FullName; }
-
-        /// <summary>
-        /// Name of the type
-        /// </summary>       
-        public string Name { get => _monoTypeDefinition.Name; }
+        public Type ReflectionType => _type.Value;  
+        public string FullName => _monoTypeDefinition.FullName;     
+        public string Name => _monoTypeDefinition.Name;
 
 
         public static implicit operator System.Type(TypeWrapper type)
         {
-            return type.Type;
+            return type.ReflectionType;
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace NetArchTest.Rules.Dependencies
+﻿namespace NetArchTest.Dependencies
 {
     using System;
     using System.Collections.Generic;
     using Mono.Cecil;
-    using NetArchTest.Rules.Dependencies.DataStructures;
+    using NetArchTest.Dependencies.DataStructures;
     using NetArchTest.Rules.Extensions;
 
     internal class TypeDefinitionCheckingContext

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Slices.Model;
+using NetArchTest.Assemblies;
+using NetArchTest.Slices.Model;
 
-namespace NetArchTest.Rules.Slices
+namespace NetArchTest.Slices
 {
     /// <summary>
     /// Allows dividing types into groups, also called slices.

@@ -1,10 +1,11 @@
 ﻿using NetArchTest.TestStructure.Classes;
 
-namespace NetArchTest.Rules.UnitTests
+namespace NetArchTest.UnitTests
 {
     using System;
     using System.Linq;
     using System.Reflection;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.CustomAttributes;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
@@ -12,6 +13,7 @@ namespace NetArchTest.Rules.UnitTests
     using NetArchTest.TestStructure.Interfaces;
     using NetArchTest.TestStructure.NameMatching.Namespace1;
     using NetArchTest.TestStructure.Nested;
+    using NetArchTest.UnitTests.TestDoubles;
     using Xunit;
     using static NetArchTest.TestStructure.Nested.NestedPublic;
 
@@ -874,7 +876,7 @@ namespace NetArchTest.Rules.UnitTests
                 .And()
                 .HaveNameStartingWith("HasDependency")
                 .Should()
-                .OnlyHaveDependenciesOn(new[] { typeof(ExampleDependency).FullName, "System" })
+                .OnlyHaveDependencyOn(new[] { typeof(ExampleDependency).FullName, "System" })
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -938,7 +940,7 @@ namespace NetArchTest.Rules.UnitTests
                 .And()
                 .HaveNameStartingWith("HasDependencies")
                 .Should()
-                .HaveDependenciesOtherThan(new[] { typeof(ExampleDependency).FullName, "System" })
+                .HaveDependencyOtherThan(new[] { typeof(ExampleDependency).FullName, "System" })
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -959,15 +961,15 @@ namespace NetArchTest.Rules.UnitTests
 
             var failingTypes = result.FailingTypes.ToList();
             Assert.Equal(2, failingTypes.Count);
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].Type.ToString());
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].Type.ToString());
+            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].ReflectionType.ToString());
+            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].ReflectionType.ToString());
         }
 
         [Fact(DisplayName = "Types can be selected according to a custom rule.")]
         public void MeetCustomRule_MatchesFound_ClassSelected()
         {
             // Create a custom rule that selected "ClassA1"
-            var rule = new CustomRuleExample(t => t.Name.Equals("ClassA1", StringComparison.InvariantCultureIgnoreCase));
+            var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA1", StringComparison.InvariantCultureIgnoreCase));
 
             // This rule uses the custom rule to confirm that "ClassA1" has been selected
             var result = Types

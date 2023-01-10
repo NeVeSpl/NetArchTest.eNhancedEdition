@@ -1,8 +1,10 @@
-﻿namespace NetArchTest.Rules.Policies
+﻿namespace NetArchTest.Policies
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using NetArchTest.Rules;
+
 
     /// <summary>
     /// An aggregate of rules and results that can be used for reporting.

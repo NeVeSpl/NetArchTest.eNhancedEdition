@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Mono.Cecil;
-using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Slices;
+using NetArchTest.Assemblies;
+using NetArchTest.Slices;
 
-[assembly: InternalsVisibleTo("NetArchTest.Rules.UnitTests")]
+[assembly: InternalsVisibleTo("NetArchTest.UnitTests")]
 
 namespace NetArchTest.Rules
 {
@@ -44,11 +43,6 @@ namespace NetArchTest.Rules
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         public static Types InAssembly(Assembly assembly, IEnumerable<string> searchDirectories = null)
         {
-            if (assembly == null)
-            {
-                throw new ArgumentNullException(nameof(assembly));
-            }
-
             return Types.InAssemblies(new List<Assembly> { assembly }, searchDirectories);
         }
 
@@ -109,16 +103,9 @@ namespace NetArchTest.Rules
             return new Types(TypeSource.FromFiles(files, searchDirectories));
         }
        
-
        
-        internal IEnumerable<TypeSpec> GetTypeSpecifications()
-        {
-            return types;
-        }
-        internal IEnumerable<Type> GetNetTypes()
-        {
-            return GetTypes().Select(x => x.Type);
-        }
+        
+        
 
         /// <summary>
         /// Returns the list of <see cref="Type"/> objects describing the types in this list.
@@ -126,7 +113,7 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
         public IEnumerable<IType> GetTypes()
         {
-            return (types.Select(t => t.CreateWrapper()));
+            return types.Select(t => t.CreateWrapper());
         }
 
 

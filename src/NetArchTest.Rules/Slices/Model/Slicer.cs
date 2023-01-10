@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NetArchTest.Rules.Assemblies;
+using NetArchTest.Assemblies;
 using NetArchTest.Rules.Extensions;
 
-namespace NetArchTest.Rules.Slices.Model
+namespace NetArchTest.Slices.Model
 {
     internal sealed class Slicer
     {

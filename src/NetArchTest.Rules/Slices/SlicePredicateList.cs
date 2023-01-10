@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using NetArchTest.Rules.Slices.Model;
+using NetArchTest.Slices.Model;
 
-namespace NetArchTest.Rules.Slices
+namespace NetArchTest.Slices
 {
     /// <summary>
     /// Link between predicate and condition.

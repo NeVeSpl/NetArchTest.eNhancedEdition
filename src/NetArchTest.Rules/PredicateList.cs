@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetArchTest.Rules.Assemblies;
+using NetArchTest.Assemblies;
 using NetArchTest.Rules.Extensions;
-using NetArchTest.Rules.Slices;
+using NetArchTest.Functions;
+using NetArchTest.Slices;
 
 namespace NetArchTest.Rules
 {
@@ -58,7 +59,7 @@ namespace NetArchTest.Rules
         { 
             return _sequence.Execute(_types);
         }
-        internal IEnumerable<Type> GetNetTypes()
+        internal IEnumerable<Type> GetReflectionTypes()
         {
             return GetTypeSpecifications().Select(x => x.Definition.ToType());
         }

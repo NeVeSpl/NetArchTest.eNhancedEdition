@@ -1,9 +1,10 @@
-﻿namespace NetArchTest.Rules.UnitTests
+﻿namespace NetArchTest.UnitTests
 {
     using System;
     using System.Linq;
     using System.Reflection;
-    using NetArchTest.Rules.Policies;
+    using NetArchTest.Policies;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.NameMatching.Namespace1;
     using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
     using Xunit;

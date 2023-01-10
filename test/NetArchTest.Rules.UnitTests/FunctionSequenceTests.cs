@@ -1,12 +1,14 @@
-﻿namespace NetArchTest.Rules.UnitTests
+﻿namespace NetArchTest.UnitTests
 {
     using System;
     using System.Linq;
     using System.Reflection;
     using NetArchTest.Rules.Extensions;
+    using NetArchTest.Functions;
     using NetArchTest.TestStructure.Abstract;
     using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
     using Xunit;
+    using NetArchTest.Rules;
 
     public class FunctionSequenceTests
     {
@@ -15,7 +17,7 @@
         {
             // Arrange
             var sequence = new FunctionSequence();
-            sequence.AddFunctionCall(FunctionDelegates.BeAbstract, true, true);
+            sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, true));
 
             var types = Types
             .InAssembly(Assembly.GetAssembly(typeof(AbstractClass)))
@@ -43,9 +45,9 @@
             // Arrange
             // Set up a sequence that has an OR condition in it
             var sequence = new FunctionSequence();
-            sequence.AddFunctionCall(FunctionDelegates.HaveNameStartingWith, "ClassA", true);
+            sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, "ClassA", true));
             sequence.CreateGroup();
-            sequence.AddFunctionCall(FunctionDelegates.HaveName, "ClassB1", true);
+            sequence.AddFunctionCall(x => FunctionDelegates.HaveName(x, "ClassB1", true));
 
             var types = Types
             .InAssembly(Assembly.GetAssembly(typeof(ClassB2)))

@@ -1,6 +1,6 @@
-﻿using NetArchTest.Rules.Slices.Model;
+﻿using NetArchTest.Slices.Model;
 
-namespace NetArchTest.Rules.Slices
+namespace NetArchTest.Slices
 {
     /// <summary>
     /// A set of conditions that can be applied to slices of types.

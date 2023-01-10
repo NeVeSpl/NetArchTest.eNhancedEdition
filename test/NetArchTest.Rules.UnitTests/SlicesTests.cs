@@ -1,13 +1,11 @@
-﻿namespace NetArchTest.Rules.UnitTests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using NetArchTest.Rules.Slices;
-    using NetArchTest.TestStructure.Dependencies.Examples;
-    using Xunit;
+﻿using System.Linq;
+using NetArchTest.Rules;
+using NetArchTest.Slices;
+using NetArchTest.TestStructure.Dependencies.Examples;
+using Xunit;
 
+namespace NetArchTest.UnitTests
+{
     public class SlicesTests
     {
         [Fact(DisplayName = "Types are divided correctly into slices for a valid tree")]

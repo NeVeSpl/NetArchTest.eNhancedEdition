@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using NetArchTest.Rules;
-    using NetArchTest.Rules.Policies;
+    using NetArchTest.Policies;
     using NetArchTest.SampleLibrary.Data;
     using NetArchTest.SampleLibrary.Services;
 

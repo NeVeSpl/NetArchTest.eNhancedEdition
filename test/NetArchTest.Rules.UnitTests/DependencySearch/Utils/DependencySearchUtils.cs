@@ -1,11 +1,12 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using Mono.Cecil;
-    using NetArchTest.Rules.Assemblies;
+    using NetArchTest.Assemblies;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Search;
     using NetArchTest.TestStructure.Dependencies.Search.DependencyLocation;
@@ -64,7 +65,7 @@
         private static void FindTypesWithAnyDependencies(IEnumerable<TypeSpec> subjects, IEnumerable<string> dependencies, bool expectToFind)
         {
             // Arrange
-            var search = new global::NetArchTest.Rules.Dependencies.DependencySearch();
+            var search = new global::NetArchTest.Dependencies.DependencySearch();
 
             // Act
             // Search against the dependencies

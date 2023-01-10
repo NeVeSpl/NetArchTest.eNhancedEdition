@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@
     /// This tests collection verifies that dependency search checks every posible type.    
     /// </summary>
     [CollectionDefinition("Dependency Search - type tests ")]
-    public class DependencyTypeTests
+    public class DependencySearch_DependencyTypeTests
     {
         [Fact(DisplayName = "Finds a dependency ExampleDependency[] in ExampleDependency[].")]
         public void DependencySearch_Array_Found()

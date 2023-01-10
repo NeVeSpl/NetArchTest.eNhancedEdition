@@ -1,8 +1,8 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using Mono.Cecil;
-    using NetArchTest.Rules.Assemblies;
-    using NetArchTest.Rules.Dependencies;
+    using NetArchTest.Assemblies;
+    using NetArchTest.Dependencies;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using System;
@@ -36,7 +36,7 @@
     /// test execution time from seconds to minutes.
     /// </remarks>
     [CollectionDefinition("Dependency Search Scalability", DisableParallelization = true)]
-    public class ScalabilityTests
+    public class DependencySearch_ScalabilityTests
     {
         // Type definitions input sets of different size
         private static IList<TypeSpec> _inputTypesSmallSet;
@@ -63,7 +63,7 @@
         private static string _implementationNamespace = typeof(HasDependency).Namespace;
         private static string _dependencyNamespace = typeof(ExampleDependency).Namespace;
 
-        static ScalabilityTests()
+        static DependencySearch_ScalabilityTests()
         {
             _dependenciesToSearchSmallSet = ConstructDependencyToSearchList(0x40, "ExampleDependency");     // 64 items
             _dependenciesToSearchMediumSet = ConstructDependencyToSearchList(0x80, "ExampleDependency");    // 128 items

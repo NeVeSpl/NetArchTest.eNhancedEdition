@@ -4,15 +4,35 @@ A fluent API for .Net Standard that can enforce architectural rules in unit test
 
 NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/BenMorris/NetArchTest). If you are not familiar with NetArchTest, you should start by reading [introduction on Ben's blog](https://www.ben-morris.com/writing-archunit-style-tests-for-net-and-c-for-self-testing-architectures).
 
-## Rationale
+### Rationale
 
-NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** has born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. The main goal is to offer more, and not to be a replacement.
+NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. The main goal is to offer more, and not to be only a replacement.
+
+### Index
+
+* [Getting started](#getting-started)
+    * [Examples](#examples)
+    * [Writing rules](#writing-rules)
+* [Dependency search](#dependency-search)
+* [Slices](#slices)
+* [Custom rules](#custom-rules)
+* Limitations
+* API
+   * [Types](documentation/api.md#types)
+   * [Predicate](documentation/api.md#predicate)
+   * [PredicateList](documentation/api.md#predicateList)
+   * [Condition](documentation/api.md#condition)
+   * [ConditionList](documentation/api.md#conditionList)
+   * [TestResult](documentation/api.md#testResult)
+   * [IType](documentation/api.md#itype)
+
+
 
 ## Getting started
 
 The library is available as a package on NuGet: [NetArchTest.eNhancedEdition](https://www.nuget.org/packages/NetArchTest.eNhancedEdition/).
 
-## Examples
+### Examples
 
 ```csharp
 static readonly Assembly TestCreationAssembly = typeof(Foo).Assembly;
@@ -38,7 +58,7 @@ public void DomainIsIndependent()
                       .That()
                       .ResideInNamespace("MyApp.Domain")
                       .ShouldNot()
-                      .HaveDependenciesOtherThan( 
+                      .HaveDependencyOtherThan( 
                         "System",                       
                         "MyApp.SharedKernel.Domain",
                         "MyApp.BuildingBlocks.Domain"
@@ -51,7 +71,7 @@ public void DomainIsIndependent()
 
 
 
-## Writing rules
+### Writing rules
 
 The fluent API should direct you in building up a rule, based on a combination of predicates, conditions and conjunctions. 
 
@@ -76,7 +96,34 @@ var types = result.FailingTypes;
 ```
 
 
-## Dependencies 
+## Dependency search
+
+Dependency matrix:
+
+| type\has dependency on | D1 | D2 | D3 |
+|---|----|----|----|
+| a |    |    |    |
+| b |    |    | x  |
+| c |    | x  |    |
+| d |    | x  | x  |
+| e | x  |    |    |
+| f | x  |    | x  |
+| g | x  | x  |    |
+| h | x  | x  | x  |
+
+
+Available predicates:
+
+|   | Predicate   | number<br> of required<br> dependencies <br>from the list  | type can have<br>a dependency<br>that is not<br>on the list  |  passing types |  failing types |
+|---|---|---|---|---|---|
+| 1 | HaveDependencyOnAny(D1, D2) | at least 1  | yes  |  c, d, e, f, g, h, |  a, b |
+| 2 | HaveDependencyOnAll(D1, D2)  | all  |  yes |  g, h | a, b, c, d, e, f  |
+| 3 | OnlyHaveDependencyOn(D1, D2) | >=0  |  no | a, c, e, g  |  b, d, f, h  |
+| 1N | DoNotHaveDependencyOnAny(D1, D2) | none  | yes   |  a, b |   c, d, e, f, g, h, |
+| 2N | DoNotHaveDependencyOnAll(D1, D2)  | not all  |  yes | a, b, c, d, e, f |  g, h   |
+| 3N | HaveDependencyOtherThan(D1, D2)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
+
+
 
 ## Slices 
 
@@ -99,9 +146,9 @@ There is only one way, at least for now, to divide types into slices `ByNamespac
 
 ![Slices](docs/slices.png)
 
-When we already have our types divided into slices, we can apply only one available right now condition: `NotHaveDependenciesBetweenSlices()`. As the name suggest it detects if any dependencies exist between slices. Any dependency from slice to type that is not part of any other slice is allowed.
+When we already have our types divided into slices, we can apply condition: `NotHaveDependenciesBetweenSlices()`. As the name suggest it detects if any dependency exists between slices. Dependency from slice to type that is not part of any other slice is allowed.
 
-allowed | not allowed
+passing | failing
 --|---
 ![Slices](docs/slices.ok.png)|![Slices](docs/slices.not.png)
 

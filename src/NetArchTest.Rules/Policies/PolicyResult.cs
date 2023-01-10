@@ -1,8 +1,9 @@
-﻿namespace NetArchTest.Rules.Policies
+﻿namespace NetArchTest.Policies
 {
     using System;
     using System.Collections.Generic;
-    using NetArchTest.Rules.Assemblies;
+    using NetArchTest.Assemblies;
+    using NetArchTest.Rules;
 
     /// <summary>
     /// A single test result for a policy.

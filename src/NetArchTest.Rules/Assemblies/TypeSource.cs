@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
-using NetArchTest.Rules.Dependencies.DataStructures;
+using NetArchTest.Dependencies.DataStructures;
 using NetArchTest.Rules.Extensions;
 
-namespace NetArchTest.Rules.Assemblies
+namespace NetArchTest.Assemblies
 {
     internal sealed class TypeSource
     {

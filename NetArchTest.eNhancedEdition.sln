@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.Rules", "src\NetArchTest.Rules\NetArchTest.Rules.csproj", "{2FDD6DBD-F203-4EC9-9F9B-6771713CC353}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest", "src\NetArchTest.Rules\NetArchTest.csproj", "{2FDD6DBD-F203-4EC9-9F9B-6771713CC353}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{660FEA1B-C886-4B72-AD70-1D7DD248CD76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.Rules.UnitTests", "test\NetArchTest.Rules.UnitTests\NetArchTest.Rules.UnitTests.csproj", "{D56F6954-7CCA-41D6-BA81-850F0C81FE3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.UnitTests", "test\NetArchTest.Rules.UnitTests\NetArchTest.UnitTests.csproj", "{D56F6954-7CCA-41D6-BA81-850F0C81FE3A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.TestStructure", "test\NetArchTest.TestStructure\NetArchTest.TestStructure.csproj", "{D91C182D-DC97-4F9B-AFFE-8C7A62501DA6}"
 EndProject
@@ -20,6 +20,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.CrossAssemblyTest.A", "test\NetArchTest.CrossAssemblyTest.A\NetArchTest.CrossAssemblyTest.A.csproj", "{70B787F2-8B79-4AA5-8C73-26682A605B6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetArchTest.CrossAssemblyTest.B", "test\NetArchTest.CrossAssemblyTest.B\NetArchTest.CrossAssemblyTest.B.csproj", "{28692D43-3E08-43E4-BCBB-5940B9F741C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{AD4F8A0F-6F5B-45A6-AC8B-822999097CA3}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\api.md = documentation\api.md
+		api.nt = api.nt
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

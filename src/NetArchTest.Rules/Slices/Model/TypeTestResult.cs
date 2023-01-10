@@ -1,6 +1,6 @@
-﻿using NetArchTest.Rules.Assemblies;
+﻿using NetArchTest.Assemblies;
 
-namespace NetArchTest.Rules.Slices.Model
+namespace NetArchTest.Slices.Model
 {
     internal sealed class TypeTestResult 
     { 

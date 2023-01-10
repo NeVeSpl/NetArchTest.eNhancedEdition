@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetArchTest.Rules
 {
@@ -15,7 +13,7 @@ namespace NetArchTest.Rules
         /// <remarks>
         /// This property may be null if the test project does not have a direct dependency on the type.
         /// </remarks>
-        Type Type { get; }
+        Type ReflectionType { get; }
 
         /// <summary>
         /// FullName of the type

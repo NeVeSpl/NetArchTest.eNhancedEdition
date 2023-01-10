@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.Rules.Policies
+﻿namespace NetArchTest.Policies
 {
     using System.Collections.Generic;
     using System.Linq;

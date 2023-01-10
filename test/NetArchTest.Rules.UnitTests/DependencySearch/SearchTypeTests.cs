@@ -1,14 +1,15 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System.Linq;
     using System.Reflection;
-    using NetArchTest.Rules.Dependencies;
+    using NetArchTest.Dependencies;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - search type tests ")]
-    public class SearchTypeTests
+    public class DependencySearch_SearchTypeTests
     {
         [Theory(DisplayName = "A search for types with ANY dependencies returns types that have a dependency on at least one item in the list.")]
         [InlineData(new string[] { "NetArchTest.TestStructure.Dependencies.Examples.ExampleDependency", "NetArchTest.TestStructure.Dependencies.Examples.AnotherExampleDependency" }, "List contains two distinct dependencies.")]

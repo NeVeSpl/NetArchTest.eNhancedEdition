@@ -1,6 +1,6 @@
 ﻿using Mono.Cecil;
 
-namespace NetArchTest.Rules.Assemblies
+namespace NetArchTest.Assemblies
 {
     internal sealed class TypeSpec
     {

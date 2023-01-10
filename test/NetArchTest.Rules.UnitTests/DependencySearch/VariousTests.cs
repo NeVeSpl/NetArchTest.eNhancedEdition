@@ -1,7 +1,8 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System.Collections.Generic;
     using System.Reflection;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Example;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
@@ -10,7 +11,7 @@
     using Xunit;
 
     [CollectionDefinition("Dependency Search - various tests")]
-    public class VariousTests
+    public class DependencySearch_VariousTests
     {
         [Fact(DisplayName = "Does not find a dependency in an indirect reference.")]
         public void DependencySearch_IndirectReference_NotFound()
@@ -58,7 +59,7 @@
             // In this example, searching for a dependency on "PatternMatch" should not return "PatternMatchTwo"
 
             // Arrange
-            var search = new global::NetArchTest.Rules.Dependencies.DependencySearch();
+            var search = new global::NetArchTest.Dependencies.DependencySearch();
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
@@ -78,7 +79,7 @@
             // In this example, searching for a dependency on "NamespaceMatch" should not return classes in "NamespaceMatchToo"
 
             // Arrange
-            var search = new global::NetArchTest.Rules.Dependencies.DependencySearch();
+            var search = new global::NetArchTest.Dependencies.DependencySearch();
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()

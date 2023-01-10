@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NetArchTest.Rules.Slices.Model;
+using NetArchTest.Rules;
+using NetArchTest.Slices.Model;
 
-namespace NetArchTest.Rules.Slices
+namespace NetArchTest.Slices
 {
     /// <summary>
     /// Executor of condition.

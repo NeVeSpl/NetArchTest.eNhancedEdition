@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetArchTest.Rules.Assemblies;
-using NetArchTest.Rules.Extensions;
+using NetArchTest.Assemblies;
+using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
@@ -66,9 +66,9 @@ namespace NetArchTest.Rules
             return _sequence.Execute(_types).Select(t => t.CreateWrapper());
         }
 
-        internal IEnumerable<Type> GetNetTypes()
+        internal IEnumerable<Type> GetReflectionTypes()
         {
-            return GetTypes().Select(x => x.Type);
+            return GetTypes().Select(x => x.ReflectionType);
         }
 
         /// <summary>

@@ -1,8 +1,9 @@
-﻿namespace NetArchTest.Rules.UnitTests
+﻿namespace NetArchTest.UnitTests
 {
     using System;
     using System.Linq;
     using System.Reflection;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Interfaces;
     using NetArchTest.TestStructure.NameMatching.Namespace1;
     using NetArchTest.TestStructure.NameMatching.Namespace2;
@@ -24,7 +25,7 @@
                 .HaveNameEndingWith("1")
                 .Or()
                 .HaveNameEndingWith("2")
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             Assert.Equal(5, result.Count()); // five types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -47,7 +48,7 @@
                 .HaveNameEndingWith("1")
                 .And()
                 .BeClasses()
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             Assert.Equal(2, result.Count()); // two types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -71,7 +72,7 @@
                 .HaveNameStartingWith("ClassB")
                 .And()
                 .HaveNameEndingWith("2")
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             // Results will be everything returned by both groups of statements
             Assert.Equal(2, result.Count()); // five types found
@@ -121,8 +122,8 @@
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(2, result.FailingTypes.Count()); // two types found
-            Assert.Contains<Type>(typeof(ClassB1), result.FailingTypes.Select(x => x.Type));
-            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes.Select(x => x.Type));
+            Assert.Contains<Type>(typeof(ClassB1), result.FailingTypes.Select(x => x.ReflectionType));
+            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes.Select(x => x.ReflectionType));
         }
 
         [Fact(DisplayName = "If a condition fails using ShouldNot logic then a list of failing types should be returned.")]
@@ -138,9 +139,9 @@
 
             Assert.False(result.IsSuccessful);
             Assert.Equal(3, result.FailingTypes.Count()); // three types found
-            Assert.Contains<Type>(typeof(ClassA1), result.FailingTypes.Select(x => x.Type));
-            Assert.Contains<Type>(typeof(ClassA2), result.FailingTypes.Select(x => x.Type));
-            Assert.Contains<Type>(typeof(ClassA3), result.FailingTypes.Select(x => x.Type));
+            Assert.Contains<Type>(typeof(ClassA1), result.FailingTypes.Select(x => x.ReflectionType));
+            Assert.Contains<Type>(typeof(ClassA2), result.FailingTypes.Select(x => x.ReflectionType));
+            Assert.Contains<Type>(typeof(ClassA3), result.FailingTypes.Select(x => x.ReflectionType));
         }
 
         [Fact(DisplayName = "If a condition succeeds then a list of failing types should be null.")]

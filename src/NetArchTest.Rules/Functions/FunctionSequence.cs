@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetArchTest.Rules.Assemblies;
+using NetArchTest.Assemblies;
 
-namespace NetArchTest.Rules
+namespace NetArchTest.Functions
 {
     /// <summary>
     /// A sequence of function calls that are combined to select types.
     /// </summary>
     internal sealed class FunctionSequence
-    {        
+    {
         private readonly List<List<IFunctionCall>> groups;
 
 
@@ -20,9 +20,9 @@ namespace NetArchTest.Rules
         }
 
 
-        public void AddFunctionCall<T>(FunctionDelegates.FunctionDelegate<T> method, T value, bool condition)
+        public void AddFunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
         {
-            groups.Last().Add(new FunctionCall<T>(method, value, condition));
+            groups.Last().Add(new FunctionCall(func));
         }
         public void CreateGroup()
         {
@@ -45,7 +45,7 @@ namespace NetArchTest.Rules
         {
             MarkPassingTypes(inputTypes);
 
-            return inputTypes.Where(x => x.IsSelected == true).ToList();            
+            return inputTypes.Where(x => x.IsSelected == true).ToList();
         }
         private void MarkPassingTypes(IEnumerable<TypeSpec> inputTypes)
         {
@@ -66,24 +66,20 @@ namespace NetArchTest.Rules
         }
 
 
-        internal class FunctionCall<T> : IFunctionCall
+
+
+        internal class FunctionCall : IFunctionCall
         {
-            public FunctionDelegates.FunctionDelegate<T> FunctionDelegate { get; }
-            public T FunctionArgument { get; }
-            public bool Condition { get;  }
+            private readonly Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func;
 
-
-            public FunctionCall(FunctionDelegates.FunctionDelegate<T> func, T argument, bool condition)
+            public FunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
             {
-                this.FunctionDelegate = func;
-                this.FunctionArgument = argument;
-                this.Condition = condition;
+                this.func = func;
             }
-
 
             public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
             {
-                return FunctionDelegate(inputTypes, FunctionArgument, Condition);
+                return func(inputTypes);
             }
         }
 

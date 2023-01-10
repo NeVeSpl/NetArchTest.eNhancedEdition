@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NetArchTest.Rules.Slices.Model
+namespace NetArchTest.Slices.Model
 {
     internal sealed class SlicedTypes
     {

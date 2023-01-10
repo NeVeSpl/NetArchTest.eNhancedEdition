@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.Rules.Dependencies.DataStructures
+﻿namespace NetArchTest.Dependencies.DataStructures
 {
     using System.Collections.Generic;
     using Mono.Cecil;

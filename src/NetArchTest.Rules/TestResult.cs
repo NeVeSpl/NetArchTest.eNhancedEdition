@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetArchTest.Rules.Assemblies;
+using NetArchTest.Assemblies;
 
 namespace NetArchTest.Rules
 {

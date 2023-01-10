@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.Rules.UnitTests.DependencySearch
+﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System;
     using NetArchTest.TestStructure.Dependencies.Examples;
@@ -11,7 +11,7 @@
     /// then it looks for: AttributeDependency or ExceptionDependency 
     /// </summary>
     [CollectionDefinition("Dependency Search - location tests ")]
-    public class DependencyLocationTests
+    public class DependencySearch_DependencyLocationTests
     {
         [Fact(DisplayName = "Finds a dependency in an async method.")]
         public void DependencySearch_AsyncMethod_Found()

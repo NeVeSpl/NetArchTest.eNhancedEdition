@@ -1,8 +1,9 @@
-﻿namespace NetArchTest.Rules.UnitTests
+﻿namespace NetArchTest.UnitTests
 {
     using System;
     using System.Linq;
     using System.Reflection;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Generic;
     using NetArchTest.TestStructure.NameMatching.Namespace1;
     using NetArchTest.TestStructure.NameMatching.Namespace2;
@@ -22,7 +23,7 @@
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
                 .Or()
                 .ResideInNamespace("NetArchTest.TestStructure.Generic")
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             Assert.Equal(7, result.Count()); // seven types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -45,7 +46,7 @@
                 .HaveNameStartingWith("Class")
                 .And()
                 .HaveNameEndingWith("1")
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             Assert.Equal(2, result.Count()); // two types found
             Assert.Contains<Type>(typeof(ClassA1), result);
@@ -67,7 +68,7 @@
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
                 .And()
                 .HaveNameStartingWith("ClassB")
-                .GetNetTypes();
+                .GetReflectionTypes();
 
             // Results will be everything returned by both groups of statements
             Assert.Equal(3, result.Count()); // five types found

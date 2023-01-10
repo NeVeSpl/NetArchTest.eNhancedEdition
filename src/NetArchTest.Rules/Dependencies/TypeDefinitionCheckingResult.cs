@@ -1,11 +1,11 @@
-﻿namespace NetArchTest.Rules.Dependencies
+﻿namespace NetArchTest.Dependencies
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Mono.Cecil;
-    using NetArchTest.Rules.Dependencies.DataStructures;
+    using NetArchTest.Dependencies.DataStructures;
 
     /// <summary>
     /// Manages the results of dependency search.
