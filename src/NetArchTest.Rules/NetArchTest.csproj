@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.3.3</Version>
+    <Version>1.3.4</Version>
     <Authors>NeVeSpl</Authors>
     <Product>NetArchTest.eNhancedEdition </Product>
     <Description>A fluent API for .Net Standard that can enforce architectural rules in unit tests.</Description>
@@ -14,8 +14,8 @@
     <PackageTags>test architecture dependencies archtest</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
-    <FileVersion>1.3.3.0</FileVersion>
+    <AssemblyVersion>1.3.4.0</AssemblyVersion>
+    <FileVersion>1.3.4.0</FileVersion>
     <PackageId>NetArchTest.eNhancedEdition </PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
