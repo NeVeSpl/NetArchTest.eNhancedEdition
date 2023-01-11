@@ -27,7 +27,7 @@
 
             // Act
             var resultSelected = sequence.Execute(types).Select(t => t.Definition.ToType());
-            var resultNotSelected = sequence.ExecuteExtended(types, selected: false).Select(t => t.Definition.ToType());
+            var resultNotSelected = sequence.ExecuteToGetFailingTypes(types, selected: false).Select(t => t.Definition.ToType());
 
             // Assert
             // The default behaviour is to return the types that were selected
@@ -59,7 +59,7 @@
 
             // Act
             var resultSelected = sequence.Execute(types).Select(t => t.Definition.ToType());
-            var resultNotSelected = sequence.ExecuteExtended(types, selected: false).Select(t => t.Definition.ToType());
+            var resultNotSelected = sequence.ExecuteToGetFailingTypes(types, selected: false).Select(t => t.Definition.ToType());
 
             // Assert
             // The default behaviour is to return the types that were selected - i.e. everything except ClassB2

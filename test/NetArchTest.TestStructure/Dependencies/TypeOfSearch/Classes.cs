@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D1;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D2;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D3;
 
 #pragma warning disable 169
 

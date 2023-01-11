@@ -6,7 +6,11 @@ namespace NetArchTest.Assemblies
     {
         public TypeDefinition Definition { get; }
         public string FullName => Definition.FullName;
+        // Only for use by FunctionSequence
         internal bool IsSelected { get; set;  }
+        // Can be use by any function
+        internal bool IsPassing { get; set; }
+        public string Explanation { get; set; }
 
 
         public TypeSpec(TypeDefinition definition)
@@ -18,7 +22,7 @@ namespace NetArchTest.Assemblies
 
         public TypeWrapper CreateWrapper()
         {
-            return new TypeWrapper(Definition);
+            return new TypeWrapper(Definition, Explanation);
         }
     }
 }

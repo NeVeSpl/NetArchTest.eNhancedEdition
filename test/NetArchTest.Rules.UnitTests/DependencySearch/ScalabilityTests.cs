@@ -3,6 +3,7 @@
     using Mono.Cecil;
     using NetArchTest.Assemblies;
     using NetArchTest.Dependencies;
+    using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using System;
@@ -172,10 +173,10 @@
 
         private void FindTypesWithAnyDependencies(IEnumerable<TypeSpec> inputTypes, IEnumerable<string> dependenciesToSearch)
         {
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAny(inputTypes, dependenciesToSearch);
+            var result = search.FindTypesThatHaveDependencyOnAny(inputTypes, dependenciesToSearch).Where(t => t.IsPassing == true);
 
             Assert.Equal(inputTypes.Count(), result.Count());
         }
@@ -183,7 +184,7 @@
         private void FindTypesWithAllDependencies(IEnumerable<TypeSpec> inputTypes, IEnumerable<string> dependenciesToSearch)
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
 
             // Act
             var result = search.FindTypesThatHaveDependencyOnAll(inputTypes, dependenciesToSearch);

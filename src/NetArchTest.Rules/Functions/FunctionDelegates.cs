@@ -8,6 +8,7 @@ using NetArchTest.Assemblies;
 using NetArchTest.Dependencies;
 
 using NetArchTest.Rules;
+using static NetArchTest.Functions.FunctionSequence;
 
 namespace NetArchTest.Functions
 {
@@ -326,53 +327,31 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding types that have a dependency on any of the supplied types. </summary>
-        internal static IEnumerable<TypeSpec> HaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAny(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
-            var search = new DependencySearch();
-            var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);
-
-            if (condition)
-            {
-                return results;
-            }
-            else
-            {
-                return input.Where(t => !results.Contains(t));
-            }
+            var search = new DependencySearch(context.IsFailPathRun);
+            var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);           
+            return input.Where(t => t.IsPassing == condition);            
         }
 
         /// <summary> Function for finding types that have a dependency on all of the supplied types. </summary>
-        internal static IEnumerable<TypeSpec> HaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAll(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
-            var search = new DependencySearch();
+            var search = new DependencySearch(context.IsFailPathRun);
             var results = search.FindTypesThatHaveDependencyOnAll(input, dependencies);
 
-            if (condition)
-            {
-                return results;
-            }
-            else
-            {
-                return input.Where(t => !results.Contains(t));
-            }
+            return input.Where(t => t.IsPassing == condition);
         }
 
         /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
-        internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
-            var search = new DependencySearch();
-            var results = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(input, dependencies);
+            var search = new DependencySearch(context.IsFailPathRun);
+            var results = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
 
-            if (condition)
-            {
-                return results;
-            }
-            else
-            {
-                return input.Where(t => !results.Contains(t));
-            }
+            return input.Where(t => t.IsPassing == condition);
         }
 
         /// <summary> Function for finding public classes. </summary>

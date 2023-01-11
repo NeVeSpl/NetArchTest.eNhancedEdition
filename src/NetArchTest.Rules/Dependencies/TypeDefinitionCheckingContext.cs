@@ -6,20 +6,26 @@ namespace NetArchTest.Dependencies
 {
     internal class TypeDefinitionCheckingContext
     {
-        private readonly TypeDefinition _typeToCheck;
+        private readonly TypeSpec _typeToCheck;
         private readonly TypeDefinitionCheckingResult _result;        
         private readonly bool _serachForDependencyInFieldConstant;
+        private readonly bool explainYourself;
 
-        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false)
+        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false, bool explainYourself = false)
         {
-            _typeToCheck = typeToCheck.Definition;
+            _typeToCheck = typeToCheck;
             _result = new TypeDefinitionCheckingResult(searchType, searchTree);
             _serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
+            this.explainYourself = explainYourself;
         }
 
         public bool IsTypeFound()
         {
-            CheckType(_typeToCheck);
+            CheckType(_typeToCheck.Definition);
+            if (explainYourself)
+            {
+                _typeToCheck.Explanation = _result.ExplainWhy();
+            }
             return _result.IsTypeFound();
         }
 
@@ -224,13 +230,13 @@ namespace NetArchTest.Dependencies
                             }
                             break;
                         case FieldReference fieldReference:
-                            if (fieldReference.DeclaringType != _typeToCheck)
+                            if (fieldReference.DeclaringType != _typeToCheck.Definition)
                             {
                                 CheckTypeReference(fieldReference.DeclaringType);
                             }
                             break;
                         case MethodReference methodReference:
-                            if (methodReference.DeclaringType != _typeToCheck)
+                            if (methodReference.DeclaringType != _typeToCheck.Definition)
                             {
                                 CheckTypeReference(methodReference.DeclaringType);
                             }
@@ -276,7 +282,7 @@ namespace NetArchTest.Dependencies
         }
         private void CheckDependency(TypeReference dependency)
         {
-            _result.CheckDependency(dependency);
+            _result.CheckDependency(dependency);           
         }
     }
 }

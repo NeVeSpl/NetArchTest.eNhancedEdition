@@ -11,7 +11,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList HaveDependencyOnAny(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.HaveDependencyOnAny(x, dependencies, true));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, true));
             return new PredicateList(_types, _sequence);
         }
 
@@ -22,7 +22,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList HaveDependencyOnAll(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.HaveDependencyOnAll(x, dependencies, true));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, true));
             return new PredicateList(_types, _sequence);
         }
 
@@ -33,7 +33,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList OnlyHaveDependencyOn(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(x, dependencies, true));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, true));
             return new PredicateList(_types, _sequence);
         }
 
@@ -44,7 +44,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveDependencyOnAny(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.HaveDependencyOnAny(x, dependencies, false));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, false));
             return new PredicateList(_types, _sequence);
         }
 
@@ -55,7 +55,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveDependencyOnAll(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.HaveDependencyOnAll(x, dependencies, false));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, false));
             return new PredicateList(_types, _sequence);
         }
 
@@ -66,7 +66,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList HaveDependencyOtherThan(params string[] dependencies)
         {
-            _sequence.AddFunctionCall(x => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(x, dependencies, false));
+            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
             return new PredicateList(_types, _sequence);
         }
     }

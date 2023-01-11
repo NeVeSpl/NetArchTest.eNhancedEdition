@@ -9,7 +9,7 @@ namespace NetArchTest.Slices.Model
     {
         public IEnumerable<TypeTestResult> Execute(SlicedTypes slicedTypes)
         {
-            var dependencySearch = new DependencySearch();
+            var dependencySearch = new DependencySearch(false);
             var result = new List<TypeTestResult>(slicedTypes.TypeCount);
 
             for (int i = 0; i < slicedTypes.Slices.Count; i++)
@@ -17,7 +17,7 @@ namespace NetArchTest.Slices.Model
                 var slice = slicedTypes.Slices[i];
                 var dependencies = slicedTypes.Slices.Where((_, index) => index != i).Select(x => x.Name).ToList();
 
-                var foundTypes = dependencySearch.FindTypesThatHaveDependencyOnAny(slice.Types, dependencies);
+                var foundTypes = dependencySearch.FindTypesThatHaveDependencyOnAny(slice.Types, dependencies).Where(x => x.IsPassing);
                 var lookup = new HashSet<TypeSpec>(foundTypes);
 
                 foreach (var type in slice.Types)

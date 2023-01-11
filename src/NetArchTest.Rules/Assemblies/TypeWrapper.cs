@@ -13,7 +13,7 @@ namespace NetArchTest.Assemblies
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Type> _type;
 
-        internal TypeWrapper(TypeDefinition monoTypeDefinition)
+        internal TypeWrapper(TypeDefinition monoTypeDefinition, string explanation)
         {
             _monoTypeDefinition = monoTypeDefinition;
             _type = new Lazy<Type>(() =>
@@ -26,12 +26,14 @@ namespace NetArchTest.Assemblies
                 catch { }
                 return type;
             });
+            Explanation = explanation;
         }
 
 
         public Type ReflectionType => _type.Value;  
         public string FullName => _monoTypeDefinition.FullName;     
         public string Name => _monoTypeDefinition.Name;
+        public string Explanation { get; }
 
 
         public static implicit operator System.Type(TypeWrapper type)

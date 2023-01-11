@@ -1,6 +1,7 @@
 ﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Example;
@@ -59,7 +60,7 @@
             // In this example, searching for a dependency on "PatternMatch" should not return "PatternMatchTwo"
 
             // Arrange
-            var search = new global::NetArchTest.Dependencies.DependencySearch();
+            var search = new global::NetArchTest.Dependencies.DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
@@ -67,7 +68,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).FullName });
+            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).FullName }).Where(x => x.IsPassing);
 
             // Assert: Before PR#36 this would have returned PatternMatchToo in the results
             Assert.Empty(result); // No results returned
@@ -79,7 +80,7 @@
             // In this example, searching for a dependency on "NamespaceMatch" should not return classes in "NamespaceMatchToo"
 
             // Arrange
-            var search = new global::NetArchTest.Dependencies.DependencySearch();
+            var search = new global::NetArchTest.Dependencies.DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
@@ -87,7 +88,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).Namespace });
+            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new List<string> { typeof(PatternMatch).Namespace }).Where(t => t.IsPassing == true);
 
             // Assert: Before PR#36 this would have returned classes in NamespaceMatchToo in the results
             Assert.Empty(result); // No results returned

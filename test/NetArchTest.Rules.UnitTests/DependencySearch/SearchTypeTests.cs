@@ -6,6 +6,8 @@
     using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D1;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D2;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - search type tests ")]
@@ -22,7 +24,7 @@
 #pragma warning restore xUnit1026 // Theory methods should use all of their parameters
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
@@ -30,7 +32,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAny(typeList, dependecies);
+            var result = search.FindTypesThatHaveDependencyOnAny(typeList, dependecies).Where(x => x.IsPassing);
 
             // Assert
             Assert.Equal(3, result.Count()); // Three types found   
@@ -49,7 +51,7 @@
 #pragma warning restore xUnit1026 // Theory methods should use all of their parameters
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
                 .That()
@@ -57,7 +59,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAll(typeList, dependecies);
+            var result = search.FindTypesThatHaveDependencyOnAll(typeList, dependecies).Where(x => x.IsPassing);
 
             // Assert
             Assert.Single(result); // One type found
@@ -68,7 +70,7 @@
         public void FindTypesThatHaveDependencyOnAny_Found()
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(true);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
                 .That()
@@ -78,7 +80,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName }).ToList();
+            var result = search.FindTypesThatHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).Namespace, typeof(Dependency_2).Namespace }).Where(x => x.IsPassing).ToList();
 
             // Assert           
             Assert.Equal(6, result.Count); 
@@ -94,7 +96,7 @@
         public void FindTypesThatHaveDependencyOnAll_Found()
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
                 .That()
@@ -104,7 +106,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName }).ToList();
+            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName }).Where(x => x.IsPassing).ToList();
 
             // Assert           
             Assert.Equal(2, result.Count); 
@@ -116,7 +118,7 @@
         public void FindTypesThatOnlyHaveDependenciesOnAnyOrNone_Found()
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(true);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
                 .That()
@@ -126,7 +128,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
+            var result = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).Where(x => x.IsPassing).ToList();
 
             // Assert           
             Assert.Equal(4, result.Count); 
@@ -140,7 +142,7 @@
         public void FindTypesThatOnlyHaveDependenciesOnAny_Found()
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
                 .That()
@@ -150,7 +152,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyHaveDependenciesOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
+            var result = search.FindTypesThatOnlyHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).Where(x => x.IsPassing).ToList();
 
             // Assert           
             Assert.Equal(4, result.Count); 
@@ -164,7 +166,7 @@
         public void FindTypesThatOnlyOnlyHaveDependenciesOnAll_Found()
         {
             // Arrange
-            var search = new DependencySearch();
+            var search = new DependencySearch(false);
             var typeList = Types
                 .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
                 .That()
@@ -174,7 +176,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyOnlyHaveDependenciesOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
+            var result = search.FindTypesThatOnlyOnlyHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).Where(x => x.IsPassing).ToList();
 
             // Assert           
             Assert.Equal(1, result.Count);

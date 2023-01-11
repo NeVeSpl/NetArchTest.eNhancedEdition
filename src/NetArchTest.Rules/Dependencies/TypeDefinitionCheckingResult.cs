@@ -7,9 +7,6 @@ using NetArchTest.Dependencies.DataStructures;
 
 namespace NetArchTest.Dependencies
 {
-    /// <summary>
-    /// Manages the results of dependency search.
-    /// </summary>
     internal class TypeDefinitionCheckingResult
     {
         public enum SearchType 
@@ -26,7 +23,9 @@ namespace NetArchTest.Dependencies
         /// <summary> The list of dependencies that have been found in the search.</summary>
         private HashSet<string> _foundDependencies = new HashSet<string>();
         private bool _hasDependencyFromOutsideOfSearchTree;
-       
+
+        TypeReference lastFoundDependency = null;
+        TypeReference lastFoundDependencyOutsideOfSearchTree = null;
 
         public TypeDefinitionCheckingResult(SearchType searchType, ISearchTree searchTree)
         {
@@ -53,6 +52,42 @@ namespace NetArchTest.Dependencies
                 default:
                     throw new NotImplementedException();
             }
+        }
+        public string ExplainWhy()
+        {
+            var isTypeFound = IsTypeFound();
+            switch (_searchType)
+            {
+                case SearchType.HaveDependencyOnAll:
+                    if (isTypeFound)
+                    {
+                        return "Has dependency on all provided inputs";
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }                    
+                case SearchType.HaveDependencyOnAny:
+                    if (isTypeFound)
+                    {
+                        return $"Has dependency on: {lastFoundDependency}";
+                    }
+                    else
+                    {
+                        return "Does not have a dependency on any provided inputs";
+                    }                    
+                case SearchType.OnlyHaveDependenciesOnAnyOrNone:
+                    if (isTypeFound)
+                    {
+                        return "Does not have a dependency outside of provided inputs";
+                    }
+                    else
+                    {
+                        return $"Has dependency on: {lastFoundDependencyOutsideOfSearchTree}";
+                    }
+                    break;
+            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -96,6 +131,7 @@ namespace NetArchTest.Dependencies
                 {
                     _foundDependencies.Add(match);
                 }
+                lastFoundDependency = dependency;
             } 
             else
             {
@@ -109,6 +145,7 @@ namespace NetArchTest.Dependencies
                     if (!isGlobalAnonymousCompilerGeneratedType)
                     {
                         _hasDependencyFromOutsideOfSearchTree = true;
+                        lastFoundDependencyOutsideOfSearchTree = dependency;
                     }
                 }
             }

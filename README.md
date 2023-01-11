@@ -1,4 +1,6 @@
-﻿# NetArchTest.eNhancedEdition
+﻿[![Nuget](https://img.shields.io/nuget/v/NetArchTest.eNhancedEdition?color=%23004880&label=NetArchTest.eNhancedEdition%20nuget)](https://www.nuget.org/packages/NetArchTest.eNhancedEdition)
+
+# NetArchTest.eNhancedEdition
 
 A fluent API for .Net Standard that can enforce architectural rules in unit tests and create a *self-testing architecture*. Inspired by the [ArchUnit](https://www.archunit.org/) library for Java.
 
@@ -6,9 +8,15 @@ NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/
 
 ### Rationale
 
-NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. The main goal is to offer more, and not to be only a replacement.
+NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. 
 
-### Index
+What **eNhancedEdition** has to offer:
+ - [Slices](#slices)
+ - solved BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test  
+
+
+
+## Index
 
 * [Getting started](#getting-started)
     * [Examples](#examples)

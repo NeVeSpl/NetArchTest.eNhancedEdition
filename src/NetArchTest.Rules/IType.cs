@@ -24,5 +24,8 @@ namespace NetArchTest.Rules
         /// Name of the type
         /// </summary>       
         string Name { get; }
+
+
+        string Explanation { get; }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 using NetArchTest.Assemblies;
 
 namespace NetArchTest.Functions
 {
-    /// <summary>
-    /// A sequence of function calls that are combined to select types.
-    /// </summary>
     internal sealed class FunctionSequence
     {
         private readonly List<List<IFunctionCall>> groups;
@@ -24,30 +22,34 @@ namespace NetArchTest.Functions
         {
             groups.Last().Add(new FunctionCall(func));
         }
+        public void AddFunctionCall(Func<FunctionInvokeContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+        {
+            groups.Last().Add(new FunctionCallWithContext(func));
+        }
+
         public void CreateGroup()
         {
             groups.Add(new List<IFunctionCall>());
         }
 
 
-        /// <summary>
-        /// Executes all the function calls that have been specified.
-        /// </summary>
-        /// <returns>A list of types that are selected by the predicates (or not selected if optional reversing flag is passed).</returns>
-        public IReadOnlyList<TypeSpec> ExecuteExtended(IEnumerable<TypeSpec> inputTypes, bool selected = true)
+
+        public IReadOnlyList<TypeSpec> ExecuteToGetFailingTypes(IEnumerable<TypeSpec> inputTypes, bool selected = true)
         {
-            MarkPassingTypes(inputTypes);
+            var context = new FunctionInvokeContext(true);
+            MarkPassingTypes(context, inputTypes);
 
             return inputTypes.Where(x => x.IsSelected == selected).ToList();
         }
 
         public IReadOnlyList<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
         {
-            MarkPassingTypes(inputTypes);
+            var context = new FunctionInvokeContext(false);
+            MarkPassingTypes(context, inputTypes);
 
             return inputTypes.Where(x => x.IsSelected == true).ToList();
         }
-        private void MarkPassingTypes(IEnumerable<TypeSpec> inputTypes)
+        private void MarkPassingTypes(FunctionInvokeContext context, IEnumerable<TypeSpec> inputTypes)
         {
             inputTypes.ForEach(x => x.IsSelected = false);
 
@@ -57,7 +59,7 @@ namespace NetArchTest.Functions
 
                 foreach (var func in group)
                 {
-                    var funcResults = func.Execute(passingTypes);
+                    var funcResults = func.Execute(context, passingTypes);
                     passingTypes = funcResults;
                 }
 
@@ -66,26 +68,50 @@ namespace NetArchTest.Functions
         }
 
 
-
-
-        internal class FunctionCall : IFunctionCall
+        public class FunctionInvokeContext
         {
-            private readonly Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func;
+            public static readonly FunctionInvokeContext Default = new FunctionInvokeContext(false);
+
+            public bool IsFailPathRun { get; }
+
+            public FunctionInvokeContext(bool isFailPathRun)
+            {
+                IsFailPathRun = isFailPathRun;
+            }
+        }
+
+
+        private class FunctionCall : IFunctionCall
+        {
+            private readonly Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func;           
 
             public FunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
             {
                 this.func = func;
-            }
+            }           
 
-            public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
+            public IEnumerable<TypeSpec> Execute(FunctionInvokeContext context, IEnumerable<TypeSpec> inputTypes)
             {
                 return func(inputTypes);
             }
         }
-
-        internal interface IFunctionCall
+        private class FunctionCallWithContext : IFunctionCall
         {
-            IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes);
+            private readonly Func<FunctionInvokeContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func;
+
+            public FunctionCallWithContext(Func<FunctionInvokeContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+            {
+                this.func = func;
+            }
+
+            public IEnumerable<TypeSpec> Execute(FunctionInvokeContext context, IEnumerable<TypeSpec> inputTypes)
+            {
+                return func(context, inputTypes);
+            }
+        }
+        private interface IFunctionCall
+        {
+            IEnumerable<TypeSpec> Execute(FunctionInvokeContext context, IEnumerable<TypeSpec> inputTypes);
         }
     }
 }

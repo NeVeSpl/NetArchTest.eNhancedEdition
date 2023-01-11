@@ -53,7 +53,7 @@ namespace NetArchTest.Rules
             }
 
             // If we've failed, get a collection of failing types so these can be reported in a failing test.
-            var failedTypes = _sequence.ExecuteExtended(_types, selected: !_should);
+            var failedTypes = _sequence.ExecuteToGetFailingTypes(_types, selected: !_should);
             return TestResult.Failure(failedTypes);
         }
 
