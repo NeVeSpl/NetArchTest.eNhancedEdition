@@ -5,10 +5,10 @@ namespace NetArchTest.TestStructure.Mutability
     /// </summary>
     public class ImmutableClass3
     {
-        protected object Property {get; set;}
+        protected object Property {get;}
 
 #pragma warning disable 169
-        private object privateField;
+        private readonly object privateField;
 #pragma warning restore 169
     }
 }

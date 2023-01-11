@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 using NetArchTest.Assemblies;
-using NetArchTest.Rules.Extensions;
+
 
 namespace NetArchTest.Slices.Model
 {

@@ -1,13 +1,9 @@
-﻿namespace NetArchTest.Rules.Extensions
-{
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using Mono.Cecil;
+﻿using System.Linq;
+using System.Reflection;
+using Mono.Cecil;
 
-    /// <summary>
-    /// Extensions for the <see cref="Type"/> class.
-    /// </summary>
+namespace System
+{   
     static internal class TypeExtensions
     {
         /// <summary>

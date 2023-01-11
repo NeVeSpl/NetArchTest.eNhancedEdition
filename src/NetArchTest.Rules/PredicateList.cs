@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 using NetArchTest.Assemblies;
-using NetArchTest.Rules.Extensions;
 using NetArchTest.Functions;
 using NetArchTest.Slices;
+
 
 namespace NetArchTest.Rules
 {

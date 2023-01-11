@@ -20,11 +20,5 @@ namespace NetArchTest.Assemblies
         {
             return new TypeWrapper(Definition);
         }
-
-
-        public static implicit operator TypeDefinition(TypeSpec type)
-        {
-            return type.Definition;
-        }
     }
 }

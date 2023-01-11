@@ -5,7 +5,7 @@ namespace NetArchTest.TestStructure.Mutability
     /// </summary>
     public class ImmutableClass2
     {
-        public object PrivateSetProperty {get; private set;}
+        public object PrivateSetProperty {get; }
 
         public const object constField = null;
     }

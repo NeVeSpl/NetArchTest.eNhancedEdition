@@ -1,20 +1,18 @@
-﻿namespace NetArchTest.Dependencies
-{
-    using System;
-    using System.Collections.Generic;
-    using Mono.Cecil;
-    using NetArchTest.Dependencies.DataStructures;
-    using NetArchTest.Rules.Extensions;
+﻿using Mono.Cecil;
+using NetArchTest.Assemblies;
+using NetArchTest.Dependencies.DataStructures;
 
+namespace NetArchTest.Dependencies
+{
     internal class TypeDefinitionCheckingContext
     {
         private readonly TypeDefinition _typeToCheck;
         private readonly TypeDefinitionCheckingResult _result;        
         private readonly bool _serachForDependencyInFieldConstant;
 
-        public TypeDefinitionCheckingContext(TypeDefinition typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false)
+        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false)
         {
-            _typeToCheck = typeToCheck;
+            _typeToCheck = typeToCheck.Definition;
             _result = new TypeDefinitionCheckingResult(searchType, searchTree);
             _serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
         }

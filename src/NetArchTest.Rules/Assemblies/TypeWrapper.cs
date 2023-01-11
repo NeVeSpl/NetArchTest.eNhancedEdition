@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Mono.Cecil;
 using NetArchTest.Rules;
-using NetArchTest.Rules.Extensions;
 
 namespace NetArchTest.Assemblies
 {

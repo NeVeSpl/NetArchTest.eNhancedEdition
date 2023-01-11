@@ -1,13 +1,6 @@
-namespace NetArchTest.Rules.Extensions
+namespace Mono.Cecil
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using Mono.Cecil;
 
-    /// <summary>
-    /// Extensions for the <see cref="PropertyDefinition"/> class.
-    /// </summary>
     static internal class PropertyDefinitionExtensions
     {
         /// <summary>
@@ -17,7 +10,7 @@ namespace NetArchTest.Rules.Extensions
         /// <returns>An indication of whether the property is readonly.</returns>
         public static bool IsReadonly(this PropertyDefinition propertyDefinition)
         {
-            return propertyDefinition.SetMethod == null || !propertyDefinition.SetMethod.IsPublic;
+            return propertyDefinition.SetMethod == null;
         }
         
         /// <summary>

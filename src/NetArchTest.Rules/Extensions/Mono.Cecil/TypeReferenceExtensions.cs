@@ -1,10 +1,7 @@
-namespace NetArchTest.Rules.Extensions
-{
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using Mono.Cecil;
+using System;
 
+namespace Mono.Cecil
+{
     static internal class TypeReferenceExtensions
     {
         /// <summary>
@@ -14,7 +11,7 @@ namespace NetArchTest.Rules.Extensions
         /// <returns>An indication of whether the type has any memebers that are non-nullable value types</returns>
         public static bool IsNullable(this TypeReference typeReference)
         {
-            return !typeReference.IsValueType || typeReference.Resolve().ToType() == typeof(System.Nullable<>);
+            return !typeReference.IsValueType || typeReference.Resolve().ToType() == typeof(Nullable<>);
         }
 
         /// <summary>

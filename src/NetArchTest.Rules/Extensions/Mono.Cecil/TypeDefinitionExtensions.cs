@@ -1,15 +1,10 @@
-﻿namespace NetArchTest.Rules.Extensions
-{
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using Mono.Cecil;
-    using System.Runtime.CompilerServices;
-    using Mono.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Extensions for the <see cref="TypeDefinition"/> class.
-    /// </summary>
+namespace Mono.Cecil
+{
     static internal class TypeDefinitionExtensions
     {
         /// <summary>
@@ -119,7 +114,7 @@
         /// </remarks>
         public static string GetNamespace(this TypeDefinition typeDefinition)
         {
-            if ((typeDefinition.IsNested))
+            if (typeDefinition.IsNested)
             {
                 return typeDefinition.DeclaringType.FullName;
             }

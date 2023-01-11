@@ -1,6 +1,7 @@
 ﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -69,7 +70,7 @@
 
             // Act
             // Search against the dependencies
-            var resultClass = search.FindTypesThatHaveDependencyOnAny(subjects, dependencies);
+            var resultClass = search.FindTypesThatHaveDependencyOnAny(subjects, dependencies).ToList();
 
             // Assert
             if (expectToFind)

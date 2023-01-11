@@ -33,7 +33,7 @@
             var result = search.FindTypesThatHaveDependencyOnAny(typeList, dependecies);
 
             // Assert
-            Assert.Equal(3, result.Count); // Three types found   
+            Assert.Equal(3, result.Count()); // Three types found   
             Assert.Equal(typeof(HasAnotherDependency).FullName, result.First().FullName); // Correct types returned...
             Assert.Equal(typeof(HasDependencies).FullName, result.Skip(1).First().FullName);
             Assert.Equal(typeof(HasDependency).FullName, result.Last().FullName);
@@ -78,7 +78,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName });
+            var result = search.FindTypesThatHaveDependencyOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName }).ToList();
 
             // Assert           
             Assert.Equal(6, result.Count); 
@@ -104,7 +104,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName });
+            var result = search.FindTypesThatHaveDependencyOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName }).ToList();
 
             // Assert           
             Assert.Equal(2, result.Count); 
@@ -126,7 +126,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });
+            var result = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
 
             // Assert           
             Assert.Equal(4, result.Count); 
@@ -150,7 +150,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyHaveDependenciesOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });
+            var result = search.FindTypesThatOnlyHaveDependenciesOnAny(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
 
             // Assert           
             Assert.Equal(4, result.Count); 
@@ -174,7 +174,7 @@
                 .GetTypeSpecifications();
 
             // Act
-            var result = search.FindTypesThatOnlyOnlyHaveDependenciesOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" });
+            var result = search.FindTypesThatOnlyOnlyHaveDependenciesOnAll(typeList, new string[] { typeof(Dependency_1).FullName, typeof(Dependency_2).FullName, "System" }).ToList();
 
             // Assert           
             Assert.Equal(1, result.Count);

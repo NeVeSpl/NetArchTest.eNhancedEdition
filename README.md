@@ -144,13 +144,13 @@ There is only one way, at least for now, to divide types into slices `ByNamespac
 `namespacePrefix.(sliceName).restOfNamespace`
 3) Types with the same `sliceName` part will be placed in the same slice. If `sliceName` is empty for a given type, the type will be also ignored (`BaseFeature` class from folowing image)
 
-![Slices](docs/slices.png)
+![Slices](documentation/slices/slices.png)
 
 When we already have our types divided into slices, we can apply condition: `NotHaveDependenciesBetweenSlices()`. As the name suggest it detects if any dependency exists between slices. Dependency from slice to type that is not part of any other slice is allowed.
 
 passing | failing
 --|---
-![Slices](docs/slices.ok.png)|![Slices](docs/slices.not.png)
+![Slices](documentation/slices/slices.ok.png)|![Slices](documentation/slices/slices.not.png)
 
 
 ## Custom rules

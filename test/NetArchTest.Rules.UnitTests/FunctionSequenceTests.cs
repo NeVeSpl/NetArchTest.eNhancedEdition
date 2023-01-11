@@ -3,12 +3,12 @@
     using System;
     using System.Linq;
     using System.Reflection;
-    using NetArchTest.Rules.Extensions;
     using NetArchTest.Functions;
     using NetArchTest.TestStructure.Abstract;
     using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
     using Xunit;
     using NetArchTest.Rules;
+    using Mono.Cecil;
 
     public class FunctionSequenceTests
     {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
 using NetArchTest.Dependencies.DataStructures;
-using NetArchTest.Rules.Extensions;
 
 namespace NetArchTest.Assemblies
 {

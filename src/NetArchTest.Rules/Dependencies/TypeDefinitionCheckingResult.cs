@@ -1,12 +1,12 @@
-﻿namespace NetArchTest.Dependencies
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using Mono.Cecil;
-    using NetArchTest.Dependencies.DataStructures;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using Mono.Cecil;
+using NetArchTest.Dependencies.DataStructures;
 
+namespace NetArchTest.Dependencies
+{
     /// <summary>
     /// Manages the results of dependency search.
     /// </summary>
@@ -84,10 +84,6 @@
                 {
                     _foundDependencies.Add(match);
                 }
-            }
-            else
-            {
-                _hasDependencyFromOutsideOfSearchTree = true;
             }
         }
 

@@ -5,7 +5,7 @@
     using System.Diagnostics;
     using System.Text;
     using Mono.Cecil;
-    using NetArchTest.Rules.Extensions;
+   
 
     /// <summary>
     /// Holds tree structure of full names; child nodes of each parent are indexed for optimal time of search.

@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Mono.Cecil;
 using Mono.Cecil.Rocks;
 using NetArchTest.Assemblies;
-using NetArchTest.Rules;
 using NetArchTest.Dependencies;
-using NetArchTest.Rules.Extensions;
+
+using NetArchTest.Rules;
 
 namespace NetArchTest.Functions
 {
-    /// <summary>
-    /// Defines the various functions that can be applied to a collection of types.
-    /// </summary>
-    /// <remarks>
-    /// These are used by both predicates and conditions so warrant a common definition.
-    /// </remarks>
     internal static class FunctionDelegates
     {
-        /// <summary> The base delegate type used by every function. </summary>
-        internal delegate IEnumerable<TypeSpec> FunctionDelegate<T>(IEnumerable<TypeSpec> input, T arg, bool condition);
-
-
         public static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
@@ -36,7 +26,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for matching a type name using a regular expression. </summary>
-        internal static FunctionDelegate<string> HaveNameMatching = delegate (IEnumerable<TypeSpec> input, string pattern, bool condition)
+        internal static IEnumerable<TypeSpec> HaveNameMatching(IEnumerable<TypeSpec> input, string pattern, bool condition)
         {
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
             if (condition)
@@ -47,7 +37,7 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !r.Match(c.Definition.Name).Success);
             }
-        };
+        }
 
         /// <summary> Function for matching the start of a type name. </summary>
         internal static IEnumerable<TypeSpec> HaveNameStartingWith(IEnumerable<TypeSpec> input, string start, bool condition, StringComparison comparer = StringComparison.InvariantCultureIgnoreCase)
@@ -76,7 +66,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding classes with a particular custom attribute. </summary>
-        internal static FunctionDelegate<Type> HaveCustomAttribute = delegate (IEnumerable<TypeSpec> input, Type attribute, bool condition)
+        internal static IEnumerable<TypeSpec> HaveCustomAttribute(IEnumerable<TypeSpec> input, Type attribute, bool condition)
         {
             if (condition)
             {
@@ -86,10 +76,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase)));
             }
-        };
+        }
 
         /// <summary> Function for finding classes decorated with a particular custom attribute or derived one</summary>
-        internal static FunctionDelegate<Type> HaveCustomAttributeOrInherit = delegate (IEnumerable<TypeSpec> input, Type attribute, bool condition)
+        internal static IEnumerable<TypeSpec> HaveCustomAttributeOrInherit(IEnumerable<TypeSpec> input, Type attribute, bool condition)
         {
             // Convert the incoming type to a definition
             var target = attribute.ToTypeDefinition();
@@ -101,11 +91,11 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => a.AttributeType.Resolve().IsSubclassOf(target) || attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase)));
             }
-        };
+        }
 
 
         /// <summary> Function for finding classes that inherit from a particular type. </summary>
-        internal static FunctionDelegate<Type> Inherits = delegate (IEnumerable<TypeSpec> input, Type type, bool condition)
+        internal static IEnumerable<TypeSpec> Inherits(IEnumerable<TypeSpec> input, Type type, bool condition)
         {
             // Convert the incoming type to a definition
             var target = type.ToTypeDefinition();
@@ -117,10 +107,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsSubclassOf(target));
             }
-        };
+        }
 
         /// <summary> Function for finding classes that implement a particular interface. </summary>
-        internal static FunctionDelegate<Type> ImplementsInterface = delegate (IEnumerable<TypeSpec> input, Type typeInterface, bool condition)
+        internal static IEnumerable<TypeSpec> ImplementsInterface(IEnumerable<TypeSpec> input, Type typeInterface, bool condition)
         {
             if (!typeInterface.IsInterface)
             {
@@ -146,10 +136,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !found.Contains(c));
             }
-        };
+        }
 
         /// <summary> Function for finding abstract classes. </summary>
-        internal static FunctionDelegate<bool> BeAbstract = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeAbstract(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -159,10 +149,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsAbstract);
             }
-        };
+        }
 
         /// <summary> Function for finding classes. </summary>
-        internal static FunctionDelegate<bool> BeClass = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeClass(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -172,10 +162,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsClass);
             }
-        };
+        }
 
         /// <summary> Function for finding interfaces. </summary>
-        internal static FunctionDelegate<bool> BeInterface = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeInterface(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -185,10 +175,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsInterface);
             }
-        };
+        }
 
         /// <summary> Function for finding static classes. </summary>
-        internal static FunctionDelegate<bool> BeStatic = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeStatic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -200,10 +190,10 @@ namespace NetArchTest.Functions
             }
 
             bool ClassIsStatic(TypeSpec c) => c.Definition.IsAbstract && c.Definition.IsSealed && !c.Definition.IsInterface && !c.Definition.GetConstructors().Any(m => m.IsPublic);
-        };
+        }
 
         /// <summary> Function for finding types with generic parameters. </summary>
-        internal static FunctionDelegate<bool> BeGeneric = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -213,11 +203,11 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.HasGenericParameters);
             }
-        };
+        }
 
 
         /// <summary> Function for finding nested classes. </summary>
-        internal static FunctionDelegate<bool> BeNested = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNested(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -227,10 +217,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsNested);
             }
-        };
+        }
 
         /// <summary> Function for finding nested public classes. </summary>
-        internal static FunctionDelegate<bool> BeNestedPublic = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNestedPublic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -240,10 +230,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsNestedPublic);
             }
-        };
+        }
 
         /// <summary> Function for finding nested private classes. </summary>
-        internal static FunctionDelegate<bool> BeNestedPrivate = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNestedPrivate(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -253,11 +243,11 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsNestedPrivate);
             }
-        };
+        }
 
 
         /// <summary> Function for finding public classes. </summary>
-        internal static FunctionDelegate<bool> BePublic = delegate (IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BePublic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
         {
             if (condition)
             {
@@ -267,10 +257,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => c.Definition.IsNested ? !c.Definition.IsNestedPublic : c.Definition.IsNotPublic);
             }
-        };
+        }
 
         /// <summary> Function for finding sealed classes. </summary>
-        internal static FunctionDelegate<bool> BeSealed = delegate (IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> BeSealed(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
         {
             if (condition)
             {
@@ -280,10 +270,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsSealed);
             }
-        };
+        }
 
         /// <summary> Function for finding immutable classes. </summary>
-        internal static FunctionDelegate<bool> BeImmutable = delegate (IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> BeImmutable(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
         {
             if (condition)
             {
@@ -293,10 +283,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsImmutable());
             }
-        };
+        }
 
         /// <summary> Function for finding nullable classes. </summary>
-        internal static FunctionDelegate<bool> HasNullableMembers = delegate (IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> HasNullableMembers(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
         {
             if (condition)
             {
@@ -306,10 +296,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.HasNullableMembers());
             }
-        };
+        }
 
         /// <summary> Function for finding types in a particular namespace. </summary>
-        internal static FunctionDelegate<string> ResideInNamespace = delegate (IEnumerable<TypeSpec> input, string name, bool condition)
+        internal static IEnumerable<TypeSpec> ResideInNamespace(IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
             {
@@ -319,10 +309,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.FullName.StartsWith(name, StringComparison.InvariantCultureIgnoreCase));
             }
-        };
+        }
 
         /// <summary> Function for matching a type name using a regular expression. </summary>
-        internal static FunctionDelegate<string> ResideInNamespaceMatching = delegate (IEnumerable<TypeSpec> input, string pattern, bool condition)
+        internal static IEnumerable<TypeSpec> ResideInNamespaceMatching(IEnumerable<TypeSpec> input, string pattern, bool condition)
         {
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
             if (condition)
@@ -333,10 +323,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !r.Match(c.Definition.GetNamespace()).Success);
             }
-        };
+        }
 
         /// <summary> Function for finding types that have a dependency on any of the supplied types. </summary>
-        internal static FunctionDelegate<IEnumerable<string>> HaveDependencyOnAny = delegate (IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
             var search = new DependencySearch();
@@ -350,10 +340,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(t => !results.Contains(t));
             }
-        };
+        }
 
         /// <summary> Function for finding types that have a dependency on all of the supplied types. </summary>
-        internal static FunctionDelegate<IEnumerable<string>> HaveDependencyOnAll = delegate (IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
             var search = new DependencySearch();
@@ -367,10 +357,10 @@ namespace NetArchTest.Functions
             {
                 return input.Where(t => !results.Contains(t));
             }
-        };
+        }
 
         /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
-        internal static FunctionDelegate<IEnumerable<string>> OnlyHaveDependenciesOnAnyOrNone = delegate (IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             var search = new DependencySearch();
             var results = search.FindTypesThatOnlyHaveDependenciesOnAnyOrNone(input, dependencies);
@@ -383,19 +373,19 @@ namespace NetArchTest.Functions
             {
                 return input.Where(t => !results.Contains(t));
             }
-        };
+        }
 
         /// <summary> Function for finding public classes. </summary>
-        internal static FunctionDelegate<ICustomRule> MeetCustomRule = delegate (IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)
+        internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)
         {
             if (condition)
             {
-                return input.Where(t => rule.MeetsRule(t));
+                return input.Where(t => rule.MeetsRule(t.Definition));
             }
             else
             {
-                return input.Where(t => !rule.MeetsRule(t));
+                return input.Where(t => !rule.MeetsRule(t.Definition));
             }
-        };
+        }
     }
 }

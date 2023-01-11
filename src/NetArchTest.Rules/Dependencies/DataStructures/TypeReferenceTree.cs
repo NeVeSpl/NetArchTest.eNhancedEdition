@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
     using Mono.Cecil;
-    using NetArchTest.Rules.Extensions;
+    
 
     /// <summary>
     /// Similar tree to <see cref="NamespaceTree"/>, but this is aware of the structure of type full name,
