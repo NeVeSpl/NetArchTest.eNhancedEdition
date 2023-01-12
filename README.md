@@ -12,7 +12,7 @@ NetArchTest is well established mature library, but in order to push things forw
 
 What **eNhancedEdition** has to offer:
  - [Slices](#slices)
- - solved BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test  
+ - solved BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation)  
 
 
 
@@ -81,9 +81,9 @@ public void DomainIsIndependent()
 
 ### Writing rules
 
-The fluent API should direct you in building up a rule, based on a combination of predicates, conditions and conjunctions. 
+The fluent API should direct you in building up a rule, based on a combination of [predicates](documentation/api.md#predicate), [conditions](documentation/api.md#condition) and conjunctions. 
 
-The starting point for any rule is the static `Types` class, where you load a set of types from a path, assembly.
+The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from a path, assembly.
 
 ```csharp
 var types = Types.InAssembly(typeof(MyClass).Assembly);
@@ -120,16 +120,16 @@ Dependency matrix:
 | h | x  | x  | x  |
 
 
-Available predicates:
+Available predicates/conditions:
 
 |   | Predicate   | number<br> of required<br> dependencies <br>from the list  | type can have<br>a dependency<br>that is not<br>on the list  |  passing types |  failing types |
 |---|---|---|---|---|---|
-| 1 | HaveDependencyOnAny(D1, D2) | at least 1  | yes  |  c, d, e, f, g, h, |  a, b |
-| 2 | HaveDependencyOnAll(D1, D2)  | all  |  yes |  g, h | a, b, c, d, e, f  |
-| 3 | OnlyHaveDependencyOn(D1, D2) | >=0  |  no | a, c, e, g  |  b, d, f, h  |
-| 1N | DoNotHaveDependencyOnAny(D1, D2) | none  | yes   |  a, b |   c, d, e, f, g, h, |
-| 2N | DoNotHaveDependencyOnAll(D1, D2)  | not all  |  yes | a, b, c, d, e, f |  g, h   |
-| 3N | HaveDependencyOtherThan(D1, D2)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
+| 1 | [HaveDependencyOnAny(D1, D2)](documentation/api.md#conditionhavedependencyonany) | at least 1  | yes  |  c, d, e, f, g, h, |  a, b |
+| 2 | [HaveDependencyOnAll(D1, D2)](documentation/api.md#conditionhavedependencyonall)  | all  |  yes |  g, h | a, b, c, d, e, f  |
+| 3 | [OnlyHaveDependencyOn(D1, D2)](documentation/api.md#conditiononlyhavedependencyon) | >=0  |  no | a, c, e, g  |  b, d, f, h  |
+| 1N | [NotHaveDependencyOnAny(D1, D2)](documentation/api.md#conditionnothavedependencyonany) | none  | yes   |  a, b |   c, d, e, f, g, h, |
+| 2N | [NotHaveDependencyOnAll(D1, D2)](documentation/api.md#conditionnothavedependencyonall)  | not all  |  yes | a, b, c, d, e, f |  g, h   |
+| 3N | [HaveDependencyOtherThan(D1, D2)](documentation/api.md#conditionhavedependencyotherthan)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
 
 
 
