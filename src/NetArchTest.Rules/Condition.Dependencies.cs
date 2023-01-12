@@ -11,8 +11,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOnAny(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, true));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, true));
+            return CreateConditionList();
         }
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOnAll(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, true));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, true));
+            return CreateConditionList();
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList OnlyHaveDependencyOn(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, true));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, true));
+            return CreateConditionList();
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveDependencyOnAny(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, false));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, false));
+            return CreateConditionList();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveDependencyOnAll(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, false));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, false));
+            return CreateConditionList();
         }
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOtherThan(params string[] dependencies)
         {
-            _sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
-            return new ConditionList(_types, _should, _sequence);
+            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
+            return CreateConditionList();
         }
     }
 }

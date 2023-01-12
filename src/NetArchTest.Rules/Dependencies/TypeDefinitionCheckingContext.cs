@@ -10,13 +10,15 @@ namespace NetArchTest.Dependencies
         private readonly TypeDefinitionCheckingResult _result;        
         private readonly bool _serachForDependencyInFieldConstant;
         private readonly bool explainYourself;
+        private readonly IDependencyFilter dependencyFilter;
 
-        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false, bool explainYourself = false)
+        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false, bool explainYourself = false, IDependencyFilter dependencyFilter = null)
         {
             _typeToCheck = typeToCheck;
             _result = new TypeDefinitionCheckingResult(searchType, searchTree);
             _serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
             this.explainYourself = explainYourself;
+            this.dependencyFilter = dependencyFilter;
         }
 
         public bool IsTypeFound()
@@ -282,6 +284,13 @@ namespace NetArchTest.Dependencies
         }
         private void CheckDependency(TypeReference dependency)
         {
+            if (dependencyFilter != null)
+            {
+                if (dependencyFilter.ShouldDependencyBeChecked(dependency) == false)
+                {
+                    return;
+                }
+            }
             _result.CheckDependency(dependency);           
         }
     }

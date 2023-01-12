@@ -7,7 +7,7 @@ namespace NetArchTest.Assemblies
         public TypeDefinition Definition { get; }
         public string FullName => Definition.FullName;
         // Only for use by FunctionSequence
-        internal bool IsSelected { get; set;  }
+        internal bool IsSelectedInMarkPhase { get; set;  }
         // Can be use by any function
         internal bool IsPassing { get; set; }
         public string Explanation { get; set; }

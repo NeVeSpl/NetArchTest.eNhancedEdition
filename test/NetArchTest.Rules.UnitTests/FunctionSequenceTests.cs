@@ -9,6 +9,7 @@
     using Xunit;
     using NetArchTest.Rules;
     using Mono.Cecil;
+    using NetArchTest.RuleEngine;
 
     public class FunctionSequenceTests
     {

@@ -1,0 +1,39 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using NetArchTest.Assemblies;
+using NetArchTest.Dependencies;
+using NetArchTest.RuleEngine;
+
+namespace NetArchTest.Functions
+{
+    internal static partial class FunctionDelegates
+    {
+        /// <summary> Function for finding types that have a dependency on any of the supplied types. </summary>
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAny(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        {
+            // Get the types that contain the dependencies
+            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);
+            return input.Where(t => t.IsPassing == condition);
+        }
+
+        /// <summary> Function for finding types that have a dependency on all of the supplied types. </summary>
+        internal static IEnumerable<TypeSpec> HaveDependencyOnAll(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        {
+            // Get the types that contain the dependencies
+            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var results = search.FindTypesThatHaveDependencyOnAll(input, dependencies);
+
+            return input.Where(t => t.IsPassing == condition);
+        }
+
+        /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
+        internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        {
+            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var results = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
+
+            return input.Where(t => t.IsPassing == condition);
+        }
+    }
+}

@@ -6,13 +6,13 @@ using Mono.Cecil;
 using Mono.Cecil.Rocks;
 using NetArchTest.Assemblies;
 using NetArchTest.Dependencies;
-
+using NetArchTest.RuleEngine;
 using NetArchTest.Rules;
-using static NetArchTest.Functions.FunctionSequence;
+
 
 namespace NetArchTest.Functions
 {
-    internal static class FunctionDelegates
+    internal static partial class FunctionDelegates
     {
         public static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
         {
@@ -326,34 +326,7 @@ namespace NetArchTest.Functions
             }
         }
 
-        /// <summary> Function for finding types that have a dependency on any of the supplied types. </summary>
-        internal static IEnumerable<TypeSpec> HaveDependencyOnAny(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
-        {
-            // Get the types that contain the dependencies
-            var search = new DependencySearch(context.IsFailPathRun);
-            var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);           
-            return input.Where(t => t.IsPassing == condition);            
-        }
-
-        /// <summary> Function for finding types that have a dependency on all of the supplied types. </summary>
-        internal static IEnumerable<TypeSpec> HaveDependencyOnAll(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
-        {
-            // Get the types that contain the dependencies
-            var search = new DependencySearch(context.IsFailPathRun);
-            var results = search.FindTypesThatHaveDependencyOnAll(input, dependencies);
-
-            return input.Where(t => t.IsPassing == condition);
-        }
-
-        /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
-        internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(FunctionInvokeContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
-        {
-            var search = new DependencySearch(context.IsFailPathRun);
-            var results = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
-
-            return input.Where(t => t.IsPassing == condition);
-        }
-
+       
         /// <summary> Function for finding public classes. </summary>
         internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NetArchTest.Slices.Model;
+﻿using NetArchTest.Slices.Model;
 
 namespace NetArchTest.Slices
 {

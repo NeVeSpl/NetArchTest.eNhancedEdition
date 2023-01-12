@@ -1,48 +1,53 @@
 {{- config.AddGeneratedFilesToVSProject = false
 capture output 
-      types_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Types$" | Array.First
-
-      predicate_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Predicate" | Array.First
-      predicatelist_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^PredicateList" | Array.First
-      condition_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Condition" | Array.First
-      conditionlist_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^ConditionList" | Array.First
-      testresult_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^TestResult" | Array.First
-      itype_type =  data.Interfaces | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^IType" | Array.First
+      types_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Types$"
+      predicate_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Predicate" 
+      condition_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Condition"
+      testresult_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^TestResult" 
+      itype_type =  data.Interfaces | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^IType"
+      all_types = types_type | Array.Concat predicate_type | Array.Concat condition_type | Array.Concat testresult_type | Array.Concat itype_type
 }}    
-# Types
-   {{ for method in types_type.Methods | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
 
-# Predicate
-   {{ for method in predicate_type.Methods | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
 
-# PredicateList
-   {{ for method in predicatelist_type.Methods | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
+{{- for type in all_types }}
+## {{ type.Name }}
 
-# Condition
-   {{ for method in condition_type.Methods | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
+  {{- for method in type.Methods | Symbols.ThatArePublic | Symbols.ThatAreStatic   | Array.Sort "Name" }}
+- [{{method.Name}}](#{{type.BareName}}{{method.BareName}})
+  {{- end }}
+  {{~ for method in type.Methods | Symbols.ThatArePublic | Symbols.ThatAreNotStatic   | Array.Sort "Name" }}
+* [{{method.Name}}](#{{type.BareName}}{{method.BareName}})
+  {{- end }}
+  {{- for prop in type.Properties | Symbols.ThatArePublic | Symbols.ThatAreNotStatic   | Array.Sort "Name" }}
+* [{{prop.Name}}](#{{type.BareName}}{{prop.BareName}})
+  {{- end }}
+{{ end}}
 
-# ConditionList
-   {{ for method in conditionlist_type.Methods | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
 
-# TestResult
-   {{ for method in testresult_type.Properties | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
 
-# IType
-   {{ for method in itype_type.Properties | Symbols.ThatArePublic | Array.Sort "Name" }}
-* [{{method.Name}}](#{{method.BareName}})
-   {{- end }}
+{{- for type in all_types }}
+## {{ type.Name }}
+
+  {{- for method in type.Methods | Symbols.ThatArePublic  | Array.Sort "Name" }}
+### {{type.BareName}}.{{method.Name}}
+```csharp
+{{method.FullName}}
+```
+{{ method.DocComment.Summary | String.StripNewlines }}
+  {{- end }}
+ 
+  {{- for prop in type.Properties | Symbols.ThatArePublic | Symbols.ThatAreNotStatic   | Array.Sort "Name" }}
+### {{type.BareName}}.{{prop.Name}}
+```csharp
+{{prop.FullName}}
+```
+  {{~ prop.DocComment.Summary | String.StripNewlines }}
+  {{- end }}
+{{ end}}
+
+ 
+
+
     
 {{   
     end

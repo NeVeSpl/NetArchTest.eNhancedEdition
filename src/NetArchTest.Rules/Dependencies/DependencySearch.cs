@@ -10,10 +10,12 @@ namespace NetArchTest.Dependencies
     internal class DependencySearch
     {
         private readonly bool explainYourself;
+        private readonly IDependencyFilter dependencyFilter;
 
-        public DependencySearch(bool explainYourself)
+        public DependencySearch(bool explainYourself, IDependencyFilter dependencyFilter = null)
         {
             this.explainYourself = explainYourself;
+            this.dependencyFilter = dependencyFilter;
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace NetArchTest.Dependencies
 
             foreach (var type in input)
             {
-                var context = new TypeDefinitionCheckingContext(type, searchType, searchTree, serachForDependencyInFieldConstant, explainYourself);               
+                var context = new TypeDefinitionCheckingContext(type, searchType, searchTree, serachForDependencyInFieldConstant, explainYourself, dependencyFilter);               
                 type.IsPassing = context.IsTypeFound();                
             }
 

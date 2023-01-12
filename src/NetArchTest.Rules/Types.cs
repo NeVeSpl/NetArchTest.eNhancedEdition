@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using NetArchTest.Assemblies;
+using NetArchTest.RuleEngine;
 using NetArchTest.Slices;
 
 [assembly: InternalsVisibleTo("NetArchTest.UnitTests")]
@@ -15,13 +15,13 @@ namespace NetArchTest.Rules
     /// Creates a list of types that can have predicates and conditions applied to it.
     /// </summary>
     public sealed class Types
-    {        
-        private readonly IReadOnlyList<TypeSpec> types;  
+    {
+        private readonly RuleContext rule;
 
 
         private Types(IEnumerable<TypeSpec> types)
         {
-            this.types = types.ToList();
+            rule = new RuleContext(types);
         }
 
 
@@ -32,7 +32,7 @@ namespace NetArchTest.Rules
         public static Types InCurrentDomain()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            return InAssemblies(assemblies);
+            return Types.InAssemblies(assemblies);
         }
 
         /// <summary>
@@ -102,19 +102,6 @@ namespace NetArchTest.Rules
             var files = Directory.GetFiles(path, "*.dll");
             return new Types(TypeSource.FromFiles(files, searchDirectories));
         }
-       
-       
-        
-        
-
-        /// <summary>
-        /// Returns the list of <see cref="Type"/> objects describing the types in this list.
-        /// </summary>
-        /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
-        public IEnumerable<IType> GetTypes()
-        {
-            return types.Select(t => t.CreateWrapper());
-        }
 
 
         /// <summary>
@@ -123,7 +110,7 @@ namespace NetArchTest.Rules
         /// <returns>A list of types onto which you can apply a series of filters.</returns>
         public Predicate That()
         {
-            return new Predicate(types);
+            return new Predicate(rule);
         }
 
         /// <summary>
@@ -132,7 +119,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition Should()
         {
-            return new Condition(types, true);
+            return new Condition(rule, true);
         }
 
         /// <summary>
@@ -141,7 +128,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition ShouldNot()
         {
-            return new Condition(types, false);
+            return new Condition(rule, false);
         }
 
         /// <summary>
@@ -150,7 +137,17 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public SlicePredicate Slice()
         {
-            return new SlicePredicate(types);
+            return new SlicePredicate(rule);
+        }
+
+
+        /// <summary>
+        /// Returns the list of <see cref="Type"/> objects describing the types in this list.
+        /// </summary>
+        /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
+        public IEnumerable<IType> GetTypes()
+        {
+            return rule.GetTypes();
         }
     }
 }

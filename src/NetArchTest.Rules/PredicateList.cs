@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Mono.Cecil;
 using NetArchTest.Assemblies;
-using NetArchTest.Functions;
+using NetArchTest.RuleEngine;
 using NetArchTest.Slices;
-
 
 namespace NetArchTest.Rules
 {
@@ -13,18 +10,13 @@ namespace NetArchTest.Rules
     /// A set of predicates and types that have have conjunctions (i.e. "and", "or") and executors (i.e. Types(), TypeDefinitions()) applied to them.
     /// </summary>
     public sealed class PredicateList
-    {       
-        private readonly IEnumerable<TypeSpec> _types;        
-        private readonly FunctionSequence _sequence;
+    {
+        private readonly RuleContext rule;       
 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PredicateList"/> class.
-        /// </summary>
-        internal PredicateList(IEnumerable<TypeSpec> classes, FunctionSequence sequence) 
+        internal PredicateList(RuleContext rule) 
         {
-            _types = classes;
-            _sequence = sequence;
+            this.rule = rule;          
         }
 
 
@@ -34,7 +26,7 @@ namespace NetArchTest.Rules
         /// <returns>A condition that tests classes against a given criteria.</returns>
         public Condition Should()
         {
-            return new Condition(GetTypeSpecifications(), true);
+            return new Condition(rule, true);
         }
 
         /// <summary>
@@ -43,7 +35,7 @@ namespace NetArchTest.Rules
         /// <returns>A condition that tests classes against a given criteria.</returns>
         public Condition ShouldNot()
         {
-            return new Condition(GetTypeSpecifications(), false);
+            return new Condition(rule, false);
         }
 
         /// <summary>
@@ -52,27 +44,9 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public SlicePredicate Slice()
         {
-            return new SlicePredicate(GetTypeSpecifications());
+            return new SlicePredicate(rule);
         }
 
-       
-        internal IEnumerable<TypeSpec> GetTypeSpecifications()
-        { 
-            return _sequence.Execute(_types);
-        }
-        internal IEnumerable<Type> GetReflectionTypes()
-        {
-            return GetTypeSpecifications().Select(x => x.Definition.ToType());
-        }
-
-        /// <summary>
-        /// Returns the types returned by these predicates.
-        /// </summary>
-        /// <returns>A list of types.</returns>
-        public IEnumerable<IType> GetTypes()
-        {
-            return GetTypeSpecifications().Select(t => t.CreateWrapper());
-        }
 
         /// <summary>
         /// Specifies that any subsequent predicates should be treated as "and" conditions.
@@ -81,7 +55,7 @@ namespace NetArchTest.Rules
         /// <remarks>And() has higher priority than Or() and it is computed first.</remarks>
         public Predicate And()
         {
-            return new Predicate(_types, _sequence);
+            return new Predicate(rule);
         }
 
         /// <summary>
@@ -91,8 +65,27 @@ namespace NetArchTest.Rules
         public Predicate Or()
         {
             // Create a new group of functions - this has the effect of creating an "or" condition
-            _sequence.CreateGroup();
-            return new Predicate(_types, _sequence);
+            rule.PredicateContext.Sequence.CreateGroup();
+            return new Predicate(rule);
+        }
+
+        /// <summary>
+        /// Returns the types returned by these predicates.
+        /// </summary>
+        /// <returns>A list of types.</returns>
+        public IEnumerable<IType> GetTypes()
+        {
+            return rule.GetTypes();
+        }
+
+
+        internal IEnumerable<TypeSpec> GetTypeSpecifications()
+        { 
+            return rule.Execute();
+        }
+        internal IEnumerable<Type> GetReflectionTypes()
+        {
+            return rule.GetReflectionTypes();
         }
     }
 }

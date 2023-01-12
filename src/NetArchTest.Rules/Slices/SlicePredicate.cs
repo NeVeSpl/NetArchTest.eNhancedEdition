@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NetArchTest.Assemblies;
+﻿using NetArchTest.RuleEngine;
 using NetArchTest.Slices.Model;
 
 namespace NetArchTest.Slices
@@ -10,12 +9,12 @@ namespace NetArchTest.Slices
     /// <returns></returns>
     public sealed class SlicePredicate
     {
-        private readonly IEnumerable<TypeSpec> types;
+        private readonly RuleContext rule;
 
 
-        internal SlicePredicate(IEnumerable<TypeSpec> types)
+        internal SlicePredicate(RuleContext rule)
         {
-            this.types = types;
+            this.rule = rule;
         }
 
 
@@ -28,7 +27,7 @@ namespace NetArchTest.Slices
         public SlicePredicateList ByNamespacePrefix(string prefix)
         {
             var slicer = new Slicer();
-            var slicedTypes = slicer.SliceByNamespacePrefix(types, prefix);
+            var slicedTypes = slicer.SliceByNamespacePrefix(rule.Execute(), prefix);
             return new SlicePredicateList(slicedTypes);
         }
     }
