@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetArchTest.Assemblies;
@@ -27,7 +28,7 @@ namespace NetArchTest.Rules
         /// <remarks>
         /// This method loads all the types and may throw dependency loading errors if the test project does not have a direct dependency on the type being loaded.
         /// </remarks>
-        public IReadOnlyList<IType> FailingTypes { get; private set; }
+        public IReadOnlyList<IType> FailingTypes { get; private set; } = Array.Empty<IType>();
 
 
         /// <summary>
