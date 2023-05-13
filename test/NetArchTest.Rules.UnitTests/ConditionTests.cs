@@ -624,7 +624,7 @@ namespace NetArchTest.UnitTests
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
-                .DoNotHaveNameStartingWith("ImmutableClass")
+                .DoNotHaveNameStartingWith("Immutable")
                 .Should()
                 .BeMutable().GetResult();
 

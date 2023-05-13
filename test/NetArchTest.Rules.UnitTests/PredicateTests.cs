@@ -656,10 +656,11 @@ namespace NetArchTest.UnitTests
                 .And()
                 .AreImmutable().GetReflectionTypes();
 
-            Assert.Equal(3, result.Count()); // Three types found
+            Assert.Equal(4, result.Count()); // Three types found
             Assert.Contains<Type>(typeof(ImmutableClass1), result);
             Assert.Contains<Type>(typeof(ImmutableClass2), result);
             Assert.Contains<Type>(typeof(ImmutableClass3), result);
+            Assert.Contains<Type>(typeof(ImmutableRecord1), result);
         }
 
         [Fact(DisplayName = "Types can be selected for being mutable.")]

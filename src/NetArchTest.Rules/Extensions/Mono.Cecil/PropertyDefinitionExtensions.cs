@@ -10,9 +10,26 @@ namespace Mono.Cecil
         /// <returns>An indication of whether the property is readonly.</returns>
         public static bool IsReadonly(this PropertyDefinition propertyDefinition)
         {
-            return propertyDefinition.SetMethod == null;
+            if (propertyDefinition.SetMethod == null)
+            {
+                return true;
+            }
+            else
+            {                
+                if (propertyDefinition.IsInitOnly())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
-        
+
+        public static bool IsInitOnly(this PropertyDefinition propertyDefinition)
+        {
+            return propertyDefinition.SetMethod?.ReturnType.FullName == "System.Void modreq(System.Runtime.CompilerServices.IsExternalInit)";
+        }
+
         /// <summary>
         /// Tests whether a property is nullable
         /// </summary>
