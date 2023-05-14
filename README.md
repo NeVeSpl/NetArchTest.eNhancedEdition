@@ -1,4 +1,5 @@
-﻿[![Nuget](https://img.shields.io/nuget/v/NetArchTest.eNhancedEdition?color=%23004880&label=NetArchTest.eNhancedEdition%20nuget)](https://www.nuget.org/packages/NetArchTest.eNhancedEdition)
+[![net-workflow](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml/badge.svg?branch=main)](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml)
+[![Nuget](https://img.shields.io/nuget/v/NetArchTest.eNhancedEdition?color=%23004880&label=NetArchTest.eNhancedEdition%20nuget)](https://www.nuget.org/packages/NetArchTest.eNhancedEdition)
 
 # NetArchTest.eNhancedEdition
 
