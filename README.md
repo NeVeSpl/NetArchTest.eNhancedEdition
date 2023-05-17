@@ -11,11 +11,13 @@ NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/
 
 NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. 
 
-What **eNhancedEdition** has to offer:
+What **eNhancedEdition** has to offer, that is not available in the NetArchTest v1.3.2:
  - [Slices](#slices)
- - solved BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation)  
-
-
+ - implemented BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
+ - fixed BenMorris/NetArchTest#98 - ResideInNamespaceMatching with nested+internal types 
+ - fixed BenMorris/NetArchTest#101 - Conditions.OnlyHaveDependenciessOn fails when switch expression is used
+ - fixed BenMorris/NetArchTest#119 - Fixed nulls for Success result
+ - fixed BenMorris/NetArchTest#120 - Add support for records and init-only properties
 
 ## Index
 
