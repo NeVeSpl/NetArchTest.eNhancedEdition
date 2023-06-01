@@ -260,27 +260,30 @@ namespace NetArchTest.Dependencies
         /// </example>         
         /// </summary>      
         private void CheckTypeReference(TypeReference reference)
-        {
-            if (reference.IsGenericParameter == false)
+        {          
+            if (reference.IsGenericParameter == true) return;
+           
+            if ((reference.IsArray) || (reference.IsPointer) || (reference.IsByReference))
             {
-                CheckDependency(reference);
-                if (reference.IsGenericInstance == true)
+                var referenceAsTypeSpecification = reference as TypeSpecification;
+                if (referenceAsTypeSpecification.ElementType?.IsGenericParameter == true) return;
+
+                CheckTypeReference(referenceAsTypeSpecification.ElementType);
+            }
+
+            CheckDependency(reference);
+
+            if (reference.IsGenericInstance == true)
+            {
+                var referenceAsGenericInstance = reference as GenericInstanceType;
+                if (referenceAsGenericInstance.HasGenericArguments)
                 {
-                    var referenceAsGenericInstance = reference as GenericInstanceType;
-                    if (referenceAsGenericInstance.HasGenericArguments)
+                    foreach (var genericArgument in referenceAsGenericInstance.GenericArguments)
                     {
-                        foreach (var genericArgument in referenceAsGenericInstance.GenericArguments)
-                        {
-                            CheckTypeReference(genericArgument);
-                        }
+                        CheckTypeReference(genericArgument);
                     }
                 }
-                if ((reference.IsArray) || (reference.IsPointer) || (reference.IsByReference))
-                {
-                    var referenceAsTypeSpecification = reference as TypeSpecification;
-                    CheckTypeReference(referenceAsTypeSpecification.ElementType);
-                }
-            }
+            }            
         }
         private void CheckDependency(TypeReference dependency)
         {
