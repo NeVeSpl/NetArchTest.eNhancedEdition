@@ -18,6 +18,7 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
  - fixed BenMorris/NetArchTest#101 - Conditions.OnlyHaveDependenciessOn fails when switch expression is used
  - fixed BenMorris/NetArchTest#119 - Fixed nulls for Success result
  - fixed BenMorris/NetArchTest#120 - Add support for records and init-only properties
+ - fixed #3 - generic type parameters: `T*`, `T[]`, `T&` were detected as dependencies
 
 ## Index
 
