@@ -210,7 +210,11 @@
         {
             if ((reference.IsArray == false) && (reference.IsByReference == false) && (reference.IsPointer == false))
             {
-                yield return reference.GetNamespace();
+                var @namespace = reference.GetNamespace();
+                if (!string.IsNullOrEmpty(@namespace))
+                {
+                    yield return @namespace;
+                }
                 yield return reference.Name;
             }
             else

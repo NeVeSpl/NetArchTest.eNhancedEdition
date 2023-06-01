@@ -24,13 +24,14 @@
         [Fact(DisplayName = "Does not find things that are not dependency at all")]
         public void DependencySearch_Garbage_NotFound()
         {
-            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)), new List<string> { "System.Object::.ctor()", "T", "T1", "T2", "ctor()", "!1)", "::.ctor(!0" }, false);            
+            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)), new List<string> { "System.Object::.ctor()", "T", "T1", "T2", "ctor()", "!1)", "::.ctor(!0", "T1&", "T2&", "T1[]", "T2[]" }, false);            
         }
 
         [Fact(DisplayName = "Does not find a dependency that only partially matches actually referenced type.")]       
         public void DependencySearch_PartiallyMatchingDependency_NotFound()
-        { 
-            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)),
+        {
+            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference), typeof(GenericMethodGenericParameter));
+            Utils.RunDependencyTest(subjects,
                                     dependencyToSearch: typeof(ExampleDep),
                                     expectToFindClass: false,
                                     expectToFindNamespace: true);
@@ -48,7 +49,8 @@
         [Fact(DisplayName = "Does not find a dependency that differs only in case from actually referenced type.")]       
         public void DependencySearch_DependencyWithDifferentCaseOfCharacters_NotFound()
         {
-            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)),
+            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference), typeof(GenericMethodGenericParameter));
+            Utils.RunDependencyTest(subjects,
                                     dependencyToSearch: typeof(ExampleDEPENDENCY),
                                     expectToFindClass: false,
                                     expectToFindNamespace: true);
