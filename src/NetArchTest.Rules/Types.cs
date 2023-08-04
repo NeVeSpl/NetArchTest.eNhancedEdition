@@ -16,12 +16,12 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed class Types
     {
-        private readonly RuleContext rule;
+        private readonly IEnumerable<TypeSpec> types;
 
 
         private Types(IEnumerable<TypeSpec> types)
         {
-            rule = new RuleContext(types);
+            this.types = types;
         }
 
 
@@ -110,7 +110,7 @@ namespace NetArchTest.Rules
         /// <returns>A list of types onto which you can apply a series of filters.</returns>
         public Predicate That()
         {
-            return new Predicate(rule);
+            return new Predicate(new RuleContext(types));
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition Should()
         {
-            return new Condition(rule, true);
+            return new Condition(new RuleContext(types), true);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition ShouldNot()
         {
-            return new Condition(rule, false);
+            return new Condition(new RuleContext(types), false);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public SlicePredicate Slice()
         {
-            return new SlicePredicate(rule);
+            return new SlicePredicate(new RuleContext(types));
         }
 
 
@@ -147,7 +147,7 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
         public IEnumerable<IType> GetTypes()
         {
-            return rule.GetTypes();
+            return new RuleContext(types).GetTypes();
         }
     }
 }
