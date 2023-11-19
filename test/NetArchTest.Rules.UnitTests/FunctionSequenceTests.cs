@@ -18,7 +18,7 @@
         {
             // Arrange
             var sequence = new FunctionSequence();
-            sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, true));
+            sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true));
 
             var types = Types
             .InAssembly(Assembly.GetAssembly(typeof(AbstractClass)))

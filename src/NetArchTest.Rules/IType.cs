@@ -25,7 +25,9 @@ namespace NetArchTest.Rules
         /// </summary>       
         string Name { get; }
 
-
+        /// <summary>
+        /// It contains explanation why this Type has failed dependecy search.
+        /// </summary>
         string Explanation { get; }
     }
 }

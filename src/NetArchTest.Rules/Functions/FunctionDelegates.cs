@@ -14,7 +14,7 @@ namespace NetArchTest.Functions
 {
     internal static partial class FunctionDelegates
     {
-        public static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
+        internal static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
             {
@@ -140,7 +140,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding abstract classes. </summary>
-        internal static IEnumerable<TypeSpec> BeAbstract(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeAbstract(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -153,7 +153,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding classes. </summary>
-        internal static IEnumerable<TypeSpec> BeClass(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeClass(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -166,7 +166,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding interfaces. </summary>
-        internal static IEnumerable<TypeSpec> BeInterface(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeInterface(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -179,7 +179,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding static classes. </summary>
-        internal static IEnumerable<TypeSpec> BeStatic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeStatic(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -194,7 +194,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding types with generic parameters. </summary>
-        internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -208,7 +208,7 @@ namespace NetArchTest.Functions
 
 
         /// <summary> Function for finding nested classes. </summary>
-        internal static IEnumerable<TypeSpec> BeNested(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNested(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -221,7 +221,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding nested public classes. </summary>
-        internal static IEnumerable<TypeSpec> BeNestedPublic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNestedPublic(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -234,7 +234,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding nested private classes. </summary>
-        internal static IEnumerable<TypeSpec> BeNestedPrivate(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BeNestedPrivate(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -248,7 +248,7 @@ namespace NetArchTest.Functions
 
 
         /// <summary> Function for finding public classes. </summary>
-        internal static IEnumerable<TypeSpec> BePublic(IEnumerable<TypeSpec> input, bool dummy, bool condition)
+        internal static IEnumerable<TypeSpec> BePublic(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -261,7 +261,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding sealed classes. </summary>
-        internal static IEnumerable<TypeSpec> BeSealed(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> BeSealed(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -274,7 +274,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding immutable classes. </summary>
-        internal static IEnumerable<TypeSpec> BeImmutable(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> BeImmutable(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -287,7 +287,7 @@ namespace NetArchTest.Functions
         }
 
         /// <summary> Function for finding nullable classes. </summary>
-        internal static IEnumerable<TypeSpec> HasNullableMembers(IEnumerable<TypeSpec> input, bool dummmy, bool condition)
+        internal static IEnumerable<TypeSpec> HasNullableMembers(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {

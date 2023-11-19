@@ -17,14 +17,15 @@ namespace NetArchTest.Assemblies
         {
             _monoTypeDefinition = monoTypeDefinition;
             _type = new Lazy<Type>(() =>
-            {
-                Type type = null;
+            {                
                 try
                 {
-                    type = _monoTypeDefinition.ToType();
+                    return _monoTypeDefinition.ToType();
                 }
-                catch { }
-                return type;
+                catch 
+                { 
+                }
+                return null;
             });
             Explanation = explanation;
         }

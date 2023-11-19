@@ -1,4 +1,6 @@
 ﻿using System;
+using NetArchTest.Assemblies;
+using System.Collections.Generic;
 using NetArchTest.Functions;
 using NetArchTest.RuleEngine;
 
@@ -24,6 +26,10 @@ namespace NetArchTest.Rules
         {
             return new PredicateList(rule);
         }
+        private void AddFunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+        {
+            context.Sequence.AddFunctionCall(func);
+        }
 
 
         /// <summary>
@@ -35,7 +41,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in name)
             {
-                context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveName(x, item, true));
+                AddFunctionCall(x => FunctionDelegates.HaveName(x, item, true));
             }
             return CreatePredicateList();
         }
@@ -49,7 +55,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in name)
             {
-                context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveName(x, item, false));
+                AddFunctionCall(x => FunctionDelegates.HaveName(x, item, false));
             }
             return CreatePredicateList();
         }
@@ -61,7 +67,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, true));
+            AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, true));
             return CreatePredicateList();
         }
 
@@ -72,7 +78,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, false));
+            AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, false));
             return CreatePredicateList();
         }
 
@@ -85,7 +91,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in start)
             {
-                context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, true));
+                AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, true));
             }
             return CreatePredicateList();
         }
@@ -98,7 +104,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameStartingWith(string start, StringComparison comparer)
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true, comparer));
+	        AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true, comparer));
 	        return CreatePredicateList();
         }
 
@@ -111,7 +117,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in start)
             {
-                context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, false));
+                AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, false));
             }
             return CreatePredicateList();
         }
@@ -124,7 +130,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameStartingWith(string start, StringComparison comparer)
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false, comparer));
+	        AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false, comparer));
 	        return CreatePredicateList();
         }
 
@@ -135,7 +141,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(string end)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true));
             return CreatePredicateList();
         }
 
@@ -147,7 +153,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(string end, StringComparison comparer)
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, true, comparer));
+	        AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, true, comparer));
 	        return CreatePredicateList();
         }
 
@@ -158,7 +164,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(string end)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false));
             return CreatePredicateList();
         }
 
@@ -170,7 +176,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(string end, StringComparison comparer)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, false, comparer));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, false, comparer));
             return CreatePredicateList();
         }
 
@@ -181,7 +187,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttribute(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
             return CreatePredicateList();
         }
 
@@ -192,7 +198,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttributeOrInherit(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, true));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, true));
             return CreatePredicateList();
         }
 
@@ -203,7 +209,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveCustomAttribute(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
             return CreatePredicateList();
         }
 
@@ -214,7 +220,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveCustomAttributeOrInherit(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, false));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, false));
             return CreatePredicateList();
         }
 
@@ -225,7 +231,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList Inherit(Type type)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.Inherits(x, type, true));
+            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, true));
             return CreatePredicateList();
         }
 
@@ -236,7 +242,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotInherit(Type type)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.Inherits(x, type, false));
+            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, false));
             return CreatePredicateList();
         }
 
@@ -247,7 +253,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ImplementInterface(Type interfaceType)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, true));
+            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, true));
             return CreatePredicateList();
         }
 
@@ -258,7 +264,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotImplementInterface(Type interfaceType)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, false));
+            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, false));
             return CreatePredicateList();
         }
 
@@ -268,7 +274,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreAbstract()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true));
             return CreatePredicateList();
         }
 
@@ -278,7 +284,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotAbstract()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeAbstract(x, false));
             return CreatePredicateList();
         }
 
@@ -288,7 +294,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreClasses()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeClass(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeClass(x, true));
             return CreatePredicateList();
         }
 
@@ -298,7 +304,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotClasses()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeClass(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeClass(x, false));
             return CreatePredicateList();
         }
 
@@ -308,7 +314,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreGeneric()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true));
             return CreatePredicateList();
         }
 
@@ -318,7 +324,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotGeneric()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeGeneric(x, false));
             return CreatePredicateList();
         }
 
@@ -328,7 +334,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreInterfaces()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeInterface(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeInterface(x, true));
             return CreatePredicateList();
         }
 
@@ -338,7 +344,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotInterfaces()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeInterface(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeInterface(x, false));
             return CreatePredicateList();
         }
 
@@ -348,7 +354,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreStatic()
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.BeStatic(x, true, true));
+	        AddFunctionCall(x => FunctionDelegates.BeStatic(x, true));
 	        return CreatePredicateList();
         }
 
@@ -358,7 +364,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotStatic()
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.BeStatic(x, true, false));
+	        AddFunctionCall(x => FunctionDelegates.BeStatic(x, false));
 	        return CreatePredicateList();
         }
 
@@ -368,7 +374,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNested()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNested(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNested(x, true));
             return CreatePredicateList();
         }
 
@@ -378,7 +384,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNestedPublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true));
             return CreatePredicateList();
         }
 
@@ -388,7 +394,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNestedPrivate()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true));
             return CreatePredicateList();
         }
 
@@ -398,7 +404,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotNested()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNested(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNested(x, false));
             return CreatePredicateList();
         }
 
@@ -409,7 +415,7 @@ namespace NetArchTest.Rules
         /// <remarks>NB: This method will return non-nested types and nested types that are declared as private.</remarks>
         public PredicateList AreNotNestedPublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, false));
             return CreatePredicateList();
         }
 
@@ -420,7 +426,7 @@ namespace NetArchTest.Rules
         /// <remarks>NB: This method will return non-nested types and nested types that are declared as public.</remarks>
         public PredicateList AreNotNestedPrivate()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, false));
             return CreatePredicateList();
         }
 
@@ -433,7 +439,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ArePublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BePublic(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BePublic(x, true));
             return CreatePredicateList();
         }
 
@@ -446,7 +452,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotPublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BePublic(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BePublic(x, false));
             return CreatePredicateList();
         }
 
@@ -456,7 +462,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreSealed()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeSealed(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, true));
             return CreatePredicateList();
         }
 
@@ -466,7 +472,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotSealed()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeSealed(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, false));
             return CreatePredicateList();
         }
 
@@ -476,7 +482,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreImmutable()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true));
             return CreatePredicateList();
         }
 
@@ -486,7 +492,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreMutable()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeImmutable(x, false));
             return CreatePredicateList();
         }
 
@@ -496,7 +502,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList OnlyHaveNullableMembers()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true));
             return CreatePredicateList();
         }
 
@@ -506,7 +512,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveSomeNonNullableMembers()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, false));
             return CreatePredicateList();
         }
 
@@ -517,7 +523,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespace(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
             return CreatePredicateList();
         }
 
@@ -528,7 +534,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespace(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
             return CreatePredicateList();
         }
 
@@ -539,7 +545,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespaceMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, true));
             return CreatePredicateList();
         }
 
@@ -550,7 +556,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespaceStartingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", true));
             return CreatePredicateList();
         }
 
@@ -561,7 +567,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespaceEndingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", true));
             return CreatePredicateList();
         }
 
@@ -572,7 +578,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespaceContaining(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", true));
             return CreatePredicateList();
         }
 
@@ -583,7 +589,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespaceMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, false));
             return CreatePredicateList();
         }
 
@@ -594,7 +600,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespaceStartingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", false));
             return CreatePredicateList();
         }
 
@@ -605,7 +611,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespaceEndingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", false));
             return CreatePredicateList();
         }
 
@@ -616,7 +622,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespaceContaining(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", false));
             return CreatePredicateList();
         }          
 
@@ -627,7 +633,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList MeetCustomRule(ICustomRule rule)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
+            AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
             return CreatePredicateList();
         }
     }

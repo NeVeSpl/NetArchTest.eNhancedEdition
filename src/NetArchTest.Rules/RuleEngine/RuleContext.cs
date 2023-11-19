@@ -61,7 +61,7 @@ namespace NetArchTest.RuleEngine
         {
             return Execute().Select(t => t.CreateWrapper());
         }
-        public IEnumerable<Type> GetReflectionTypes()
+        internal IEnumerable<Type> GetReflectionTypes()
         {
             return Execute().Select(x => x.Definition.ToType());
         }

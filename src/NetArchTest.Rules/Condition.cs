@@ -1,4 +1,6 @@
 ﻿using System;
+using NetArchTest.Assemblies;
+using System.Collections.Generic;
 using NetArchTest.Functions;
 using NetArchTest.RuleEngine;
 
@@ -28,6 +30,10 @@ namespace NetArchTest.Rules
         {
             return new ConditionList(rule);
         }
+        private void AddFunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+        {
+            context.Sequence.AddFunctionCall(func);
+        }
 
 
         /// <summary>
@@ -37,7 +43,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveName(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveName(x, name, true));
+            AddFunctionCall(x => FunctionDelegates.HaveName(x, name, true));
             return CreateConditionList();
         }
 
@@ -48,7 +54,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveName(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveName(x, name, false));
+            AddFunctionCall(x => FunctionDelegates.HaveName(x, name, false));
             return CreateConditionList();
         }
 
@@ -59,7 +65,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, true));
+            AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, true));
             return CreateConditionList();
         }
 
@@ -70,7 +76,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, false));
+            AddFunctionCall(x => FunctionDelegates.HaveNameMatching(x, pattern, false));
             return CreateConditionList();
         }
 
@@ -81,7 +87,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameStartingWith(string start)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true));
+            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true));
             return CreateConditionList();
         }
 
@@ -93,7 +99,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameStartingWith(string start, StringComparison comparer)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true, comparer));
+            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true, comparer));
             return CreateConditionList();
         }
 
@@ -104,7 +110,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameStartingWith(string start)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false));
+            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false));
             return CreateConditionList();
         }
 
@@ -116,7 +122,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameStartingWith(string start, StringComparison comparer)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false, comparer));
+            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false, comparer));
             return CreateConditionList();
         }
 
@@ -127,7 +133,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameEndingWith(string end)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true));
             return CreateConditionList();
         }
 
@@ -139,7 +145,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameEndingWith(string end, StringComparison comparer)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true, comparer));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true, comparer));
             return CreateConditionList();
         }
 
@@ -150,7 +156,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameEndingWith(string end)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false));
             return CreateConditionList();
         }
 
@@ -162,7 +168,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameEndingWith(string end, StringComparison comparer)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false, comparer));
+            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false, comparer));
             return CreateConditionList();
         }
 
@@ -173,7 +179,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveCustomAttribute(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
             return CreateConditionList();
         }
 
@@ -184,7 +190,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveCustomAttribute(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
             return CreateConditionList();
         }
 
@@ -195,7 +201,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveCustomAttributeOrInherit(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, true));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, true));
             return CreateConditionList();
         }
 
@@ -206,7 +212,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveCustomAttributeOrInherit(Type attribute)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, false));
+            AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, false));
             return CreateConditionList();
         }
 
@@ -217,7 +223,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList Inherit(Type type)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.Inherits(x, type, true));
+            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, true));
             return CreateConditionList();
         }
 
@@ -228,7 +234,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotInherit(Type type)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.Inherits(x, type, false));
+            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, false));
             return CreateConditionList();
         }
 
@@ -239,7 +245,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ImplementInterface(Type interfaceType)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, true));
+            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, true));
             return CreateConditionList();
         }
 
@@ -250,7 +256,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotImplementInterface(Type interfaceType)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, false));
+            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, false));
             return CreateConditionList();
         }
 
@@ -260,7 +266,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeAbstract()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true));
             return CreateConditionList();
         }
 
@@ -270,7 +276,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeAbstract()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeAbstract(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeAbstract(x, false));
             return CreateConditionList();
         }
 
@@ -280,7 +286,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeClasses()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeClass(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeClass(x, true));
             return CreateConditionList();
         }
 
@@ -290,7 +296,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeClasses()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeClass(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeClass(x, false));
             return CreateConditionList();
         }
 
@@ -300,7 +306,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeGeneric()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true));
             return CreateConditionList();
         }
 
@@ -310,7 +316,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeGeneric()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeGeneric(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeGeneric(x, false));
             return CreateConditionList();
         }
 
@@ -321,7 +327,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeInterfaces()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeInterface(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeInterface(x, true));
             return CreateConditionList();
         }
 
@@ -331,7 +337,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeInterfaces()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeInterface(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeInterface(x, false));
             return CreateConditionList();
         }
 
@@ -341,7 +347,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeStatic()
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.BeStatic(x, true, true));
+	        AddFunctionCall(x => FunctionDelegates.BeStatic(x, true));
 	        return CreateConditionList();
         }
 
@@ -351,7 +357,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeStatic()
         {
-	        context.Sequence.AddFunctionCall(x => FunctionDelegates.BeStatic(x, true, false));
+	        AddFunctionCall(x => FunctionDelegates.BeStatic(x, false));
 	        return CreateConditionList();
         }
 
@@ -361,7 +367,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeNested()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNested(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNested(x, true));
             return CreateConditionList();
         }
 
@@ -371,7 +377,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeNestedPublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true));
             return CreateConditionList();
         }
 
@@ -381,7 +387,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeNestedPrivate()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true));
             return CreateConditionList();
         }
 
@@ -391,7 +397,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeNested()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNested(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNested(x, false));
             return CreateConditionList();
         }
 
@@ -401,7 +407,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeNestedPublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPublic(x, false));
             return CreateConditionList();
         }
 
@@ -411,7 +417,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeNestedPrivate()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeNestedPrivate(x, false));
             return CreateConditionList();
         }
 
@@ -421,7 +427,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BePublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BePublic(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BePublic(x, true));
             return CreateConditionList();
         }
 
@@ -431,7 +437,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBePublic()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BePublic(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BePublic(x, false));
             return CreateConditionList();
         }
 
@@ -441,7 +447,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeSealed()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeSealed(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, true));
             return CreateConditionList();
         }
 
@@ -451,7 +457,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeSealed()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeSealed(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, false));
             return CreateConditionList();
         }
 
@@ -461,7 +467,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeImmutable()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true));
             return CreateConditionList();
         }
 
@@ -471,7 +477,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeMutable()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.BeImmutable(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.BeImmutable(x, false));
             return CreateConditionList();
         }
 
@@ -481,7 +487,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList OnlyHaveNullableMembers()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true, true));
+            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true));
             return CreateConditionList();
         }
 
@@ -491,7 +497,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveSomeNonNullableMembers()
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true, false));
+            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, false));
             return CreateConditionList();
         }
 
@@ -502,7 +508,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespace(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
             return CreateConditionList();
         }
 
@@ -513,7 +519,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespace(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
             return CreateConditionList();
         }
 
@@ -524,7 +530,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespaceMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, true));
             return CreateConditionList();
         }
 
@@ -535,7 +541,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespaceMatching(string pattern)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, pattern, false));
             return CreateConditionList();
         }
 
@@ -546,7 +552,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespaceStartingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", true));
             return CreateConditionList();
         }
 
@@ -557,7 +563,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespaceStartingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", false));
             return CreateConditionList();
         }
 
@@ -568,7 +574,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespaceEndingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", true));
             return CreateConditionList();
         }
 
@@ -579,7 +585,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespaceEndingWith(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"{name}$", false));
             return CreateConditionList();
         }
 
@@ -590,7 +596,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespaceContaining(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", true));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", true));
             return CreateConditionList();
         }
 
@@ -601,7 +607,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespaceContaining(string name)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", false));
+            AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^.*{name}.*$", false));
             return CreateConditionList();
         }               
 
@@ -612,7 +618,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList MeetCustomRule(ICustomRule rule)
         {
-            context.Sequence.AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
+            AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
             return CreateConditionList();
         }
     }
