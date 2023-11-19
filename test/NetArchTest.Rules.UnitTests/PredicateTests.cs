@@ -1,37 +1,34 @@
-﻿using NetArchTest.TestStructure.NameMatching.Namespace3.A;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.CrossAssemblyTest.A;
+using NetArchTest.CrossAssemblyTest.B;
+using NetArchTest.Rules;
+using NetArchTest.TestStructure.Abstract;
+using NetArchTest.TestStructure.Classes;
+using NetArchTest.TestStructure.CustomAttributes;
+using NetArchTest.TestStructure.Dependencies.Examples;
+using NetArchTest.TestStructure.Dependencies.Implementation;
+using NetArchTest.TestStructure.Generic;
+using NetArchTest.TestStructure.Inheritance;
+using NetArchTest.TestStructure.Interfaces;
+using NetArchTest.TestStructure.Mutability;
+using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.NameMatching.Namespace2;
+using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using NetArchTest.TestStructure.NameMatching.Namespace3.A;
 using NetArchTest.TestStructure.NameMatching.Namespace3.B;
+using NetArchTest.TestStructure.NamespaceMatching.Namespace1;
+using NetArchTest.TestStructure.NamespaceMatching.NamespaceA;
+using NetArchTest.TestStructure.Nested;
+using NetArchTest.TestStructure.Nullable;
+using NetArchTest.TestStructure.Scope;
+using NetArchTest.TestStructure.Sealed;
+using NetArchTest.UnitTests.TestDoubles;
+using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.CrossAssemblyTest.A;
-    using NetArchTest.CrossAssemblyTest.B;
-    using NetArchTest.TestStructure.Abstract;
-    using NetArchTest.TestStructure.Classes;
-    using NetArchTest.TestStructure.CustomAttributes;
-    using NetArchTest.TestStructure.Dependencies;
-    using NetArchTest.TestStructure.Dependencies.Implementation;
-    using NetArchTest.TestStructure.Generic;
-    using NetArchTest.TestStructure.Inheritance;
-    using NetArchTest.TestStructure.Interfaces;
-    using NetArchTest.TestStructure.NameMatching.Namespace1;
-    using NetArchTest.TestStructure.NameMatching.Namespace2;
-    using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-    using NetArchTest.TestStructure.NameMatching.Namespace3;
-    using NetArchTest.TestStructure.NamespaceMatching.Namespace1;
-    using NetArchTest.TestStructure.NamespaceMatching.NamespaceA;
-    using NetArchTest.TestStructure.Nested;
-    using NetArchTest.TestStructure.Scope;
-    using NetArchTest.TestStructure.Sealed;
-    using NetArchTest.TestStructure.Mutability;
-    using Xunit;
-    using NetArchTest.TestStructure.Nullable;
-    using NetArchTest.TestStructure.Dependencies.Examples;
-    using NetArchTest.Rules;
-    using NetArchTest.UnitTests.TestDoubles;
-
     public class PredicateTests
     {
         [Fact(DisplayName = "Types can be selected by name name.")]

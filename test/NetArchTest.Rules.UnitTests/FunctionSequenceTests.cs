@@ -1,16 +1,16 @@
-﻿namespace NetArchTest.UnitTests
-{
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.Functions;
-    using NetArchTest.TestStructure.Abstract;
-    using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-    using Xunit;
-    using NetArchTest.Rules;
-    using Mono.Cecil;
-    using NetArchTest.RuleEngine;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.Functions;
+using NetArchTest.TestStructure.Abstract;
+using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using Xunit;
+using NetArchTest.Rules;
+using Mono.Cecil;
+using NetArchTest.RuleEngine;
 
+namespace NetArchTest.UnitTests
+{   
     public class FunctionSequenceTests
     {
         [Fact(DisplayName = "Setting the Selected flag to false will return the types that fail the sequence.")]

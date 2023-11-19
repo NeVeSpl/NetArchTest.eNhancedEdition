@@ -1,15 +1,15 @@
-﻿namespace NetArchTest.UnitTests
-{
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.Rules;
-    using NetArchTest.TestStructure.Generic;
-    using NetArchTest.TestStructure.NameMatching.Namespace1;
-    using NetArchTest.TestStructure.NameMatching.Namespace2;
-    using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-    using Xunit;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.Rules;
+using NetArchTest.TestStructure.Generic;
+using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.NameMatching.Namespace2;
+using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using Xunit;
 
+namespace NetArchTest.UnitTests
+{   
     public class PredicateListTests
     {
         [Fact(DisplayName = "Predicates can be grouped together using 'or' logic.")]
@@ -76,6 +76,5 @@
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassB2), result);
         }
-
     }
 }

@@ -1,22 +1,21 @@
-﻿using NetArchTest.TestStructure.Classes;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.Rules;
+using NetArchTest.TestStructure.Classes;
+using NetArchTest.TestStructure.CustomAttributes;
+using NetArchTest.TestStructure.Dependencies.Examples;
+using NetArchTest.TestStructure.Dependencies.Implementation;
+using NetArchTest.TestStructure.Inheritance;
+using NetArchTest.TestStructure.Interfaces;
+using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.Nested;
+using NetArchTest.UnitTests.TestDoubles;
+using Xunit;
+using static NetArchTest.TestStructure.Nested.NestedPublic;
 
 namespace NetArchTest.UnitTests
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.Rules;
-    using NetArchTest.TestStructure.CustomAttributes;
-    using NetArchTest.TestStructure.Dependencies.Examples;
-    using NetArchTest.TestStructure.Dependencies.Implementation;
-    using NetArchTest.TestStructure.Inheritance;
-    using NetArchTest.TestStructure.Interfaces;
-    using NetArchTest.TestStructure.NameMatching.Namespace1;
-    using NetArchTest.TestStructure.Nested;
-    using NetArchTest.UnitTests.TestDoubles;
-    using Xunit;
-    using static NetArchTest.TestStructure.Nested.NestedPublic;
-
     public class ConditionTests
     {
         [Fact(DisplayName = "Types can be selected by name.")]

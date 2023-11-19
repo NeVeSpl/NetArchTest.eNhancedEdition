@@ -1,15 +1,15 @@
-﻿namespace NetArchTest.UnitTests
-{
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.Rules;
-    using NetArchTest.TestStructure.Interfaces;
-    using NetArchTest.TestStructure.NameMatching.Namespace1;
-    using NetArchTest.TestStructure.NameMatching.Namespace2;
-    using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-    using Xunit;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.Rules;
+using NetArchTest.TestStructure.Interfaces;
+using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.NameMatching.Namespace2;
+using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using Xunit;
 
+namespace NetArchTest.UnitTests
+{  
     public class ConditionListTests
     {
         [Fact(DisplayName = "Conditions can be grouped together using 'or' logic.")]

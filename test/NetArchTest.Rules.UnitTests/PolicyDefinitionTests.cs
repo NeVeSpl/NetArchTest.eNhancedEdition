@@ -1,14 +1,14 @@
-﻿namespace NetArchTest.UnitTests
-{
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using NetArchTest.Policies;
-    using NetArchTest.Rules;
-    using NetArchTest.TestStructure.NameMatching.Namespace1;
-    using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-    using Xunit;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using NetArchTest.Policies;
+using NetArchTest.Rules;
+using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using Xunit;
 
+namespace NetArchTest.UnitTests
+{    
     public class PolicyDefinitionTests
     {
         private const string POLICY_NAME = "Name";
