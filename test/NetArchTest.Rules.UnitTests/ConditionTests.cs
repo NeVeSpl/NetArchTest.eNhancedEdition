@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.Classes;
 using NetArchTest.TestStructure.CustomAttributes;
 using NetArchTest.TestStructure.Dependencies.Examples;
 using NetArchTest.TestStructure.Dependencies.Implementation;
@@ -10,6 +9,7 @@ using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Nested;
+using NetArchTest.TestStructure.Types;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 using static NetArchTest.TestStructure.Nested.NestedPublic;
@@ -329,35 +329,7 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected if they are classes.")]
-        public void AreClasses_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .HaveNameEndingWith("Class")
-                .Should()
-                .BeClasses().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not classes.")]
-        public void AreNotClasses_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .HaveNameEndingWith("Interface")
-                .Should()
-                .NotBeClasses().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
+       
 
         [Fact(DisplayName = "Types can be selected if they have generic parameters.")]
         public void AreGeneric_MatchesFound_ClassesSelected()
@@ -388,66 +360,8 @@ namespace NetArchTest.UnitTests
 
             Assert.True(result.IsSuccessful);
         }
-
-        [Fact(DisplayName = "Types can be selected if they are interfaces.")]
-        public void AreInterfaces_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .HaveNameEndingWith("Interface")
-                .Should()
-                .BeInterfaces().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not interfaces.")]
-        public void AreNotInterfaces_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .HaveNameEndingWith("Class")
-                .Should()
-                .NotBeInterfaces().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are static.")]
-        public void AreStatic_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.Classes")
-		        .And()
-		        .HaveNameEndingWith("StaticClass")
-		        .Should()
-		        .BeStatic().GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not static.")]
-        public void AreNotStatic_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.Classes")
-		        .And()
-		        .HaveName(nameof(ExampleClass))
-		        .Should()
-		        .NotBeStatic().GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
+              
+        
 
         [Fact(DisplayName = "Types can be selected if they are nested.")]
         public void AreNested_MatchesFound_ClassesSelected()

@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.TestStructure.Classes
+﻿namespace NetArchTest.TestStructure.Types
 {
     public interface IExampleInterface
     {

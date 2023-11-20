@@ -5,7 +5,6 @@ using NetArchTest.CrossAssemblyTest.A;
 using NetArchTest.CrossAssemblyTest.B;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Abstract;
-using NetArchTest.TestStructure.Classes;
 using NetArchTest.TestStructure.CustomAttributes;
 using NetArchTest.TestStructure.Dependencies.Examples;
 using NetArchTest.TestStructure.Dependencies.Implementation;
@@ -24,12 +23,13 @@ using NetArchTest.TestStructure.Nested;
 using NetArchTest.TestStructure.Nullable;
 using NetArchTest.TestStructure.Scope;
 using NetArchTest.TestStructure.Sealed;
+using NetArchTest.TestStructure.Types;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests
+    public partial class PredicateTests
     {
         [Fact(DisplayName = "Types can be selected by name name.")]
         public void HaveName_MatchFound_ClassesSelected()
@@ -381,34 +381,9 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(ConcreteClass), result);
         }
 
-        [Fact(DisplayName = "Types can be selected if they are classes.")]
-        public void AreClasses_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .AreClasses().GetReflectionTypes();
+        
 
-            Assert.Equal(2, result.Count()); // Two types found
-            Assert.Contains<Type>(typeof(ExampleClass), result);
-            Assert.Contains<Type>(typeof(ExampleStaticClass), result);
-        }
 
-        [Fact(DisplayName = "Types can be selected if they are not classes.")]
-        public void AreNotClasses_MatchesFound_ClassesSelected ()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .AreNotClasses().GetReflectionTypes();
-
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(IExampleInterface), result);
-        }
 
         [Fact(DisplayName = "Types can be selected if they have generic parameters.")]
         public void AreGeneric_MatchesFound_ClassesSelected()
@@ -438,63 +413,9 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(NonGenericType), result);
         }
 
-        [Fact(DisplayName = "Types can be selected if they are interfaces.")]
-        public void AreInterfaces_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .AreInterfaces().GetReflectionTypes();
+       
 
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(IExampleInterface), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not interfaces.")]
-        public void AreNotInterfaces_MatchesFound_ClassesSelected ()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Classes")
-                .And()
-                .AreNotInterfaces().GetReflectionTypes();
-
-            Assert.Equal(2, result.Count()); // Two types found
-            Assert.Contains<Type>(typeof(ExampleClass), result);
-            Assert.Contains<Type>(typeof(ExampleStaticClass), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are static.")]
-        public void AreStatic_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.Classes")
-		        .And()
-		        .AreStatic().GetReflectionTypes();
-
-	        Assert.Single(result); // One type found
-	        Assert.Contains<Type>(typeof(ExampleStaticClass), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not static.")]
-        public void AreNotStatic_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.Classes")
-		        .And()
-		        .AreNotStatic().GetReflectionTypes();
-
-	        Assert.Equal(2, result.Count()); // Two types found
-            Assert.Contains<Type>(typeof(ExampleClass), result);
-	        Assert.Contains<Type>(typeof(IExampleInterface), result);
-        }
+       
 
         [Fact(DisplayName = "Types can be selected if they are nested.")]
         public void AreNested_MatchesFound_ClassesSelected()

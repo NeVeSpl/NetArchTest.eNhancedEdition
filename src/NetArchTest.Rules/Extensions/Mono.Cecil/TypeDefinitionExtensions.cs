@@ -120,5 +120,16 @@ namespace Mono.Cecil
             }
             return typeDefinition.Namespace;
         }
+
+
+
+        public static bool IsDelegate(this TypeDefinition typeDefinition)
+        {
+            return typeDefinition.IsClass && typeDefinition.BaseType?.FullName == "System.MulticastDelegate";
+        }
+        public static bool IsStruct(this TypeDefinition typeDefinition)
+        {
+            return typeDefinition.IsValueType && typeDefinition.BaseType?.FullName == "System.ValueType";
+        }
     }
 }
