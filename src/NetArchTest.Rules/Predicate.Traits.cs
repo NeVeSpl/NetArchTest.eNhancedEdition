@@ -102,7 +102,27 @@ namespace NetArchTest.Rules
         {
             AddFunctionCall(x => FunctionDelegates.BeEnum(x, false));
             return CreatePredicateList();
-        }   
+        }
+
+        /// <summary>
+        /// Selects types that are records.
+        /// </summary>
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        internal PredicateList AreRecords()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeRecord(x, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that are not records.
+        /// </summary>
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        internal PredicateList AreNotRecords()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeRecord(x, false));
+            return CreatePredicateList();
+        }
 
         /// <summary>
         /// Selects types that have generic parameters.

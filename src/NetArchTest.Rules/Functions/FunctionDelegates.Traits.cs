@@ -71,6 +71,18 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsInterface);
             }
         }
+        // todo
+        internal static IEnumerable<TypeSpec> BeRecord(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return Enumerable.Empty<TypeSpec>();
+            }
+            else
+            {
+                return Enumerable.Empty<TypeSpec>();
+            }
+        }
 
         // Modifiers
 

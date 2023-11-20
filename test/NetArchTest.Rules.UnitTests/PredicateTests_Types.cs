@@ -40,7 +40,7 @@ namespace NetArchTest.UnitTests
         }
 
         [Fact(DisplayName = "AreStructures")]
-        public void AreStructuresd()
+        public void AreStructures()
         {
             var result = GetTypesThat().AreStructures().GetReflectionTypes();
 
@@ -135,6 +135,28 @@ namespace NetArchTest.UnitTests
             Assert.Equal(7, result.Count());
             Assert.Contains<Type>(typeof(ExampleClass), result);
             Assert.Contains<Type>(typeof(IExampleInterface), result);
+        }
+
+        // todo 
+        [Fact(DisplayName = "AreRecords", Skip = "not implemented yet")]
+        public void AreRecords()
+        {
+            var result = GetTypesThat().AreRecords().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(ExampleRecordClass), result);
+            Assert.Contains<Type>(typeof(ExampleRecordStruct), result);
+        }
+
+        // todo 
+        [Fact(DisplayName = "AreNotRecords", Skip = "not implemented yet")]
+        public void AreNotRecords()
+        {
+            var result = GetTypesThat().AreNotRecords().GetReflectionTypes();
+
+            Assert.Equal(6, result.Count());
+            Assert.Contains<Type>(typeof(ExampleClass), result);
+            Assert.Contains<Type>(typeof(ExampleStruct), result);
         }
     }
 }
