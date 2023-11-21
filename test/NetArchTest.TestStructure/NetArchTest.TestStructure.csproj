@@ -9,5 +9,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>false</Optimize>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Scope\**" />
+    <EmbeddedResource Remove="Scope\**" />
+    <None Remove="Scope\**" />
+  </ItemGroup>
   
 </Project>

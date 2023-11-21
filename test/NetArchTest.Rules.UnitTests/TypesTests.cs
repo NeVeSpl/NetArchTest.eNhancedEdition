@@ -55,14 +55,14 @@ namespace NetArchTest.UnitTests
         public void InCurrentDomain_NestedPublicTypesPresent_Returned()
         {
             var result = Types.InCurrentDomain().GetTypes();
-            Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.Nested.NestedPublic/NestedPublicClass"));
+            Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.AccessModifiers.PublicClass/PublicClassNested"));
         }
 
         [Fact(DisplayName = "Nested private types should be included in the current domain.")]
         public void InCurrentDomain_NestedPrivateTypesPresent_Returned()
         {
             var result = Types.InCurrentDomain().GetTypes();
-            Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.Nested.NestedPrivate/NestedPrivateClass"));
+            Assert.Contains(result, t => t.FullName.StartsWith("NetArchTest.TestStructure.AccessModifiers.PublicClass/PrivateClassNested"));
         }
 
        

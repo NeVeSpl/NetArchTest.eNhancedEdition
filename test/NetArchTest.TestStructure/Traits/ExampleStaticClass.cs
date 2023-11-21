@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.TestStructure.Types
+﻿namespace NetArchTest.TestStructure.Traits
 {
     public static class ExampleStaticClass
     {

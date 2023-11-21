@@ -19,11 +19,8 @@ using NetArchTest.TestStructure.NameMatching.Namespace3.A;
 using NetArchTest.TestStructure.NameMatching.Namespace3.B;
 using NetArchTest.TestStructure.NamespaceMatching.Namespace1;
 using NetArchTest.TestStructure.NamespaceMatching.NamespaceA;
-using NetArchTest.TestStructure.Nested;
 using NetArchTest.TestStructure.Nullable;
-using NetArchTest.TestStructure.Scope;
 using NetArchTest.TestStructure.Sealed;
-using NetArchTest.TestStructure.Types;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 
@@ -417,124 +414,9 @@ namespace NetArchTest.UnitTests
 
        
 
-        [Fact(DisplayName = "Types can be selected if they are nested.")]
-        public void AreNested_MatchesFound_ClassesSelected()
-        {
-                var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nested")
-                .And()
-                .AreNested().GetReflectionTypes();
+  
 
-            Assert.Equal(2, result.Count()); // Two types found
-            Assert.Equal("NestedPrivateClass", result.First().Name);
-            Assert.Equal("NestedPublicClass", result.Last().Name);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are nested and public.")]
-        public void AreNestedPublic_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-            .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-            .That()
-            .ResideInNamespace("NetArchTest.TestStructure.Nested")
-            .And()
-            .AreNestedPublic().GetReflectionTypes();
-
-            Assert.Single(result); // One types found
-            Assert.Equal("NestedPublicClass", result.First().Name);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are nested and private.")]
-        public void AreNestedPrivate_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-            .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-            .That()
-            .ResideInNamespace("NetArchTest.TestStructure.Nested")
-            .And()
-            .AreNestedPrivate().GetReflectionTypes();
-
-            Assert.Single(result); // One types found
-            Assert.Equal("NestedPrivateClass", result.First().Name);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not nested.")]
-        public void AreNotNested_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nested")
-                .And()
-                .AreNotNested().GetReflectionTypes();
-
-            Assert.Equal(3, result.Count()); // Three types found
-            Assert.Equal("NestedPrivate", result.First().Name);
-            Assert.Equal("NestedPublic", result.Skip(1).First().Name);
-            Assert.Equal("NotNested", result.Last().Name);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not nested and public.")]
-        public void AreNotNestedPublic_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nested")
-                .And()
-                .AreNotNestedPublic().GetReflectionTypes();
-
-            Assert.Equal(4, result.Count()); // Four types found
-            var match = result.Any(r => r.Name == "NestedPublicClass");
-            Assert.False(match);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not nested and private.")]
-        public void AreNotNestedPrivate_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nested")
-                .And()
-                .AreNotNestedPrivate().GetReflectionTypes();
-
-            Assert.Equal(4, result.Count()); // Four types found
-            var match = result.Any(r => r.Name == "NestedPrivateClass");
-            Assert.False(match);
-        }
-
-        [Fact(DisplayName = "Types can be selected for being declared as public.")]
-        public void ArePublic_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Scope")
-                .And()
-                .ArePublic().GetReflectionTypes();
-
-            Assert.Equal(2, result.Count()); 
-            Assert.Contains<Type>(typeof(PublicClass), result);
-            Assert.Contains<Type>(typeof(PublicClass.PublicClassInternal), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected for not being declared as public.")]
-        public void AreNotPublic_MatchesFound_ClassSelected ()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Scope")
-                .And()
-                .AreNotPublic().GetReflectionTypes();
-
-            Assert.Equal(2, result.Count());
-            Assert.Contains<Type>(typeof(InternalClass), result);
-            Assert.Contains<Type>(typeof(InternalClass.InternalClassNested), result);
-        }
+        
 
         [Fact(DisplayName = "Types can be selected for being declared as sealed.")]
         public void AreSealed_MatchesFound_ClassSelected()
@@ -797,18 +679,7 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(SomeIdentity), result);
         }
 
-        [Fact(DisplayName = "Types (nested) can be selected if they reside in a namespace that contains a name part.")]
-        public void ResideInNamespaceContaining_NestedClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespaceContaining("Nested")
-                .GetReflectionTypes();
-
-            Assert.Equal(19, result.Count()); 
-            Assert.Contains<Type>(typeof(NestedPublic.NestedPublicClass), result);
-        }
+        
 
         [Fact(DisplayName = "Types can be selected if they do not reside in a namespace that contains name part.")]
         public void DoNotResideInNamespaceContaining_ClassSelected()

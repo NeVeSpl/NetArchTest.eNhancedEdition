@@ -1,6 +1,6 @@
 ﻿using Mono.Cecil;
 
-namespace NetArchTest
+namespace NetArchTest.Rules
 {
     /// <summary>
     /// An externally defined filter that can be used to decided if a dependency should be checked by DependencySearch engine or not

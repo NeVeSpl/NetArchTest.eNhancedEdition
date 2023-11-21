@@ -1,4 +1,6 @@
-﻿namespace NetArchTest.RuleEngine
+﻿using NetArchTest.Rules;
+
+namespace NetArchTest.RuleEngine
 {   
     internal class FunctionSequenceExecutionContext
     {

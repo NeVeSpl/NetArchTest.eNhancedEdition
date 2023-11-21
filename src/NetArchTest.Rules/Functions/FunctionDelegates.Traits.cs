@@ -24,15 +24,15 @@ namespace NetArchTest.Functions
             bool IsClass(TypeDefinition c) => c.IsClass && !c.IsValueType && !c.IsDelegate();
         }
 
-        internal static IEnumerable<TypeSpec> BeStruct(IEnumerable<TypeSpec> input, bool condition)
+        internal static IEnumerable<TypeSpec> BeDelegate(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.IsStruct());
+                return input.Where(c => c.Definition.IsDelegate());
             }
             else
             {
-                return input.Where(c => !c.Definition.IsStruct());
+                return input.Where(c => !c.Definition.IsDelegate());
             }
         }
 
@@ -48,18 +48,6 @@ namespace NetArchTest.Functions
             }
         }
 
-        internal static IEnumerable<TypeSpec> BeDelegate(IEnumerable<TypeSpec> input, bool condition)
-        {
-            if (condition)
-            {
-                return input.Where(c => c.Definition.IsDelegate());
-            }
-            else
-            {
-                return input.Where(c => !c.Definition.IsDelegate());
-            }
-        }
-
         internal static IEnumerable<TypeSpec> BeInterface(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
@@ -71,7 +59,21 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsInterface);
             }
         }
+
+        internal static IEnumerable<TypeSpec> BeStruct(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => c.Definition.IsStruct());
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.IsStruct());
+            }
+        }
+               
         // todo
+
         internal static IEnumerable<TypeSpec> BeRecord(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
@@ -138,8 +140,35 @@ namespace NetArchTest.Functions
             }
         }
 
-        // Nested
-              
+        // Access Modifiers & Nested
+
+        internal static IEnumerable<TypeSpec> BePublic(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => IsPublic(c.Definition));
+            }
+            else
+            {
+                return input.Where(c => !IsPublic(c.Definition));
+            }
+            bool IsPublic(TypeDefinition c) => c.IsPublic || c.IsNestedPublic;
+        }
+
+        internal static IEnumerable<TypeSpec> BeInternal(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => IsInternal(c.Definition));
+            }
+            else
+            {
+                return input.Where(c => !IsInternal(c.Definition));
+            }
+
+            bool IsInternal(TypeDefinition c) => c.IsNotPublic || c.IsNestedAssembly;
+        }
+
         internal static IEnumerable<TypeSpec> BeNested(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
@@ -150,21 +179,9 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.IsNested);
             }
-        }
+        }        
 
-        internal static IEnumerable<TypeSpec> BeNestedPublic(IEnumerable<TypeSpec> input, bool condition)
-        {
-            if (condition)
-            {
-                return input.Where(c => c.Definition.IsNestedPublic);
-            }
-            else
-            {
-                return input.Where(c => !c.Definition.IsNestedPublic);
-            }
-        }
-
-        internal static IEnumerable<TypeSpec> BeNestedPrivate(IEnumerable<TypeSpec> input, bool condition)
+        internal static IEnumerable<TypeSpec> BePrivate(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
@@ -176,22 +193,44 @@ namespace NetArchTest.Functions
             }
         }
 
-        // Access Modifiers
-
-        internal static IEnumerable<TypeSpec> BePublic(IEnumerable<TypeSpec> input, bool condition)
+        internal static IEnumerable<TypeSpec> BeProtected(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.IsNested ? c.Definition.IsNestedPublic : c.Definition.IsPublic);
+                return input.Where(c => c.Definition.IsNestedFamily);
             }
             else
             {
-                return input.Where(c => c.Definition.IsNested ? !c.Definition.IsNestedPublic : c.Definition.IsNotPublic);
+                return input.Where(c => !c.Definition.IsNestedFamily);
             }
         }
-            
+
+        internal static IEnumerable<TypeSpec> BeProtectedInternal(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => c.Definition.IsNestedFamilyOrAssembly);
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.IsNestedFamilyOrAssembly);
+            }
+        }
+
+        internal static IEnumerable<TypeSpec> BePrivateProtected(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => c.Definition.IsNestedFamilyAndAssembly);
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.IsNestedFamilyAndAssembly);
+            }
+        }
+
         // 
-              
+
         internal static IEnumerable<TypeSpec> BeImmutable(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)

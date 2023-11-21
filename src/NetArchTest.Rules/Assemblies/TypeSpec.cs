@@ -1,7 +1,9 @@
-﻿using Mono.Cecil;
+﻿using System.Diagnostics;
+using Mono.Cecil;
 
 namespace NetArchTest.Assemblies
 {
+    [DebuggerDisplay("TypeSpec: {FullName}")]
     internal sealed class TypeSpec
     {
         public TypeDefinition Definition { get; }

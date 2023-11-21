@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using NetArchTest.Assemblies;
 using NetArchTest.Dependencies.DataStructures;
+using NetArchTest.Rules;
 
 namespace NetArchTest.Dependencies
 {
