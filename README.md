@@ -190,7 +190,7 @@ var result = Types.InCurrentDomain()
 
 ## Options
 
-User options allows to configure how NetArchTest engine works.
+User [Options](documentation/api.md#options-1) allows to configure how NetArchTest engine works.
 
 ```csharp
 var result = Types.InCurrentDomain()
@@ -204,7 +204,7 @@ Assert.True(result.IsSuccessful);
 ```
 
 Available options:
-- Comparer - allows to specify how strings will be compared (right now it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
+- [Comparer](documentation/api.md#optionscomparer) - allows to specify how strings will be compared (right now it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
 
 
 ## Limitations
