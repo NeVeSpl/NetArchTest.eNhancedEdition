@@ -9,7 +9,7 @@
     {
         public InstructionStaticMethodTypeArgument()
         {
-            StaticGenericClass<int>.Foo<ExampleDependency>();
+            ExampleStaticGenericClass<int>.Foo<ExampleDependency>();
         }
     }
 }

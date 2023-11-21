@@ -24,14 +24,6 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
-       
-
-       
-
-     
-
- 
-
         /// <summary>
         /// Selects types that have generic parameters.
         /// </summary>
@@ -52,8 +44,25 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
+        /// <summary>
+        /// Selects types according that are marked as sealed.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList BeSealed()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, true));
+            return CreateConditionList();
+        }
 
-     
+        /// <summary>
+        /// Selects types according that are not marked as sealed.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotBeSealed()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeSealed(x, false));
+            return CreateConditionList();
+        }
 
         /// <summary>
         /// Selects types that are static.
@@ -75,38 +84,7 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
- 
 
-
-
-      
-
-     
-
-
-
-     
-
-
-        /// <summary>
-        /// Selects types according that are marked as sealed.
-        /// </summary>
-        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
-        public ConditionList BeSealed()
-        {
-            AddFunctionCall(x => FunctionDelegates.BeSealed(x, true));
-            return CreateConditionList();
-        }
-
-        /// <summary>
-        /// Selects types according that are not marked as sealed.
-        /// </summary>
-        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
-        public ConditionList NotBeSealed()
-        {
-            AddFunctionCall(x => FunctionDelegates.BeSealed(x, false));
-            return CreateConditionList();
-        }
 
         /// <summary>
         /// Selects types that are immutable.

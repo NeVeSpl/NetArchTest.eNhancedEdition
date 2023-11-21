@@ -116,11 +116,31 @@ namespace Mono.Cecil
         {
             if (typeDefinition.IsNested)
             {
-                return typeDefinition.DeclaringType.FullName;
+                return typeDefinition.DeclaringType.GetFullName();
             }
             return typeDefinition.Namespace;
         }
 
+
+
+        public static string GetName(this TypeDefinition typeDefinition)
+        {
+            if (typeDefinition.HasGenericParameters == false)
+            {
+                return typeDefinition.Name;
+            }
+            return typeDefinition.Name.RemoveGenericPart();
+        }
+        public static string GetFullName(this TypeDefinition typeDefinition)
+        {
+            if (typeDefinition.HasGenericParameters == false)
+            {
+                return typeDefinition.FullName;
+            }
+            return typeDefinition.FullName.RemoveGenericPart();
+        }
+
+       
 
 
         public static bool IsDelegate(this TypeDefinition typeDefinition)

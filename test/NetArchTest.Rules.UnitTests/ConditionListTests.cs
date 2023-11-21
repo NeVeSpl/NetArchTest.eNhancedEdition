@@ -6,6 +6,7 @@ using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace1;
 using Xunit;
 
 namespace NetArchTest.UnitTests
@@ -27,12 +28,13 @@ namespace NetArchTest.UnitTests
                 .HaveNameEndingWith("2")
                 .GetReflectionTypes();
 
-            Assert.Equal(5, result.Count()); // five types found
+            Assert.Equal(7, result.Count()); 
             Assert.Contains<Type>(typeof(ClassA1), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassA3), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
             Assert.Contains<Type>(typeof(ClassB2), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
         }
 
         [Fact(DisplayName = "Conditions can be chained together using 'and' logic.")]
@@ -50,9 +52,10 @@ namespace NetArchTest.UnitTests
                 .BeClasses()
                 .GetReflectionTypes();
 
-            Assert.Equal(2, result.Count()); // two types found
+            Assert.Equal(4, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
         }
 
         [Fact(DisplayName = "An Or() statement will signal the start of a separate group of Conditions")]
@@ -121,9 +124,9 @@ namespace NetArchTest.UnitTests
                 .GetResult();
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(2, result.FailingTypes.Count()); // two types found
+            Assert.Equal(3, result.FailingTypes.Count()); // two types found
             Assert.Contains<Type>(typeof(ClassB1), result.FailingTypes.Select(x => x.ReflectionType));
-            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes.Select(x => x.ReflectionType));
+            Assert.Contains<Type>(typeof(ClassB2), result.FailingTypes.Select(x => x.ReflectionType));          
         }
 
         [Fact(DisplayName = "If a condition fails using ShouldNot logic then a list of failing types should be returned.")]
@@ -138,7 +141,7 @@ namespace NetArchTest.UnitTests
                 .GetResult();
 
             Assert.False(result.IsSuccessful);
-            Assert.Equal(3, result.FailingTypes.Count()); // three types found
+            Assert.Equal(4, result.FailingTypes.Count()); // three types found
             Assert.Contains<Type>(typeof(ClassA1), result.FailingTypes.Select(x => x.ReflectionType));
             Assert.Contains<Type>(typeof(ClassA2), result.FailingTypes.Select(x => x.ReflectionType));
             Assert.Contains<Type>(typeof(ClassA3), result.FailingTypes.Select(x => x.ReflectionType));
@@ -159,6 +162,8 @@ namespace NetArchTest.UnitTests
                 .HaveNameEndingWith("1")
                 .Or()
                 .HaveNameEndingWith("2")
+                .Or()
+                .HaveNameEndingWith("G")
                 .GetResult();
 
             Assert.True(result.IsSuccessful);

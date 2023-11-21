@@ -84,6 +84,8 @@ namespace NetArchTest.Rules
             return CreatePredicateList();
         }
 
+
+
         /// <summary>
         /// Selects types that are immutable.
         /// </summary>

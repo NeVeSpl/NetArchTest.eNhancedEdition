@@ -1,6 +1,6 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Examples
 {
-    public static class StaticGenericClass<T>
+    public static class ExampleStaticGenericClass<T>
     {
         public static void Foo()
         {

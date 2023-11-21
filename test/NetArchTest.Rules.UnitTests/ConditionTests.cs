@@ -3,8 +3,6 @@ using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.CustomAttributes;
-using NetArchTest.TestStructure.Dependencies.Examples;
-using NetArchTest.TestStructure.Dependencies.Implementation;
 using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
@@ -16,165 +14,15 @@ namespace NetArchTest.UnitTests
 {
     public class ConditionTests
     {
-        [Fact(DisplayName = "Types can be selected by name.")]
-        public void HaveName_MatchFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3")
-                .Should()
-                .HaveName("ClassB2").GetResult();
+      
 
-            Assert.True(result.IsSuccessful);
-        }
+     
 
-        [Fact(DisplayName = "Types can be selected if they do not have a specific name.")]
-        public void NotHaveName_MatchFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
-                .Should()
-                .NotHaveName("ClassB2").GetResult();
+       
 
-            Assert.True(result.IsSuccessful);
-        }
+       
 
-        [Fact(DisplayName = "Types can be selected by the start of their name.")]
-        public void HaveNameStarting_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
-                .And()
-                .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-                .Should()
-                .HaveNameStartingWith("Class").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected by the start of their name using a StringComparison.")]
-        public void HaveNameStarting_UsingStringComparison_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-		        .Should()
-		        .HaveNameStartingWith("Some", StringComparison.Ordinal).GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if their name does not have a specific start.")]
-        public void NotHaveNameStarting_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
-                .Should()
-                .NotHaveNameStartingWith("X").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if their name does not have a specific start using a StringComparison.")]
-        public void NotHaveNameStarting_UsingStringComparison_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
-		        .Should()
-		        .NotHaveNameStartingWith("s", StringComparison.Ordinal).GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected by the end of their name.")]
-        public void HaveNameEnding_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3")
-                .Should()
-                .HaveNameEndingWith("B2").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected by the end of their name using a StringComparison.")]
-        public void HaveNameEnding_UsingStringComparison_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3.B")
-		        .Should()
-		        .HaveNameEndingWith("ntity").GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if their name does not have a specific end.")]
-        public void NotHaveNameEnding_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace1")
-                .Should()
-                .NotHaveNameEndingWith("B2").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if their name does not have a specific end using a StringComparison.")]
-        public void NotHaveNameEnding_UsingStringComparison_MatchesFound_ClassesSelected()
-        {
-	        var result = Types
-		        .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-		        .That()
-		        .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-		        .Should()
-		        .NotHaveNameEndingWith("ENTITY", StringComparison.Ordinal).GetResult();
-
-	        Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected by a regular expression.")]
-        public void HaveNameMatching_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
-                .And()
-                .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-                .Should()
-                .HaveNameMatching(@"Class\w\d").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not conform to a regular expression.")]
-        public void NotHaveNameMatching_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
-                .Should()
-                .NotHaveNameMatching(@"X\w").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
+    
 
         [Fact(DisplayName = "Types can be selected by a the presence of a custom attribute.")]
         public void HaveCustomAttribute_MatchesFound_ClassesSelected()
@@ -363,190 +211,19 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected if they reside in a namespace.")]
-        public void ResideInNamespace_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not reside in a namespace.")]
-        public void NotResideInNamespace_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .NotResideInNamespace("NetArchTest.TestStructure.Wrong").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they reside in a namespace that matches a regular expression.")]
-        public void ResideInNamespaceMatching_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace(@"NetArchTest.TestStructure.NamespaceMatching")
-                .Should()
-                .ResideInNamespaceMatching(@"NetArchTest.TestStructure.NamespaceMatching.Namespace\w")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not reside in a namespace that matches a regular expression.")]
-        public void NotResideInNamespaceMatching_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NamespaceMatching.NamespaceA")
-                .Should()
-                .NotResideInNamespaceMatching(@"NetArchTest.TestStructure.NamespaceMatching.Namespace\d")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they reside in a namespace that starts with a name part.")]
-        public void ResideInNamespaceStartingWith_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not reside in a namespace that start with name part.")]
-        public void NotResideInNamespaceStartingWith_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching")
-                .And()
-                .HaveNameEndingWith("1")
-                .Should()
-                .NotResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching.Namespace2")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they reside in a namespace that ends with a name part.")]
-        public void ResideInNamespaceEndingWith_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveName("ClassA1")
-                .Should()
-                .ResideInNamespaceEndingWith(".NameMatching.Namespace1")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not reside in a namespace that end with name part.")]
-        public void NotResideInNamespaceEndingWith_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .NotResideInNamespaceEndingWith(".Namespace3")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they reside in a namespace that contains a name part.")]
-        public void ResideInNamespaceContaining_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .ResideInNamespaceContaining(".NameMatching.")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not reside in a namespace that contains name part.")]
-        public void NotResideInNamespaceContaining_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveNameStartingWith("ClassA")
-                .Should()
-                .NotResideInNamespaceContaining("Namespace3")
-                .GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Selecting by namespace will return types in nested namespaces.")]
-        public void ResideInNamespace_Nested_AllClassReturned()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .HaveName("ClassB2")
-                .Should()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-
-        [Fact(DisplayName = "Types failing condition are reported when test fails.")]
-        public void MatchNotFound_ClassesReported()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
-                .Should()
-                .HaveName("ClassA2")
-                .GetResult();
-
-            Assert.False(result.IsSuccessful);
-
-            var failingTypes = result.FailingTypes.ToList();
-            Assert.Equal(2, failingTypes.Count);
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].ReflectionType.ToString());
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].ReflectionType.ToString());
-        }
+       
 
         [Fact(DisplayName = "Types can be selected according to a custom rule.")]
         public void MeetCustomRule_MatchesFound_ClassSelected()
         {
             // Create a custom rule that selected "ClassA1"
-            var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA1", StringComparison.InvariantCultureIgnoreCase));
+            var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA2", StringComparison.InvariantCultureIgnoreCase));
 
             // This rule uses the custom rule to confirm that "ClassA1" has been selected
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
-                .HaveName("ClassA1")
+                .HaveName("ClassA2")
                 .Should()
                 .MeetCustomRule(rule)
                 .GetResult();
