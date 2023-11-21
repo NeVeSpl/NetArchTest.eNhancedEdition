@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.TestStructure.Sealed
+﻿namespace NetArchTest.TestStructure.Traits
 {
     /// <summary>
     /// An example class that has been marked as sealed.

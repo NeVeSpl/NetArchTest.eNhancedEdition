@@ -1,4 +1,4 @@
-﻿namespace NetArchTest.TestStructure.Abstract
+﻿namespace NetArchTest.TestStructure.Traits
 {
     public abstract class AbstractClass
     {

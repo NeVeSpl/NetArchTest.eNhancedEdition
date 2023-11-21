@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.Generic;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
 using Xunit;
 
 namespace NetArchTest.UnitTests
-{   
+{
     public class PredicateListTests
     {
         [Fact(DisplayName = "Predicates can be grouped together using 'or' logic.")]
@@ -20,19 +19,15 @@ namespace NetArchTest.UnitTests
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
                 .Or()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
-                .Or()
-                .ResideInNamespace("NetArchTest.TestStructure.Generic")
+                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")               
                 .GetReflectionTypes();
 
-            Assert.Equal(7, result.Count()); // seven types found
+            Assert.Equal(5, result.Count()); 
             Assert.Contains<Type>(typeof(ClassA1), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassA3), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(GenericType<>), result);
-            Assert.Contains<Type>(typeof(NonGenericType), result);
+            Assert.Contains<Type>(typeof(ClassB2), result);           
         }
 
         [Fact(DisplayName = "Predicates can be chained together using 'and' logic.")]

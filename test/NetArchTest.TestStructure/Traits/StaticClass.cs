@@ -1,8 +1,8 @@
 ﻿namespace NetArchTest.TestStructure.Traits
 {
-    public static class ExampleStaticClass
+    public static class StaticClass
     {
-        static ExampleStaticClass()
+        static StaticClass()
         {
 
         }

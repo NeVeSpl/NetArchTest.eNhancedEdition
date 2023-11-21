@@ -4,11 +4,9 @@ using System.Reflection;
 using NetArchTest.CrossAssemblyTest.A;
 using NetArchTest.CrossAssemblyTest.B;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.Abstract;
 using NetArchTest.TestStructure.CustomAttributes;
 using NetArchTest.TestStructure.Dependencies.Examples;
 using NetArchTest.TestStructure.Dependencies.Implementation;
-using NetArchTest.TestStructure.Generic;
 using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.Mutability;
@@ -20,7 +18,6 @@ using NetArchTest.TestStructure.NameMatching.Namespace3.B;
 using NetArchTest.TestStructure.NamespaceMatching.Namespace1;
 using NetArchTest.TestStructure.NamespaceMatching.NamespaceA;
 using NetArchTest.TestStructure.Nullable;
-using NetArchTest.TestStructure.Sealed;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 
@@ -215,6 +212,7 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(SomeIdentity), result);
         }
 
+
         [Fact(DisplayName = "Types can be selected by a the presence of a custom attribute.")]
         public void HaveCustomAttribute_MatchesFound_ClassesSelected()
         {
@@ -350,101 +348,7 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(DoesNotImplementInterface), result);
         }
 
-        [Fact(DisplayName = "Types can be selected if they are abstract.")]
-        public void AreAbstract_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Abstract")
-                .And()
-                .AreAbstract().GetReflectionTypes();
-
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(AbstractClass), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they are not abstract.")]
-        public void AreNotAbstract_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Abstract")
-                .And()
-                .AreNotAbstract().GetReflectionTypes();
-
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(ConcreteClass), result);
-        }
-
-        
-
-
-
-        [Fact(DisplayName = "Types can be selected if they have generic parameters.")]
-        public void AreGeneric_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Generic")
-                .And()
-                .AreGeneric().GetReflectionTypes();
-
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(GenericType<>), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected if they do not have generic parameters.")]
-        public void AreNotGeneric_MatchesFound_ClassesSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Generic")
-                .And()
-                .AreNotGeneric().GetReflectionTypes();
-
-            Assert.Single(result); // One type found
-            Assert.Contains<Type>(typeof(NonGenericType), result);
-        }
-
-       
-
-       
-
-  
-
-        
-
-        [Fact(DisplayName = "Types can be selected for being declared as sealed.")]
-        public void AreSealed_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Sealed")
-                .And()
-                .AreSealed().GetReflectionTypes();
-
-            Assert.Single(result); // One result
-            Assert.Contains<Type>(typeof(SealedClass), result);
-        }
-
-        [Fact(DisplayName = "Types can be selected for not being declared as sealed.")]
-        public void AreNotSealed_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Sealed")
-                .And()
-                .AreNotSealed().GetReflectionTypes();
-
-            Assert.Single(result); // One result
-            Assert.Contains<Type>(typeof(NotSealedClass), result);
-        }
+      
 
         [Fact(DisplayName = "Types can be selected for being immutable.")]
         public void AreImmutable_MatchesFound_ClassSelected()
@@ -517,6 +421,8 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(NonNullableClass3), result);
             Assert.Contains<Type>(typeof(NonNullableClass4), result);
         }
+
+
 
         [Fact(DisplayName = "Types can be selected if they reside in a namespace.")]
         public void ResideInNamespace_MatchesFound_ClassSelected()

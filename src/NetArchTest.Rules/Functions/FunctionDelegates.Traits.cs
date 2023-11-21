@@ -86,18 +86,20 @@ namespace NetArchTest.Functions
             }
         }
 
-        // Modifiers
+        // Modifiers & Generic
 
         internal static IEnumerable<TypeSpec> BeAbstract(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.IsAbstract);
+                return input.Where(c => ClassIsAbstract(c.Definition));
             }
             else
             {
-                return input.Where(c => !c.Definition.IsAbstract);
+                return input.Where(c => !ClassIsAbstract(c.Definition));
             }
+
+            bool ClassIsAbstract(TypeDefinition c) => c.IsAbstract && !c.IsSealed;
         }
 
         internal static IEnumerable<TypeSpec> BeStatic(IEnumerable<TypeSpec> input, bool condition)
@@ -118,15 +120,15 @@ namespace NetArchTest.Functions
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.IsSealed);
+                return input.Where(c => ClassIsSealed(c.Definition));
             }
             else
             {
-                return input.Where(c => !c.Definition.IsSealed);
+                return input.Where(c => !ClassIsSealed(c.Definition));
             }
-        }
 
-        // Generic
+            bool ClassIsSealed(TypeDefinition c) => !c.IsAbstract && c.IsSealed;
+        }   
 
         internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool condition)
         {

@@ -86,7 +86,7 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "BePrivate")]
+        [Fact(DisplayName = "BePrivateProtected")]
         public void BePrivateProtected()
         {
 
@@ -151,6 +151,30 @@ namespace NetArchTest.UnitTests
                .DoNotHaveNameStartingWith("ProtectedInternalClass")
                .Should()
                .NotBeProtectedInternal().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+
+        [Fact(DisplayName = "BePublic")]
+        public void BePublic()
+        {
+
+            var result = GetTypesThat()
+                .HaveNameStartingWith("Public")
+                .Should()
+                .BePublic().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "NotBePublic")]
+        public void NotBePublic()
+        {
+            var result = GetTypesThat()
+               .DoNotHaveNameStartingWith("Public")
+               .Should()
+               .NotBePublic().GetResult();
 
             Assert.True(result.IsSuccessful);
         }
