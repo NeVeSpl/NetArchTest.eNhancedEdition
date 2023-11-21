@@ -8,12 +8,13 @@ namespace NetArchTest.RuleEngine
 
         public bool IsFailPathRun { get; }
         public IDependencyFilter DependencyFilter { get; }
+        public Options UserOptions { get; }
 
 
-        public FunctionSequenceExecutionContext(bool isFailPathRun, IDependencyFilter dependencyFilter = null)
+        public FunctionSequenceExecutionContext(bool isFailPathRun, Options options = null)
         {
-            IsFailPathRun = isFailPathRun;
-            DependencyFilter = dependencyFilter;
+            UserOptions = options ?? Options.Default; 
+            IsFailPathRun = isFailPathRun;            
         }
     }
 }

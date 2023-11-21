@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Mono.Cecil;
 using NetArchTest.Assemblies;
+using NetArchTest.RuleEngine;
 
 namespace NetArchTest.Functions
 {
@@ -11,16 +12,16 @@ namespace NetArchTest.Functions
     {
         // Name & Namespace
 
-        internal static IEnumerable<TypeSpec> HaveName(IEnumerable<TypeSpec> input, string name, bool condition)
+        internal static IEnumerable<TypeSpec> HaveName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string name, bool condition)
         {
             var plainName = name.RemoveGenericPart();
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().Equals(plainName, StringComparison.InvariantCultureIgnoreCase));
+                return input.Where(c => c.Definition.GetName().Equals(plainName, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().Equals(plainName, StringComparison.InvariantCultureIgnoreCase));
+                return input.Where(c => !c.Definition.GetName().Equals(plainName, context.UserOptions.Comparer));
             }
         }
 
@@ -37,27 +38,27 @@ namespace NetArchTest.Functions
             }
         }
 
-        internal static IEnumerable<TypeSpec> HaveNameStartingWith(IEnumerable<TypeSpec> input, string start, bool condition, StringComparison comparer = StringComparison.InvariantCultureIgnoreCase)
+        internal static IEnumerable<TypeSpec> HaveNameStartingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string start, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().StartsWith(start, comparer));
+                return input.Where(c => c.Definition.GetName().StartsWith(start, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().StartsWith(start, comparer));
+                return input.Where(c => !c.Definition.GetName().StartsWith(start, context.UserOptions.Comparer));
             }
         }
 
-        internal static IEnumerable<TypeSpec> HaveNameEndingWith(IEnumerable<TypeSpec> input, string end, bool condition, StringComparison comparer = StringComparison.InvariantCultureIgnoreCase)
+        internal static IEnumerable<TypeSpec> HaveNameEndingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string end, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().EndsWith(end, comparer));
+                return input.Where(c => c.Definition.GetName().EndsWith(end, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().EndsWith(end, comparer));
+                return input.Where(c => !c.Definition.GetName().EndsWith(end, context.UserOptions.Comparer));
             }
         }
 

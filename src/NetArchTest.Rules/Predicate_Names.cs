@@ -14,7 +14,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in name)
             {
-                AddFunctionCall(x => FunctionDelegates.HaveName(x, item, true));
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, item, true));
             }
             return CreatePredicateList();
         }
@@ -28,7 +28,7 @@ namespace NetArchTest.Rules
         {
             foreach (var item in name)
             {
-                AddFunctionCall(x => FunctionDelegates.HaveName(x, item, false));
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, item, false));
             }
             return CreatePredicateList();
         }
@@ -64,22 +64,10 @@ namespace NetArchTest.Rules
         {
             foreach (var item in start)
             {
-                AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, true));
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, item, true));
             }
             return CreatePredicateList();
-        }
-
-        /// <summary>
-        /// Selects types whose names start with the specified text.
-        /// </summary>
-        /// <param name="start">The text to match against.</param>
-        /// <param name="comparer">The string comparer.</param>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList HaveNameStartingWith(string start, StringComparison comparer)
-        {
-            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, true, comparer));
-            return CreatePredicateList();
-        }
+        }       
 
         /// <summary>
         /// Selects types whose names do not start with the specified text.
@@ -90,22 +78,10 @@ namespace NetArchTest.Rules
         {
             foreach (var item in start)
             {
-                AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, item, false));
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, item, false));
             }
             return CreatePredicateList();
-        }
-
-        /// <summary>
-        /// Selects types whose names do not start with the specified text.
-        /// </summary>
-        /// <param name="start">The text to match against.</param>
-        /// <param name="comparer">The string comparer.</param>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList DoNotHaveNameStartingWith(string start, StringComparison comparer)
-        {
-            AddFunctionCall(x => FunctionDelegates.HaveNameStartingWith(x, start, false, comparer));
-            return CreatePredicateList();
-        }
+        }       
 
         /// <summary>
         /// Selects types whose names end with the specified text.
@@ -114,21 +90,9 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(string end)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));
             return CreatePredicateList();
-        }
-
-        /// <summary>
-        /// Selects types whose names end with the specified text.
-        /// </summary>
-        /// <param name="end">The text to match against.</param>
-        /// <param name="comparer">The string comparer.</param>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList HaveNameEndingWith(string end, StringComparison comparer)
-        {
-            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, true, comparer));
-            return CreatePredicateList();
-        }
+        }     
 
         /// <summary>
         /// Selects types whose names do not end with the specified text.
@@ -137,21 +101,10 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(string end)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith(x, end, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, false));
             return CreatePredicateList();
         }
-
-        /// <summary>
-        /// Selects types whose names do not end with the specified text.
-        /// </summary>
-        /// <param name="end">The text to match against.</param>
-        /// <param name="comparer">The string comparer.</param>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList DoNotHaveNameEndingWith(string end, StringComparison comparer)
-        {
-            AddFunctionCall(x => FunctionDelegates.HaveNameEndingWith((x), end, false, comparer));
-            return CreatePredicateList();
-        }
+               
 
 
         /// <summary>
@@ -203,7 +156,7 @@ namespace NetArchTest.Rules
         /// </summary>
         /// <param name="name">The namespace part to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList ResideInNamespaceStartingWith(string name)
+        internal PredicateList ResideInNamespaceStartingWith(string name)
         {
             AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", true));
             return CreatePredicateList();
@@ -214,7 +167,7 @@ namespace NetArchTest.Rules
         /// </summary>
         /// <param name="name">The namespace part to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList DoNotResideInNamespaceStartingWith(string name)
+        internal PredicateList DoNotResideInNamespaceStartingWith(string name)
         {
             AddFunctionCall(x => FunctionDelegates.ResideInNamespaceMatching(x, $"^{name}", false));
             return CreatePredicateList();

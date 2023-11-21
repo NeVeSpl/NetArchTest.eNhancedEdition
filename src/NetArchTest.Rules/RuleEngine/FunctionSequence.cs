@@ -28,20 +28,20 @@ namespace NetArchTest.RuleEngine
         }
 
 
-        public IEnumerable<TypeSpec> ExecuteToGetFailingTypes(IEnumerable<TypeSpec> inputTypes, bool selected = true)
+        public IEnumerable<TypeSpec> ExecuteToGetFailingTypes(IEnumerable<TypeSpec> inputTypes, bool selected, Options options)
         {
-            return Execute(inputTypes, selected, true);
+            return Execute(inputTypes, selected, true, options);
         }
-        public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes)
+        public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes, Options options)
         {
-            return Execute(inputTypes, true, false);
+            return Execute(inputTypes, true, false, options);
         }
 
-        private IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes, bool selected = true, bool isFailPathRun = false)
+        private IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes, bool selected, bool isFailPathRun, Options options)
         {
             if (isEmpty) return inputTypes;
 
-            var context = new FunctionSequenceExecutionContext(isFailPathRun);
+            var context = new FunctionSequenceExecutionContext(isFailPathRun, options);
             MarkPassingTypes(context, inputTypes);
 
             return inputTypes.Where(x => x.IsSelectedInMarkPhase == selected).ToArray();

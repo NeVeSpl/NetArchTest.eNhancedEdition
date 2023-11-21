@@ -77,7 +77,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveNameStartingWith_StringComparison")]
         public void HaveNameStartingWith_StringComparison()
         {
-            var result = GetTypesThat().HaveNameStartingWith("SomeT", StringComparison.Ordinal).GetReflectionTypes();
+            var result = GetTypesThat().HaveNameStartingWith("SomeT").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.Single(result); 
             Assert.Contains<Type>(typeof(SomeThing), result);
@@ -87,7 +87,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "DoNotHaveNameStartingWith_StringComparison")]
         public void DoNotHaveNameStartingWith_StringComparison()
         {
-            var result = GetTypesThat().DoNotHaveNameStartingWith("SomeT", StringComparison.Ordinal).GetReflectionTypes();
+            var result = GetTypesThat().DoNotHaveNameStartingWith("SomeT").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.Equal(10, result.Count());
             Assert.DoesNotContain<Type>(typeof(SomeThing), result);
@@ -125,7 +125,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveNameEndingWith_StringComparison")]
         public void HaveNameEndingWith_StringComparison()
         {
-            var result = GetTypesThat().HaveNameEndingWith("Entity", StringComparison.Ordinal).GetReflectionTypes();
+            var result = GetTypesThat().HaveNameEndingWith("Entity").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.Single(result); 
             Assert.Contains<Type>(typeof(SomeEntity), result);

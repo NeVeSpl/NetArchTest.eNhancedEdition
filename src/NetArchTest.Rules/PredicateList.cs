@@ -73,19 +73,19 @@ namespace NetArchTest.Rules
         /// Returns the types returned by these predicates.
         /// </summary>
         /// <returns>A list of types.</returns>
-        public IEnumerable<IType> GetTypes()
+        public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return rule.GetTypes();
+            return rule.GetTypes(options);
         }
 
 
-        internal IEnumerable<TypeSpec> GetTypeSpecifications()
+        internal IEnumerable<TypeSpec> GetTypeSpecifications(Options options = null)
         { 
-            return rule.Execute();
+            return rule.Execute(options);
         }
-        internal IEnumerable<Type> GetReflectionTypes()
+        internal IEnumerable<Type> GetReflectionTypes(Options options = null)
         {
-            return rule.GetReflectionTypes();
+            return rule.GetReflectionTypes(options);
         }
     }
 }

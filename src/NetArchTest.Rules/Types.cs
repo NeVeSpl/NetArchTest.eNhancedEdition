@@ -145,9 +145,9 @@ namespace NetArchTest.Rules
         /// Returns the list of <see cref="Type"/> objects describing the types in this list.
         /// </summary>
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
-        public IEnumerable<IType> GetTypes()
+        public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return new RuleContext(types).GetTypes();
+            return new RuleContext(types).GetTypes(options);
         }
     }
 }

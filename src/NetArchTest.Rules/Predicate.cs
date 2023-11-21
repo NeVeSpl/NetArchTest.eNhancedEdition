@@ -30,9 +30,12 @@ namespace NetArchTest.Rules
         {
             context.Sequence.AddFunctionCall(func);
         }
+        private void AddFunctionCall(Func<FunctionSequenceExecutionContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+        {
+            context.Sequence.AddFunctionCall(func);
+        }
 
 
-       
 
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute.

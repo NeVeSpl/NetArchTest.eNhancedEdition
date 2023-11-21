@@ -22,7 +22,7 @@ namespace NetArchTest.Rules
         }
         internal Condition(RuleContext rule, bool should) : this(rule)
         {           
-            rule.ConditionContext.Should= should;
+            rule.ConditionContext.Should = should;
         }
        
 
@@ -34,11 +34,14 @@ namespace NetArchTest.Rules
         {
             context.Sequence.AddFunctionCall(func);
         }
+        private void AddFunctionCall(Func<FunctionSequenceExecutionContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
+        {
+            context.Sequence.AddFunctionCall(func);
+        }
 
 
-       
 
-       
+
 
         /// <summary>
         /// Selects types are decorated with a specific custom attribut.

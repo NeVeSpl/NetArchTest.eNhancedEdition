@@ -17,11 +17,6 @@ namespace NetArchTest.UnitTests
 {
     public partial class PredicateTests
     {
-        
-
-       
-
-
         [Fact(DisplayName = "Types can be selected by a the presence of a custom attribute.")]
         public void HaveCustomAttribute_MatchesFound_ClassesSelected()
         {
@@ -83,6 +78,8 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(ClassCustomAttribute), result);          
             Assert.Contains<Type>(typeof(InheritClassCustomAttribute), result);
         }
+
+
 
         [Fact(DisplayName = "Types can be selected if they inherit from a type.")]
         public void Inherit_MatchesFound_ClassesSelected()
@@ -231,9 +228,6 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(NonNullableClass4), result);
         }
 
-
-
-      
 
        
 

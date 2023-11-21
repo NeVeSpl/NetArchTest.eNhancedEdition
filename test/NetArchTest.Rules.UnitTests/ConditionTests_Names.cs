@@ -69,7 +69,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
                 .Should()
-                .HaveNameStartingWith("Some", StringComparison.Ordinal).GetResult();
+                .HaveNameStartingWith("Some").GetResult(Options.Default with { Comparer = StringComparison.Ordinal});
 
             Assert.True(result.IsSuccessful);
         }
@@ -80,7 +80,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .Should()
-                .NotHaveNameStartingWith("s", StringComparison.Ordinal).GetResult();
+                .NotHaveNameStartingWith("s").GetResult(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.True(result.IsSuccessful);
         }
@@ -124,7 +124,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
                 .Should()
-                .NotHaveNameEndingWith("ENTITY", StringComparison.Ordinal).GetResult();
+                .NotHaveNameEndingWith("ENTITY").GetResult(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.True(result.IsSuccessful);
         }

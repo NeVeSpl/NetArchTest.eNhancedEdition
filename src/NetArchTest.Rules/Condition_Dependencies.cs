@@ -11,7 +11,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOnAny(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, true));
             return CreateConditionList();
         }
 
@@ -22,7 +22,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOnAll(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, true));
             return CreateConditionList();
         }
 
@@ -33,7 +33,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList OnlyHaveDependencyOn(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, true));
             return CreateConditionList();
         }
 
@@ -44,7 +44,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveDependencyOnAny(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAny(context, inputTypes, dependencies, false));
             return CreateConditionList();
         }
 
@@ -55,7 +55,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveDependencyOnAll(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveDependencyOnAll(context, inputTypes, dependencies, false));
             return CreateConditionList();
         }
 
@@ -66,7 +66,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveDependencyOtherThan(params string[] dependencies)
         {
-            context.Sequence.AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
             return CreateConditionList();
         }
     }

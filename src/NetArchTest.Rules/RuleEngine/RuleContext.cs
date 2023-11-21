@@ -20,20 +20,20 @@ namespace NetArchTest.RuleEngine
         }   
 
 
-        public IEnumerable<TypeSpec> Execute()
+        public IEnumerable<TypeSpec> Execute(Options options)
         {
             IEnumerable<TypeSpec> result = types;
-            result = PredicateContext.Sequence.Execute(result);
-            result = ConditionContext.Sequence.Execute(result); 
+            result = PredicateContext.Sequence.Execute(result, options);
+            result = ConditionContext.Sequence.Execute(result, options); 
             return result;
         }
 
-        public TestResult GetResult()
+        public TestResult GetResult(Options options)
         {
             bool success;
 
-            var filteredTypes = PredicateContext.Sequence.Execute(types);
-            var passingTypes = ConditionContext.Sequence.Execute(filteredTypes);
+            var filteredTypes = PredicateContext.Sequence.Execute(types, options);
+            var passingTypes = ConditionContext.Sequence.Execute(filteredTypes, options);
 
             if (ConditionContext.Should)
             {
@@ -52,18 +52,18 @@ namespace NetArchTest.RuleEngine
             }
 
             // If we've failed, get a collection of failing types so these can be reported in a failing test.
-            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(filteredTypes, selected: !ConditionContext.Should);
+            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(filteredTypes, selected: !ConditionContext.Should, options);
             return TestResult.Failure(failedTypes);
         }
 
 
-        public IEnumerable<IType> GetTypes()
+        public IEnumerable<IType> GetTypes(Options options)
         {
-            return Execute().Select(t => t.CreateWrapper());
+            return Execute(options).Select(t => t.CreateWrapper());
         }
-        internal IEnumerable<Type> GetReflectionTypes()
+        internal IEnumerable<Type> GetReflectionTypes(Options options)
         {
-            return Execute().Select(x => x.Definition.ToType());
+            return Execute(options).Select(x => x.Definition.ToType());
         }
     }
 }

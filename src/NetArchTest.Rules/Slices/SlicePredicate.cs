@@ -27,7 +27,7 @@ namespace NetArchTest.Slices
         public SlicePredicateList ByNamespacePrefix(string prefix)
         {
             var slicer = new Slicer();
-            var slicedTypes = slicer.SliceByNamespacePrefix(rule.Execute(), prefix);
+            var slicedTypes = slicer.SliceByNamespacePrefix(rule.Execute(null), prefix);
             return new SlicePredicateList(slicedTypes);
         }
     }

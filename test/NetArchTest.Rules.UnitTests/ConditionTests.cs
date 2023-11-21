@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.CustomAttributes;
@@ -9,21 +8,10 @@ using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 
-
 namespace NetArchTest.UnitTests
 {
     public class ConditionTests
     {
-      
-
-     
-
-       
-
-       
-
-    
-
         [Fact(DisplayName = "Types can be selected by a the presence of a custom attribute.")]
         public void HaveCustomAttribute_MatchesFound_ClassesSelected()
         {
@@ -54,7 +42,6 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-
         [Fact(DisplayName = "Types can be selected by a the presence of an inherited custom attribute.")]
         public void HaveInheritCustomAttribute_MatchesFound_ClassesSelected()
         {
@@ -84,6 +71,9 @@ namespace NetArchTest.UnitTests
 
             Assert.True(result.IsSuccessful);
         }
+
+
+
 
         [Fact(DisplayName = "Types can be selected if they inherit from a type.")]
         public void Inherit_MatchesFound_ClassesSelected()

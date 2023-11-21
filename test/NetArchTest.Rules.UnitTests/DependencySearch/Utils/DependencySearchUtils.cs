@@ -55,7 +55,7 @@
         {
             var types = Types.InAssembly(Assembly.GetAssembly(type.First()))
                      .That()
-                     .ResideInNamespaceStartingWith(type.First().Namespace);
+                     .ResideInNamespace(type.First().Namespace);
             foreach (var item in type)
             {
                 types = types.And().DoNotHaveName(item.Name);

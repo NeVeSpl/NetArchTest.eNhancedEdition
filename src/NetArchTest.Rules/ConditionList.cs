@@ -44,24 +44,24 @@ namespace NetArchTest.Rules
         /// Returns an indication of whether all the selected types satisfy the conditions.
         /// </summary>
         /// <returns>An indication of whether the conditions are true, along with a list of types failing the check if they are not.</returns>
-        public TestResult GetResult()
+        public TestResult GetResult(Options options = null)
         {
-            return rule.GetResult();
+            return rule.GetResult(options);
         }
 
         /// <summary>
         /// Returns the list of types that satisfy the conditions.
         /// </summary>
         /// <returns>A list of types.</returns>
-        public IEnumerable<IType> GetTypes()
+        public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return rule.GetTypes();
+            return rule.GetTypes(options);
         }
 
                 
-        internal IEnumerable<Type> GetReflectionTypes()
+        internal IEnumerable<Type> GetReflectionTypes(Options options = null)
         {
-            return rule.GetReflectionTypes();
+            return rule.GetReflectionTypes(options);
         }
     }
 }
