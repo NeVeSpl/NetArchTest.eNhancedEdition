@@ -13,12 +13,15 @@ NetArchTest is well established mature library, but in order to push things forw
 
 What **eNhancedEdition** has to offer, that is not available in the NetArchTest v1.3.2:
  - [Slices](#slices)
- - implemented BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
+ - added BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
  - fixed BenMorris/NetArchTest#98 - ResideInNamespaceMatching with nested+internal types 
  - fixed BenMorris/NetArchTest#101 - Conditions.OnlyHaveDependenciessOn fails when switch expression is used
  - fixed BenMorris/NetArchTest#119 - Fixed nulls for Success result
  - fixed BenMorris/NetArchTest#120 - Add support for records and init-only properties
- - fixed #3 - generic type parameters: `T*`, `T[]`, `T&` were detected as dependencies
+ - fixed NeVeSpl/NetArchTest.eNhancedEdition#3 - generic type parameters: `T*`, `T[]`, `T&` were detected as dependencies
+ - added BenMorris/NetArchTest#126 - Add support for structs, enums and delegates
+ - added BenMorris/NetArchTest#131 - Add support for all access modifiers: public, internal, private, protected, private protected, protected internal
+ - fixed BenMorris/NetArchTest#130 - remove number of type parameters (e.g. `1) from the name of generic type
 
 ## Index
 
@@ -28,7 +31,8 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
 * [Dependency search](#dependency-search)
 * [Slices](#slices)
 * [Custom rules](#custom-rules)
-* Limitations
+* [Options](#options)
+* [Limitations](#limitations)
 * API
    * [Types](documentation/api.md#types)
    * [Predicate](documentation/api.md#predicate)
@@ -37,6 +41,7 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
    * [ConditionList](documentation/api.md#conditionList)
    * [TestResult](documentation/api.md#testResult)
    * [IType](documentation/api.md#itype)
+   * [Options](documentation/api.md#options)
 
 
 
@@ -181,3 +186,9 @@ var result = Types.InCurrentDomain()
     .GetResult()
     .IsSuccessful;
 ```
+
+
+## Options
+
+## Limitations
+
