@@ -190,5 +190,24 @@ var result = Types.InCurrentDomain()
 
 ## Options
 
+User options allows to configure how NetArchTest engine works.
+
+```csharp
+var result = Types.InCurrentDomain()
+    .That()
+    .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
+    .Should()
+    .HaveNameStartingWith("Some")
+    .GetResult(Options.Default with { Comparer = StringComparison.Ordinal});
+
+Assert.True(result.IsSuccessful);
+```
+
+Available options:
+- Comparer - allows to specify how strings will be compared (right now it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
+
+
 ## Limitations
 
+NetArchTest is build on top of [jbevain/cecil](https://github.com/jbevain/cecil) thus it works on CLI level. Unfortunately not every feature of C# language is represented in CLI, thus some things will never be available in NetArchTest, e.g.:
+- BenMorris/NetArchTest#81 - NetArchTest ignores a nameof expression 
