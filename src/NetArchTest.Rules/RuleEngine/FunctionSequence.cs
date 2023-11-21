@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetArchTest.Assemblies;
+using NetArchTest.Rules;
 
 namespace NetArchTest.RuleEngine
 {

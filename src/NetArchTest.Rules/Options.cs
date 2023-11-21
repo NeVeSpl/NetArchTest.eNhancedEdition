@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NetArchTest
+namespace NetArchTest.Rules
 {
     public record class Options
     {
