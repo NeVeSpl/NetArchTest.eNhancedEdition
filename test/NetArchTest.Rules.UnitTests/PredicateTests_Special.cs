@@ -11,8 +11,8 @@ namespace NetArchTest.UnitTests
 {
     public class PredicateTests_Special
     {
-        [Fact(DisplayName = "Types can be selected for being immutable.")]
-        public void AreImmutable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "AreImmutable")]
+        public void AreImmutable()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -21,15 +21,17 @@ namespace NetArchTest.UnitTests
                 .And()
                 .AreImmutable().GetReflectionTypes();
 
-            Assert.Equal(4, result.Count()); // Three types found
-            Assert.Contains<Type>(typeof(ImmutableClass1), result);
-            Assert.Contains<Type>(typeof(ImmutableClass2), result);
-            Assert.Contains<Type>(typeof(ImmutableClass3), result);
-            Assert.Contains<Type>(typeof(ImmutableRecord1), result);
+            Assert.Equal(6, result.Count()); 
+            Assert.Contains<Type>(typeof(ImmutableClass_PropertyOnlyGet), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_PropertyInit), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldConst), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldReadonly), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldReadonlyPrivate), result);
+            Assert.Contains<Type>(typeof(ImmutableRecord), result);
         }
 
-        [Fact(DisplayName = "Types can be selected for being mutable.")]
-        public void AreMutable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "AreMutable")]
+        public void AreMutable()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -38,47 +40,82 @@ namespace NetArchTest.UnitTests
                 .And()
                 .AreMutable().GetReflectionTypes();
 
-            Assert.Equal(3, result.Count()); // Three types found
-            Assert.Contains<Type>(typeof(PartiallyMutableClass1), result);
-            Assert.Contains<Type>(typeof(PartiallyMutableClass2), result);
-            Assert.Contains<Type>(typeof(MutableClass), result);
+            Assert.Equal(6, result.Count()); 
+            Assert.Contains<Type>(typeof(MutableClass_PublicProperty), result);
+            Assert.Contains<Type>(typeof(MutableClass_PublicPropertyPrivateSet), result);
+            Assert.Contains<Type>(typeof(MutableClass_PublicField), result);
+            Assert.Contains<Type>(typeof(MutableClass_PrivateField), result);
+            Assert.Contains<Type>(typeof(MutableClass_PublicEvent), result);
+            Assert.Contains<Type>(typeof(MutableRecord), result);
         }
 
-        [Fact(DisplayName = "Types can be selected for having only nullable memebers.")]
-        public void AreNullable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "AreImmutableExternally")]
+        public void AreImmutableExternally()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nullable")
+                .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
-                .AreNotNested() // ignore nested helper types
-                .And()
-                .AreClasses()
+                .AreImmutableExternally().GetReflectionTypes();
+
+            Assert.Equal(8, result.Count());
+            Assert.Contains<Type>(typeof(ImmutableClass_PropertyOnlyGet), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_PropertyInit), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldConst), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldReadonly), result);
+            Assert.Contains<Type>(typeof(ImmutableClass_FieldReadonlyPrivate), result);
+            Assert.Contains<Type>(typeof(ImmutableRecord), result);
+            Assert.Contains<Type>(typeof(MutableClass_PublicPropertyPrivateSet), result);
+            Assert.Contains<Type>(typeof(MutableClass_PrivateField), result);           
+        }
+
+        [Fact(DisplayName = "OnlyHaveNullableMembers")]
+        public void OnlyHaveNullableMembers()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Nullable")                
                 .And()
                 .OnlyHaveNullableMembers().GetReflectionTypes();
 
-            Assert.Single(result); // One result
+            Assert.Single(result);
             Assert.Contains<Type>(typeof(NullableClass), result);
         }
 
-        [Fact(DisplayName = "Types can be selected for having non-nullable memebers.")]
-        public void AreNonNullable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "HaveSomeNonNullableMembers")]
+        public void HaveSomeNonNullableMembers()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
-                .AreNotNested() // ignore nested helper types
-                .And()
-                .ArePublic()
+                .AreNotNested()             
                 .And()
                 .HaveSomeNonNullableMembers().GetReflectionTypes();
 
-            Assert.Equal(4, result.Count()); // Four types found
+            Assert.Equal(4, result.Count());
             Assert.Contains<Type>(typeof(NonNullableClass1), result);
             Assert.Contains<Type>(typeof(NonNullableClass2), result);
+            Assert.Contains<Type>(typeof(NonNullableClass3), result);
+            Assert.Contains<Type>(typeof(NonNullableClass4), result);
+        }
+
+        [Fact(DisplayName = "OnlyHaveNonNullableMembers")]
+        public void OnlyHaveNonNullableMembers()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Nullable")
+                .And()
+                .AreNotNested()
+                .And()
+                .OnlyHaveNonNullableMembers().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
             Assert.Contains<Type>(typeof(NonNullableClass3), result);
             Assert.Contains<Type>(typeof(NonNullableClass4), result);
         }

@@ -5,7 +5,7 @@ namespace NetArchTest.Rules
     public sealed partial class Predicate
     {
         /// <summary>
-        /// Selects types that are immutable.
+        /// Selects types that are immutable. (shallow immutability). It is stronger constraint than AreImmutableExternally()
         /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreImmutable()
@@ -25,14 +25,24 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
+        /// Selects types that are immutable. (shallow external only immutability). It is waker constraint than AreImmutable()
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList AreImmutableExternally()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeImmutableExternally(x, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
         /// Selects types that have only nullable members.
         /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList OnlyHaveNullableMembers()
         {
-            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, true));
+            AddFunctionCall(x => FunctionDelegates.OnlyHaveNullableMembers(x, true));
             return CreatePredicateList();
-        }
+        }  
 
         /// <summary>
         /// Selects types that have some non-nullable members.
@@ -40,7 +50,17 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveSomeNonNullableMembers()
         {
-            AddFunctionCall(x => FunctionDelegates.HasNullableMembers(x, false));
+            AddFunctionCall(x => FunctionDelegates.OnlyHaveNullableMembers(x, false));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that have only non-nullable members.
+        /// </summary>
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        public PredicateList OnlyHaveNonNullableMembers()
+        {
+            AddFunctionCall(x => FunctionDelegates.OnlyHaveNonNullableMembers(x, true));
             return CreatePredicateList();
         }
     }

@@ -21,7 +21,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !ClassIsAbstract(c.Definition));
             }
 
-            bool ClassIsAbstract(TypeDefinition c) => c.IsAbstract && !c.IsSealed;
+            static bool ClassIsAbstract(TypeDefinition c) => c.IsAbstract && !c.IsSealed;
         }
 
         internal static IEnumerable<TypeSpec> BeStatic(IEnumerable<TypeSpec> input, bool condition)
@@ -35,7 +35,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !ClassIsStatic(c));
             }
 
-            bool ClassIsStatic(TypeSpec c) => c.Definition.IsAbstract && c.Definition.IsSealed && !c.Definition.IsInterface && !c.Definition.GetConstructors().Any(m => m.IsPublic);
+            static bool ClassIsStatic(TypeSpec c) => c.Definition.IsAbstract && c.Definition.IsSealed && !c.Definition.IsInterface && !c.Definition.GetConstructors().Any(m => m.IsPublic);
         }
 
         internal static IEnumerable<TypeSpec> BeSealed(IEnumerable<TypeSpec> input, bool condition)
@@ -49,7 +49,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !ClassIsSealed(c.Definition));
             }
 
-            bool ClassIsSealed(TypeDefinition c) => !c.IsAbstract && c.IsSealed;
+            static bool ClassIsSealed(TypeDefinition c) => !c.IsAbstract && c.IsSealed;
         }   
 
         internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool condition)

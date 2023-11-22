@@ -2,9 +2,6 @@
 
 namespace NetArchTest.Rules
 {
-    /// <summary>
-    /// A set of predicates that can be applied to a list of types.
-    /// </summary>
     public sealed partial class Predicate
     {
         /// <summary>
@@ -129,10 +126,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that have public scope.
-        /// </summary>
-        /// <remarks>
-        /// This method will only act on types that are visible to the function. Use InternalsVisibleTo if testing from a separate assembly.
-        /// </remarks>
+        /// </summary>        
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ArePublic()
         {
@@ -142,10 +136,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that do not have public scope.
-        /// </summary>
-        /// <remarks>
-        /// This method will only act on types that are visible to the function. Use InternalsVisibleTo if testing from a separate assembly.
-        /// </remarks>
+        /// </summary>        
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotPublic()
         {

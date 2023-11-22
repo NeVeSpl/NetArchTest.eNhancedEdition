@@ -194,7 +194,6 @@ namespace NetArchTest.Rules
         }
 
 
-
         /// <summary>
         /// Selects types that meet a custom rule.
         /// </summary>

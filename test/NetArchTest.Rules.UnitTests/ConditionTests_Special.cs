@@ -7,23 +7,23 @@ namespace NetArchTest.UnitTests
 {
     public class ConditionTests_Special
     {
-        [Fact(DisplayName = "Types can be selected for being immutable.")]
-        public void AreImmutable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "BeImmutable")]
+        public void BeImmutable()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
-                .HaveNameStartingWith("ImmutableClass")
+                .HaveNameStartingWith("Immutable")
                 .Should()
                 .BeImmutable().GetResult();
 
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected for being mutable.")]
-        public void AreMutable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "BeMutable")]
+        public void BeMutable()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -37,15 +37,32 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected for having only nullable memebers.")]
-        public void AreNullable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "BeImmutableExternally")]
+        public void BeImmutableExternally()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Mutability")
+                .And()
+                .HaveNameStartingWith("Immutable")
+                .Or()
+                .HaveName("MutableClass_PublicPropertyPrivateSet", "MutableClass_PrivateField")
+                .Should()
+                .BeImmutableExternally().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "OnlyHaveNullableMembers")]
+        public void OnlyHaveNullableMembers()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
-                .AreNotNested() // ignore nested helper types
+                .AreNotNested() 
                 .And()
                 .DoNotHaveNameStartingWith("NonNullableClass")
                 .Should()
@@ -54,19 +71,36 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected for having non-nullable memebers.")]
-        public void AreNonNullable_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "HaveSomeNonNullableMembers")]
+        public void HaveSomeNonNullableMembers()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
-                .AreNotNested() // ignore nested helper types
+                .AreNotNested()
                 .And()
                 .DoNotHaveNameStartingWith("NullableClass")
                 .Should()
                 .HaveSomeNonNullableMembers().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "OnlyHaveNonNullableMembers")]
+        public void OnlyHaveNonNullableMembers()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Nullable")
+                .And()
+                .AreNotNested()
+                .And()
+                .DoNotHaveNameStartingWith("NonNullableClass1", "NonNullableClass2", "NullableClass")
+                .Should()
+                .OnlyHaveNonNullableMembers().GetResult();
 
             Assert.True(result.IsSuccessful);
         }

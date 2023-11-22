@@ -19,7 +19,7 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !IsPublic(c.Definition));
             }
-            bool IsPublic(TypeDefinition c) => c.IsPublic || c.IsNestedPublic;
+            static bool IsPublic(TypeDefinition c) => c.IsPublic || c.IsNestedPublic;
         }
 
         internal static IEnumerable<TypeSpec> BeInternal(IEnumerable<TypeSpec> input, bool condition)
@@ -33,7 +33,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !IsInternal(c.Definition));
             }
 
-            bool IsInternal(TypeDefinition c) => c.IsNotPublic || c.IsNestedAssembly;
+            static bool IsInternal(TypeDefinition c) => c.IsNotPublic || c.IsNestedAssembly;
         }
 
         internal static IEnumerable<TypeSpec> BeNested(IEnumerable<TypeSpec> input, bool condition)

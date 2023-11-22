@@ -7,5 +7,7 @@ namespace NetArchTest.TestStructure.Nullable {
         public int? _nullableIntField;
 
         public int? NullableIntProperty {get; set;}
+
+        public object NullableObjectField;
     }
 }

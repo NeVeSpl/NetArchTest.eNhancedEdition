@@ -12,17 +12,19 @@ namespace NetArchTest.Functions
     {
         // Name & Namespace
 
-        internal static IEnumerable<TypeSpec> HaveName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string name, bool condition)
+        internal static IEnumerable<TypeSpec> HaveName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string[] names, bool condition)
         {
-            var plainName = name.RemoveGenericPart();
+            var plainNames = names.Select(x => x.RemoveGenericPart()).ToArray();
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().Equals(plainName, context.UserOptions.Comparer));
+                return input.Where(c => HasName(c.Definition.GetName(), plainNames, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().Equals(plainName, context.UserOptions.Comparer));
+                return input.Where(c => !HasName(c.Definition.GetName(), plainNames, context.UserOptions.Comparer));
             }
+
+            static bool HasName(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.Equals(x, comparer));
         }
 
         internal static IEnumerable<TypeSpec> HaveNameMatching(IEnumerable<TypeSpec> input, string pattern, bool condition)
@@ -38,28 +40,32 @@ namespace NetArchTest.Functions
             }
         }
 
-        internal static IEnumerable<TypeSpec> HaveNameStartingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string start, bool condition)
+        internal static IEnumerable<TypeSpec> HaveNameStartingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string[] prefixes, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().StartsWith(start, context.UserOptions.Comparer));
+                return input.Where(c => StartsWith(c.Definition.GetName(), prefixes, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().StartsWith(start, context.UserOptions.Comparer));
+                return input.Where(c => !StartsWith(c.Definition.GetName(), prefixes, context.UserOptions.Comparer));
             }
+
+            static bool StartsWith(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.StartsWith(x, comparer));
         }
 
-        internal static IEnumerable<TypeSpec> HaveNameEndingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string end, bool condition)
+        internal static IEnumerable<TypeSpec> HaveNameEndingWith(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string[] suffixes, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.GetName().EndsWith(end, context.UserOptions.Comparer));
+                return input.Where(c => EndsWith(c.Definition.GetName(), suffixes, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetName().EndsWith(end, context.UserOptions.Comparer));
+                return input.Where(c => !EndsWith(c.Definition.GetName(), suffixes, context.UserOptions.Comparer));
             }
+
+            static bool EndsWith(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.EndsWith(x, comparer));
         }
 
         

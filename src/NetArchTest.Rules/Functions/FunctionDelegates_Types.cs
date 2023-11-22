@@ -18,7 +18,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !IsClass(c.Definition));
             }
 
-            bool IsClass(TypeDefinition c) => c.IsClass && !c.IsValueType && !c.IsDelegate();
+            static bool IsClass(TypeDefinition c) => c.IsClass && !c.IsValueType && !c.IsDelegate();
         }
 
         internal static IEnumerable<TypeSpec> BeDelegate(IEnumerable<TypeSpec> input, bool condition)

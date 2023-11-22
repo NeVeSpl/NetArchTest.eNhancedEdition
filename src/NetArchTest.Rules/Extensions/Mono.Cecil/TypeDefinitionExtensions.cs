@@ -79,26 +79,37 @@ namespace Mono.Cecil
 
         /// <summary>
         /// Tests whether a class is immutable, i.e. all public fields are readonly and properties have no set method
-        /// </summary>
-        /// <param name="typeDefinition">The class to test.</param>
-        /// <returns>An indication of whether the type is immutable</returns>
+        /// </summary>      
         public static bool IsImmutable(this TypeDefinition typeDefinition)
         {
             var propertiesAreReadonly = typeDefinition.Properties.All(p => p.IsReadonly());
             var fieldsAreReadonly = typeDefinition.Fields.All(f => f.IsReadonly());
-            return propertiesAreReadonly && fieldsAreReadonly;
+            var eventsAreReadonly = typeDefinition.Events.All(f => f.IsReadonly());
+            return propertiesAreReadonly && fieldsAreReadonly && eventsAreReadonly;
         }
 
-        /// <summary>
-        /// Tests whether a Type has any memebers that are non-nullable value types
-        /// </summary>
-        /// <param name="typeDefinition">The class to test.</param>
-        /// <returns>An indication of whether the type has any memebers that are non-nullable value types</returns>
-        public static bool HasNullableMembers(this TypeDefinition typeDefinition)
+        public static bool IsImmutableExternally(this TypeDefinition typeDefinition)
+        {
+            var propertiesAreReadonly = typeDefinition.Properties.All(p => p.IsReadonlyExternally());
+            var fieldsAreReadonly = typeDefinition.Fields.All(f => f.IsReadonlyExternally());
+            var eventsAreReadonly = typeDefinition.Events.All(f => f.IsReadonlyExternally());
+            return propertiesAreReadonly && fieldsAreReadonly && eventsAreReadonly;
+        }
+
+
+      
+        public static bool OnlyHasNullableMembers(this TypeDefinition typeDefinition)
         {
             var propertiesAreNullable = typeDefinition.Properties.All(p => p.IsNullable());
             var fieldsAreNullable = typeDefinition.Fields.All(f => f.IsNullable());
             return propertiesAreNullable && fieldsAreNullable;
+        }
+
+        public static bool OnlyHasNonNullableMembers(this TypeDefinition typeDefinition)
+        {
+            var propertiesAreNonNullable = typeDefinition.Properties.All(p => p.IsNullable() == false);
+            var fieldsAreNonNullable = typeDefinition.Fields.All(f => f.IsNullable() == false);
+            return propertiesAreNonNullable && fieldsAreNonNullable;
         }
 
         public static bool IsCompilerGenerated(this TypeDefinition typeDefinition)

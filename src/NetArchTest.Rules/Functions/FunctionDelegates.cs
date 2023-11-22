@@ -58,14 +58,14 @@ namespace NetArchTest.Functions
 
             if (condition)
             {
-                return input.Where(c => Implements(c.Definition));
+                return input.Where(c => Implements(c.Definition, typeInterface));
             }
             else
             {
-                return input.Where(c => !Implements(c.Definition));
+                return input.Where(c => !Implements(c.Definition, typeInterface));
             }
 
-            bool Implements(TypeDefinition c) => c.Interfaces.Any(t => t.InterfaceType.FullName.Equals(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
+            static bool Implements(TypeDefinition c, Type typeInterface) => c.Interfaces.Any(t => t.InterfaceType.FullName.Equals(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
         } 
 
         internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)

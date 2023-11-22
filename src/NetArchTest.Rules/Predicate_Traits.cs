@@ -83,6 +83,5 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.BeSealed(x, false));
             return CreatePredicateList();
         }
-
     }
 }

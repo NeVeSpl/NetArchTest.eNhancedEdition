@@ -1,5 +1,4 @@
-﻿using System;
-using NetArchTest.Functions;
+﻿using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
@@ -12,7 +11,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveName(string name)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, new[] { name }, true));
             return CreateConditionList();
         }
 
@@ -23,7 +22,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveName(string name)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, new[] { name }, false));
             return CreateConditionList();
         }
 
@@ -56,7 +55,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameStartingWith(string start)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, new[] { start }, true));
             return CreateConditionList();
         }
 
@@ -67,7 +66,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameStartingWith(string start)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, new[] { start }, false));
             return CreateConditionList();
         }   
 
@@ -78,7 +77,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameEndingWith(string end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, new[] { end }, true));
             return CreateConditionList();
         }
 
@@ -89,19 +88,10 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameEndingWith(string end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, new[] { end }, false));
             return CreateConditionList();
         }
-
-        /// <summary>
-        /// Selects types whose names do not end with the specified text.
-        /// </summary>
-        /// <param name="end">The text to match against.</param>
-        /// <param name="comparer">The string comparer.</param>
-        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
-
-
-
+               
 
         /// <summary>
         /// Selects types that reside in a particular namespace.

@@ -1,6 +1,6 @@
 ﻿using System;
-using NetArchTest.Assemblies;
 using System.Collections.Generic;
+using NetArchTest.Assemblies;
 using NetArchTest.Functions;
 using NetArchTest.RuleEngine;
 

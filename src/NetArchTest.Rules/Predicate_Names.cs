@@ -1,5 +1,4 @@
-﻿using System;
-using NetArchTest.Functions;
+﻿using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
@@ -11,11 +10,8 @@ namespace NetArchTest.Rules
         /// <param name="name">The name of the class to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveName(params string[] name)
-        {
-            foreach (var item in name)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, item, true));
-            }
+        {            
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, true));            
             return CreatePredicateList();
         }
 
@@ -26,10 +22,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveName(params string[] name)
         {
-            foreach (var item in name)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, item, false));
-            }
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, false));            
             return CreatePredicateList();
         }
 
@@ -61,11 +54,8 @@ namespace NetArchTest.Rules
         /// <param name="start">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameStartingWith(params string[] start)
-        {
-            foreach (var item in start)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, item, true));
-            }
+        {           
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, true));            
             return CreatePredicateList();
         }       
 
@@ -75,11 +65,8 @@ namespace NetArchTest.Rules
         /// <param name="start">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameStartingWith(params string[] start)
-        {
-            foreach (var item in start)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, item, false));
-            }
+        {            
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, false));            
             return CreatePredicateList();
         }       
 
@@ -89,11 +76,8 @@ namespace NetArchTest.Rules
         /// <param name="end">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(params string[] end)
-        {
-            foreach (var item in end)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, item, true));
-            }
+        {            
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));            
             return CreatePredicateList();
         }     
 
@@ -103,15 +87,11 @@ namespace NetArchTest.Rules
         /// <param name="end">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(params string[] end)
-        {
-            foreach (var item in end)
-            {
-                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, item, false));
-            }
+        {          
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, false));
             return CreatePredicateList();
         }
                
-
 
         /// <summary>
         /// Selects types that reside in a particular namespace.

@@ -8,7 +8,8 @@ namespace NetArchTest.TestStructure.Nullable {
 
         public struct TestStruct {
 #pragma warning disable 169
-            int nonNullableStructField;
+            public object nullableObject;
+            public int nonNullable;
 #pragma warning restore 169
         }
     }

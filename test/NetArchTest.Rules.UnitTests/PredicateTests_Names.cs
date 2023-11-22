@@ -8,6 +8,7 @@ using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
 using NetArchTest.TestStructure.NameMatching.Namespace3.A;
 using NetArchTest.TestStructure.NameMatching.Namespace3.B;
 using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace1;
+using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.NamespaceA;
 using Xunit;
 
 namespace NetArchTest.UnitTests
@@ -49,6 +50,28 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(SomeEntity), result);
             Assert.Contains<Type>(typeof(SomeIdentity), result);
         }
+        [Fact(DisplayName = "HaveName_Many")]
+        public void HaveName_Many()
+        {
+            var result = GetTypesThat().HaveName("ClassA1", "ClassA2").GetReflectionTypes();
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(ClassA2), result);
+        }
+        [Fact(DisplayName = "DoNotHaveName_Many")]
+        public void DoNotHaveName_Many()
+        {
+            var result = GetTypesThat().DoNotHaveName("ClassA1", "ClassA2", "ClassB1", "ClassB2").GetReflectionTypes();
+
+            Assert.Equal(6, result.Count());            
+            Assert.Contains<Type>(typeof(ClassA3), result);
+            Assert.Contains<Type>(typeof(SomeThing), result);
+            Assert.Contains<Type>(typeof(SomethingElse), result);
+            Assert.Contains<Type>(typeof(SomeEntity), result);
+            Assert.Contains<Type>(typeof(SomeIdentity), result);
+        }
 
         [Fact(DisplayName = "HaveNameStartingWith")]
         public void HaveNameStartingWith()
@@ -72,6 +95,16 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(SomethingElse), result);
             Assert.Contains<Type>(typeof(SomeEntity), result);
             Assert.Contains<Type>(typeof(SomeIdentity), result);
+        }
+
+        [Fact(DisplayName = "HaveNameStartingWith_Many")]
+        public void HaveNameStartingWith_Many()
+        {
+            var result = GetTypesThat().HaveNameStartingWith("SomeT", "SomeE").GetReflectionTypes();
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(SomeThing), result);
+            Assert.Contains<Type>(typeof(SomethingElse), result);
         }
 
         [Fact(DisplayName = "HaveNameStartingWith_StringComparison")]
