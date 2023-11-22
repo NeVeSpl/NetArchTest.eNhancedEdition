@@ -94,26 +94,6 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(ExampleClass), result);
             Assert.Contains<Type>(typeof(ExampleStruct), result);
         }
- 
-        [Fact(DisplayName = "AreRecords", Skip = "not implemented yet")]
-        public void AreRecords()
-        {
-            var result = GetTypesThat().AreRecords().GetReflectionTypes();
-
-            Assert.Equal(2, result.Count());
-            Assert.Contains<Type>(typeof(ExampleRecordClass), result);
-            Assert.Contains<Type>(typeof(ExampleRecordStruct), result);
-        }
-
-        [Fact(DisplayName = "AreNotRecords", Skip = "not implemented yet")]
-        public void AreNotRecords()
-        {
-            var result = GetTypesThat().AreNotRecords().GetReflectionTypes();
-
-            Assert.Equal(6, result.Count());
-            Assert.Contains<Type>(typeof(ExampleClass), result);
-            Assert.Contains<Type>(typeof(ExampleStruct), result);
-        }
 
         [Fact(DisplayName = "AreStructures")]
         public void AreStructures()

@@ -41,8 +41,6 @@ namespace NetArchTest.Rules
 
 
 
-
-
         /// <summary>
         /// Selects types are decorated with a specific custom attribut.
         /// </summary>
@@ -52,6 +50,14 @@ namespace NetArchTest.Rules
         {
             AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
             return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types are decorated with a specific custom attribut.
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveCustomAttribute<T>()
+        {
+            return HaveCustomAttribute(typeof(T));
         }
 
         /// <summary>
@@ -64,6 +70,14 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
             return CreateConditionList();
         }
+        /// <summary>
+        /// Selects types that are not decorated with a specific custom attribute.
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotHaveCustomAttribute<T>()
+        {
+            return NotHaveCustomAttribute(typeof(T));
+        }
 
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute or derived one.
@@ -74,6 +88,14 @@ namespace NetArchTest.Rules
         {
             AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, true));
             return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types that are decorated with a specific custom attribute or derived one.
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveCustomAttributeOrInherit<T>()
+        {
+            return HaveCustomAttributeOrInherit(typeof(T));
         }
 
         /// <summary>
@@ -86,6 +108,14 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.HaveCustomAttributeOrInherit(x, attribute, false));
             return CreateConditionList();
         }
+        /// <summary>
+        /// Selects types are not decorated with a specific custom attribute or derived one.
+        /// </summary>      
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotHaveCustomAttributeOrInherit<T>()
+        {
+            return NotHaveCustomAttributeOrInherit(typeof(T));
+        }
 
         /// <summary>
         /// Selects types that inherit a particular type.
@@ -94,8 +124,16 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList Inherit(Type type)
         {
-            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, true));
+            AddFunctionCall(x => FunctionDelegates.Inherit(x, type, true));
             return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types that inherit a particular type.
+        /// </summary>     
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList Inherit<T>()
+        {
+            return Inherit(typeof(T));
         }
 
         /// <summary>
@@ -105,8 +143,16 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotInherit(Type type)
         {
-            AddFunctionCall(x => FunctionDelegates.Inherits(x, type, false));
+            AddFunctionCall(x => FunctionDelegates.Inherit(x, type, false));
             return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types that do not inherit a particular type.
+        /// </summary>      
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotInherit<T>()
+        {
+            return NotInherit(typeof(T));
         }
 
         /// <summary>
@@ -116,8 +162,16 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ImplementInterface(Type interfaceType)
         {
-            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, true));
+            AddFunctionCall(x => FunctionDelegates.ImplementInterface(x, interfaceType, true));
             return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types that implement a particular interface.
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList ImplementInterface<T>()
+        {
+            return ImplementInterface(typeof(T));
         }
 
         /// <summary>
@@ -127,11 +181,19 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotImplementInterface(Type interfaceType)
         {
-            AddFunctionCall(x => FunctionDelegates.ImplementsInterface(x, interfaceType, false));
+            AddFunctionCall(x => FunctionDelegates.ImplementInterface(x, interfaceType, false));
             return CreateConditionList();
         }
- 
-       
+        /// <summary>
+        /// Selects types that do not implement a particular interface.
+        /// </summary>        
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotImplementInterface<T>()
+        {
+            return NotImplementInterface(typeof(T));
+        }
+
+
 
         /// <summary>
         /// Selects types that meet a custom rule.

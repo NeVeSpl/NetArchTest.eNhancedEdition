@@ -7,8 +7,6 @@ namespace NetArchTest.Functions
 {
     internal static partial class FunctionDelegates
     {
-        // Types
-
         internal static IEnumerable<TypeSpec> BeClass(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
@@ -70,20 +68,5 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsStruct());
             }
         }
-
-        // todo
-
-        internal static IEnumerable<TypeSpec> BeRecord(IEnumerable<TypeSpec> input, bool condition)
-        {
-            if (condition)
-            {
-                return Enumerable.Empty<TypeSpec>();
-            }
-            else
-            {
-                return Enumerable.Empty<TypeSpec>();
-            }
-        }
-
     }
 }

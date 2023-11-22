@@ -12,8 +12,8 @@ namespace NetArchTest.UnitTests
 {
     public class ConditionTests
     {
-        [Fact(DisplayName = "Types can be selected by a the presence of a custom attribute.")]
-        public void HaveCustomAttribute_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "HaveCustomAttribute")]
+        public void HaveCustomAttribute()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -27,8 +27,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected by the absence of a custom attribute.")]
-        public void NotHaveCustomAttribute_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "NotHaveCustomAttribute")]
+        public void NotHaveCustomAttribute()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -42,8 +42,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected by a the presence of an inherited custom attribute.")]
-        public void HaveInheritCustomAttribute_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "HaveCustomAttributeOrInherit")]
+        public void HaveCustomAttributeOrInherit()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -57,8 +57,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected by the absence of an inherited custom attribute.")]
-        public void NotHaveInheritCustomAttribute_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "NotHaveCustomAttributeOrInherit")]
+        public void NotHaveCustomAttributeOrInherit()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -72,11 +72,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-
-
-
-        [Fact(DisplayName = "Types can be selected if they inherit from a type.")]
-        public void Inherit_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "Inherit")]
+        public void Inherit()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -90,8 +87,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected if they do not inherit from a type.")]
-        public void NotInherit_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "NotInherit")]
+        public void NotInherit()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -105,8 +102,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected if they implement an interface.")]
-        public void ImplementInterface_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "ImplementInterface")]
+        public void ImplementInterface()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -120,8 +117,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "Types can be selected if they do not implement an interface.")]
-        public void NotImplementInterface_MatchesFound_ClassesSelected()
+        [Fact(DisplayName = "NotImplementInterface")]
+        public void NotImplementInterface()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
@@ -135,76 +132,8 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
-      
-
-        [Fact(DisplayName = "Types can be selected for being immutable.")]
-        public void AreImmutable_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Mutability")
-                .And()
-                .HaveNameStartingWith("ImmutableClass")
-                .Should()
-                .BeImmutable().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected for being mutable.")]
-        public void AreMutable_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Mutability")
-                .And()
-                .DoNotHaveNameStartingWith("Immutable")
-                .Should()
-                .BeMutable().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected for having only nullable memebers.")]
-        public void AreNullable_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nullable")
-                .And()
-                .AreNotNested() // ignore nested helper types
-                .And()
-                .DoNotHaveNameStartingWith("NonNullableClass")
-                .Should()
-                .OnlyHaveNullableMembers().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "Types can be selected for having non-nullable memebers.")]
-        public void AreNonNullable_MatchesFound_ClassSelected()
-        {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
-                .That()
-                .ResideInNamespace("NetArchTest.TestStructure.Nullable")
-                .And()
-                .AreNotNested() // ignore nested helper types
-                .And()
-                .DoNotHaveNameStartingWith("NullableClass")
-                .Should()
-                .HaveSomeNonNullableMembers().GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-       
-
-        [Fact(DisplayName = "Types can be selected according to a custom rule.")]
-        public void MeetCustomRule_MatchesFound_ClassSelected()
+        [Fact(DisplayName = "MeetCustomRule")]
+        public void MeetCustomRule()
         {
             // Create a custom rule that selected "ClassA1"
             var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA2", StringComparison.InvariantCultureIgnoreCase));

@@ -88,9 +88,12 @@ namespace NetArchTest.Rules
         /// </summary>
         /// <param name="end">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList HaveNameEndingWith(string end)
+        public PredicateList HaveNameEndingWith(params string[] end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));
+            foreach (var item in end)
+            {
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, item, true));
+            }
             return CreatePredicateList();
         }     
 
@@ -99,9 +102,12 @@ namespace NetArchTest.Rules
         /// </summary>
         /// <param name="end">The text to match against.</param>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
-        public PredicateList DoNotHaveNameEndingWith(string end)
+        public PredicateList DoNotHaveNameEndingWith(params string[] end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, false));
+            foreach (var item in end)
+            {
+                AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, item, false));
+            }
             return CreatePredicateList();
         }
                

@@ -9,16 +9,6 @@ namespace NetArchTest.Functions
 {
     internal static partial class FunctionDelegates
     {
-       
-
-        
-       
-
-        
-     
-
-
-        
         internal static IEnumerable<TypeSpec> HaveCustomAttribute(IEnumerable<TypeSpec> input, Type attribute, bool condition)
         {
             if (condition)
@@ -30,7 +20,6 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase)));
             }
         }
-
         
         internal static IEnumerable<TypeSpec> HaveCustomAttributeOrInherit(IEnumerable<TypeSpec> input, Type attribute, bool condition)
         {
@@ -45,10 +34,8 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => a.AttributeType.Resolve().IsSubclassOf(target) || attribute.FullName.Equals(a.AttributeType.FullName, StringComparison.InvariantCultureIgnoreCase)));
             }
         }
-
-
         
-        internal static IEnumerable<TypeSpec> Inherits(IEnumerable<TypeSpec> input, Type type, bool condition)
+        internal static IEnumerable<TypeSpec> Inherit(IEnumerable<TypeSpec> input, Type type, bool condition)
         {
             // Convert the incoming type to a definition
             var target = type.ToTypeDefinition();
@@ -61,41 +48,26 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsSubclassOf(target));
             }
         }
-
         
-        internal static IEnumerable<TypeSpec> ImplementsInterface(IEnumerable<TypeSpec> input, Type typeInterface, bool condition)
+        internal static IEnumerable<TypeSpec> ImplementInterface(IEnumerable<TypeSpec> input, Type typeInterface, bool condition)
         {
             if (!typeInterface.IsInterface)
             {
                 throw new ArgumentException($"The type {typeInterface.FullName} is not an interface.");
             }
 
-            var target = typeInterface.FullName;
-            var found = new List<TypeSpec>();
-
-            foreach (var type in input)
-            {
-                if (type.Definition.Interfaces.Any(t => t.InterfaceType.Resolve().FullName.Equals(target, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    found.Add(type);
-                }
-            }
-
             if (condition)
             {
-                return found;
+                return input.Where(c => Implements(c.Definition));
             }
             else
             {
-                return input.Where(c => !found.Contains(c));
+                return input.Where(c => !Implements(c.Definition));
             }
-        }
-                     
 
-       
+            bool Implements(TypeDefinition c) => c.Interfaces.Any(t => t.InterfaceType.FullName.Equals(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
+        } 
 
-       
-       
         internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)
         {
             if (condition)
@@ -105,33 +77,6 @@ namespace NetArchTest.Functions
             else
             {
                 return input.Where(t => !rule.MeetsRule(t.Definition));
-            }
-        }
-
-
-    
-
-        internal static IEnumerable<TypeSpec> BeImmutable(IEnumerable<TypeSpec> input, bool condition)
-        {
-            if (condition)
-            {
-                return input.Where(c => c.Definition.IsImmutable());
-            }
-            else
-            {
-                return input.Where(c => !c.Definition.IsImmutable());
-            }
-        }
-
-        internal static IEnumerable<TypeSpec> HasNullableMembers(IEnumerable<TypeSpec> input, bool condition)
-        {
-            if (condition)
-            {
-                return input.Where(c => c.Definition.HasNullableMembers());
-            }
-            else
-            {
-                return input.Where(c => !c.Definition.HasNullableMembers());
             }
         }
     }

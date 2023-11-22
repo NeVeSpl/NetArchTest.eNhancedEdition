@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Traits;
 using Xunit;
-
 
 namespace NetArchTest.UnitTests
 {
@@ -109,11 +107,5 @@ namespace NetArchTest.UnitTests
 
             Assert.True(result.IsSuccessful);
         }
-
-
-
-
-
-
     }
 }

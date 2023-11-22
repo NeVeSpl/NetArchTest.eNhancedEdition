@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Traits;
+using NetArchTest.TestStructure.Types;
 using Xunit;
 
 namespace NetArchTest.UnitTests
@@ -57,6 +58,26 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(StaticClass), result);
         }
 
+        [Fact(DisplayName = "AreRecords", Skip = "not implemented yet")]
+        public void AreRecords()
+        {
+            var result = GetTypesThat().AreRecords().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(ExampleRecordClass), result);
+            Assert.Contains<Type>(typeof(ExampleRecordStruct), result);
+        }
+
+        [Fact(DisplayName = "AreNotRecords", Skip = "not implemented yet")]
+        public void AreNotRecords()
+        {
+            var result = GetTypesThat().AreNotRecords().GetReflectionTypes();
+
+            Assert.Equal(6, result.Count());
+            Assert.Contains<Type>(typeof(ExampleClass), result);
+            Assert.Contains<Type>(typeof(ExampleStruct), result);
+        }
+
         [Fact(DisplayName = "AreSealed")]
         public void AreSealed()
         {
@@ -94,6 +115,5 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(PlainClass), result);
             Assert.Contains<Type>(typeof(AbstractClass), result);
         }
-
     }
 }

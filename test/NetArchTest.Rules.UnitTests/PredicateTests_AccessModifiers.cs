@@ -4,6 +4,7 @@ using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.AccessModifiers;
 using Xunit;
+using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
@@ -14,7 +15,7 @@ namespace NetArchTest.UnitTests
             return Types
                 .InAssembly(Assembly.GetAssembly(typeof(PublicClass)))
                 .That()
-                .ResideInNamespace("NetArchTest.TestStructure.AccessModifiers")
+                .ResideInNamespace(namespaceof<PublicClass>())
                 .And();
         }
 
