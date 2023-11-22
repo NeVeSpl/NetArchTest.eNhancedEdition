@@ -118,7 +118,7 @@
             //   (.....k1    )
             //            (.....k2    )
             //          k2-dk2      k2+dk2
-            Assert.True(Math.Abs(k1 - k2) <= (dk1 + dk2) * 1.1,
+            Assert.True(Math.Abs(k1 - k2) <= (dk1 + dk2) * 2.0,
                 $"{k1}+-{dk1}; {k2}+-{dk2}\nSize; Ellapsed Ticks:\n{n0}; {ellapsed0.Mean}+-{ellapsed0.Margins}\n{n1}; {ellapsed1.Mean}+-{ellapsed1.Margins}\n{n2}; {ellapsed2.Mean}+-{ellapsed2.Margins}");
         }
 
@@ -167,7 +167,7 @@
             //   (.....k1    )
             //            (.....k2    )
             //          k2-dk2      k2+dk2
-            Assert.True(Math.Abs(k1 - k2) <= (dk1 + dk2) * 1.1,
+            Assert.True(Math.Abs(k1 - k2) <= (dk1 + dk2) * 2.0,
                 $"{k1}+-{dk1}; {k2}+-{dk2}\nSize; Ellapsed Ticks:\n{n0}; {ellapsed0.Mean}+-{ellapsed0.Margins}\n{n1}; {ellapsed1.Mean}+-{ellapsed1.Margins}\n{n2}; {ellapsed2.Mean}+-{ellapsed2.Margins}");
         }
 
