@@ -8,6 +8,7 @@ using NetArchTest.TestStructure.CustomAttributes;
 using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.UnitTests.TestDoubles;
 using Xunit;
 using static NetArchTest.Utils;
@@ -155,7 +156,7 @@ namespace NetArchTest.UnitTests
         public void MeetCustomRule()
         {
             // Create a custom rule that selects "ClassA1"
-            var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA1", StringComparison.InvariantCultureIgnoreCase));
+            var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA3", StringComparison.InvariantCultureIgnoreCase));
 
             // Use the custom rule
             var result = Types
@@ -166,7 +167,7 @@ namespace NetArchTest.UnitTests
 
             // ClassA1 has been returned
             Assert.Single(result);
-            Assert.Equal<Type>(typeof(ClassA1), result.First());
+            Assert.Equal<Type>(typeof(ClassA3), result.First());
 
             // The custom rule was executed at least once
             Assert.True(rule.TestMethodCalled);

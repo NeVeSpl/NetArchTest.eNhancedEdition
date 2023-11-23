@@ -1,9 +1,30 @@
-﻿using NetArchTest.Functions;
+﻿using System;
+using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
     public sealed partial class Predicate
     {
+        /// <summary>
+        /// Selects types that are exactly of given type. (inheritance is not considered)
+        /// </summary>       
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        public PredicateList AreOfType(params Type[] type)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreOfType(context, inputTypes, type, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that are not exactly of given type. (inheritance is not considered)
+        /// </summary>       
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        public PredicateList AreNotOfType(params Type[] type)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreOfType(context, inputTypes, type, false));
+            return CreatePredicateList();
+        }
+
         /// <summary>
         /// Selects types that have a specific name.
         /// </summary>

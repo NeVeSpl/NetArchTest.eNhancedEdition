@@ -66,16 +66,24 @@ namespace Mono.Cecil
         /// <param name="typeDefinition">The type definition to convert.</param>
         /// <returns>The equivalent <see cref="Type"/> object instance.</returns>
         public static Type ToType(this TypeDefinition typeDefinition)
+        {            
+            var fullName = RuntimeNameToReflectionName(typeDefinition.FullName);
+            return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
+        }
+        public static string RuntimeNameToReflectionName(this string cliName)
         {
             // Nested types have a forward slash that should be replaced with "+"
             // C++ template instantiations contain comma separator for template arguments,
             // getting address operators and pointer type designations which should be prefixed by backslash
-            var fullName = typeDefinition.FullName.Replace("/", "+")
+            var fullName = cliName.Replace("/", "+")
                 .Replace(",", "\\,")
                 .Replace("&", "\\&")
                 .Replace("*", "\\*");
-            return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
+            return fullName;
         }
+
+
+
 
         /// <summary>
         /// Tests whether a class is immutable, i.e. all public fields are readonly and properties have no set method

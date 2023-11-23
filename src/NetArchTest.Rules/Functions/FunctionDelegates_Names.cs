@@ -12,6 +12,21 @@ namespace NetArchTest.Functions
     {
         // Name & Namespace
 
+        internal static IEnumerable<TypeSpec> AreOfType(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, Type[] types, bool condition)
+        {
+            var fullNames = new HashSet<string>(types.Select(x => x.FullName));
+            if (condition)
+            {
+                return input.Where(c => HasFullName(c.Definition.FullName.RuntimeNameToReflectionName(), fullNames, context.UserOptions.Comparer));
+            }
+            else
+            {
+                return input.Where(c => !HasFullName(c.Definition.FullName.RuntimeNameToReflectionName(), fullNames, context.UserOptions.Comparer));
+            }
+
+            static bool HasFullName(string typeName, HashSet<string> lookigFor, StringComparison comparer) => lookigFor.Contains(typeName);
+        }
+
         internal static IEnumerable<TypeSpec> HaveName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string[] names, bool condition)
         {
             var plainNames = names.Select(x => x.RemoveGenericPart()).ToArray();

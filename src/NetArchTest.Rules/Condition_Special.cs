@@ -5,7 +5,7 @@ namespace NetArchTest.Rules
     public sealed partial class Condition
     {
         /// <summary>
-        /// Selects types that are immutable. (shallow immutability). It is stronger constraint than BeImmutableExternally()
+        /// Selects types that are immutable, and their state cannot be changed after creation. (shallow immutability). Stronger constraint than AreImmutableExternally()
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeImmutable()
@@ -25,7 +25,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that are immutable. (shallow external only immutability). It is waker constraint than BeImmutable()
+        /// Selects types that are immutable from the outside of the given type. (shallow immutability).  Weaker constraint than AreImmutable()
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeImmutableExternally()

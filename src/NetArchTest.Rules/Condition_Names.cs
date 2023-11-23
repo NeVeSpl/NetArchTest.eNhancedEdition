@@ -1,9 +1,30 @@
-﻿using NetArchTest.Functions;
+﻿using System;
+using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
     public sealed partial class Condition
     {
+        /// <summary>
+        /// Selects types that are exactly of given type. (inheritance is not considered)
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList BeOfType(params Type[] type)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreOfType(context, inputTypes, type, true));
+            return CreateConditionList();
+        }
+
+        /// <summary>
+        /// Selects types that are not exactly of given type. (inheritance is not considered)
+        /// </summary>       
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotBeOfType(params Type[] type)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreOfType(context, inputTypes, type, false));
+            return CreateConditionList();
+        }
+
         /// <summary>
         /// Selects types that have a specific name.
         /// </summary>

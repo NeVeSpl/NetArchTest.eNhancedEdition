@@ -2,13 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
-using NetArchTest.TestStructure.NameMatching.Namespace2;
-using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
-using NetArchTest.TestStructure.NameMatching.Namespace3.A;
-using NetArchTest.TestStructure.NameMatching.Namespace3.B;
-using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace1;
-using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.NamespaceA;
+using NetArchTest.TestStructure.Names.Namespace1;
+using NetArchTest.TestStructure.Names.Namespace2;
 using Xunit;
 
 namespace NetArchTest.UnitTests
@@ -20,19 +15,40 @@ namespace NetArchTest.UnitTests
             return Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespace("NetArchTest.TestStructure.Names")
                 .And();
         }
 
 
+        [Fact(DisplayName = "AreOfType")]
+        public void AreOfType()
+        {
+            var result = GetTypesThat().AreOfType(typeof(ClassA1), typeof(ClassA1.Nested), typeof(ClassA1<>.Nested1)).GetReflectionTypes();
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+        }
+        [Fact(DisplayName = "AreNotOfType")]
+        public void AreNotOfType()
+        {
+            var result = GetTypesThat().AreNotOfType(typeof(ClassA1), typeof(ClassA1.Nested), typeof(ClassA1<>.Nested1)).GetReflectionTypes();
+
+            Assert.Equal(5, result.Count());
+            Assert.DoesNotContain<Type>(typeof(ClassA1), result);
+            Assert.DoesNotContain<Type>(typeof(ClassA1.Nested), result);
+            Assert.DoesNotContain<Type>(typeof(ClassA1<>.Nested1), result);
+        }
         [Fact(DisplayName = "HaveName")]
         public void HaveName()
         {
             var result = GetTypesThat().HaveName("ClassA1").GetReflectionTypes();
 
-            Assert.Equal(2, result.Count());
+            Assert.Equal(3, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
             Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
         }
 
         [Fact(DisplayName = "DoNotHaveName")]
@@ -40,47 +56,49 @@ namespace NetArchTest.UnitTests
         {
             var result = GetTypesThat().DoNotHaveName("ClassA1").GetReflectionTypes();
 
-            Assert.Equal(9, result.Count());
+            Assert.Equal(5, result.Count());
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
+          
         }
+
         [Fact(DisplayName = "HaveName_Many")]
         public void HaveName_Many()
         {
             var result = GetTypesThat().HaveName("ClassA1", "ClassA2").GetReflectionTypes();
 
-            Assert.Equal(3, result.Count());
+            Assert.Equal(4, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
             Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
         }
+
         [Fact(DisplayName = "DoNotHaveName_Many")]
         public void DoNotHaveName_Many()
         {
-            var result = GetTypesThat().DoNotHaveName("ClassA1", "ClassA2", "ClassB1", "ClassB2").GetReflectionTypes();
+            var result = GetTypesThat().DoNotHaveName("ClassA1", "ClassA2").GetReflectionTypes();
 
-            Assert.Equal(6, result.Count());            
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(4, result.Count());
+            Assert.Contains<Type>(typeof(ClassB1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
         }
 
         [Fact(DisplayName = "HaveNameStartingWith")]
         public void HaveNameStartingWith()
         {
-            var result = GetTypesThat().HaveNameStartingWith("SomeT").GetReflectionTypes();
-
-            Assert.Equal(2, result.Count()); 
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
+            var result = GetTypesThat().HaveNameStartingWith("ClassA").GetReflectionTypes();
+           
+            Assert.Equal(4, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(ClassA2), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);   
         }
 
         [Fact(DisplayName = "DoNotHaveNameStartingWith")]
@@ -88,55 +106,60 @@ namespace NetArchTest.UnitTests
         {
             var result = GetTypesThat().DoNotHaveNameStartingWith("ClassA").GetReflectionTypes();
 
-            Assert.Equal(7, result.Count());
+            Assert.Equal(4, result.Count());
             Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
         }
 
         [Fact(DisplayName = "HaveNameStartingWith_Many")]
         public void HaveNameStartingWith_Many()
         {
-            var result = GetTypesThat().HaveNameStartingWith("SomeT", "SomeE").GetReflectionTypes();
+            var result = GetTypesThat().HaveNameStartingWith("ClassA", "ClassB").GetReflectionTypes();
 
-            Assert.Equal(3, result.Count());
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
+            Assert.Equal(5, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(ClassA2), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
+            Assert.Contains<Type>(typeof(ClassB1), result);
         }
 
         [Fact(DisplayName = "HaveNameStartingWith_StringComparison")]
         public void HaveNameStartingWith_StringComparison()
         {
-            var result = GetTypesThat().HaveNameStartingWith("SomeT").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
+            var result = GetTypesThat().HaveNameStartingWith("ClassA").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
-            Assert.Single(result); 
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.DoesNotContain<Type>(typeof(SomethingElse), result);
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(ClassA2), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
         }       
 
         [Fact(DisplayName = "DoNotHaveNameStartingWith_StringComparison")]
         public void DoNotHaveNameStartingWith_StringComparison()
         {
-            var result = GetTypesThat().DoNotHaveNameStartingWith("SomeT").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
+            var result = GetTypesThat().DoNotHaveNameStartingWith("ClassA").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
-            Assert.Equal(10, result.Count());
-            Assert.DoesNotContain<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(5, result.Count());
+            Assert.Contains<Type>(typeof(CLASSa1), result);
+            Assert.Contains<Type>(typeof(ClassB1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+
         }
 
         [Fact(DisplayName = "HaveNameEndingWith")]
         public void HaveNameEndingWith()
         {
-            var result = GetTypesThat().HaveNameEndingWith("Entity").GetReflectionTypes();
+            var result = GetTypesThat().HaveNameEndingWith("A1").GetReflectionTypes();
 
-            Assert.Equal(2, result.Count()); 
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);          
+            Assert.Contains<Type>(typeof(ClassA1), result);           
         }
 
         [Fact(DisplayName = "DoNotHaveNameEndingWith")]
@@ -144,25 +167,22 @@ namespace NetArchTest.UnitTests
         {
             var result = GetTypesThat().DoNotHaveNameEndingWith("A1").GetReflectionTypes();
 
-            Assert.Equal(9, result.Count());
+            Assert.Equal(5, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
         }
 
         [Fact(DisplayName = "HaveNameEndingWith_StringComparison")]
         public void HaveNameEndingWith_StringComparison()
         {
-            var result = GetTypesThat().HaveNameEndingWith("Entity").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
+            var result = GetTypesThat().HaveNameEndingWith("A1").GetReflectionTypes(Options.Default with { Comparer = StringComparison.Ordinal });
 
-            Assert.Single(result); 
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.DoesNotContain<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1), result);           
+            Assert.Contains<Type>(typeof(ClassA1), result);
         }       
 
         [Fact(DisplayName = "HaveNameMatching")]
@@ -170,10 +190,12 @@ namespace NetArchTest.UnitTests
         {
             var result = GetTypesThat().HaveNameMatching(@"Class\w1").GetReflectionTypes();
 
-            Assert.Equal(4, result.Count());
+            Assert.Equal(5, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
         }
 
         [Fact(DisplayName = "DoNotHaveNameMatching")]
@@ -181,149 +203,98 @@ namespace NetArchTest.UnitTests
         {
             var result = GetTypesThat().DoNotHaveNameMatching(@"Class\w1").GetReflectionTypes();
 
-            Assert.Equal(7, result.Count()); 
+            Assert.Equal(3, result.Count());
             Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
         }
-
-
 
         [Fact(DisplayName = "ResideInNamespace")]
         public void ResideInNamespace()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1")
                 .GetReflectionTypes();
 
-            Assert.Equal(3, result.Count()); 
+            Assert.Equal(5, result.Count()); 
             Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
         }
 
         [Fact(DisplayName = "DoNotResideInNamespace")]
         public void DoNotResideInNamespace()
         {
             var result = GetTypesThat()
-                .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
+                .DoNotResideInNamespace("NetArchTest.TestStructure.Names.Namespace1")
                 .GetReflectionTypes();
 
-            Assert.Equal(9, result.Count()); 
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(3, result.Count()); 
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
+           
         }
 
         [Fact(DisplayName = "ResideInNamespaceMatching")]
         public void ResideInNamespaceMatching()
         {
             var result = GetTypesThat()
-                .ResideInNamespaceMatching(@"NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace\d")
+                .ResideInNamespaceMatching(@"NetArchTest.TestStructure.Names.Namespace\d")
                 .GetReflectionTypes();
 
-            Assert.Single(result); 
-            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Equal(8, result.Count());
+            
         }
 
         [Fact(DisplayName = "DoNotResideInNamespaceMatching")]
         public void DoNotResideInNamespaceMatching()
         {
             var result = GetTypesThat()
-                .DoNotResideInNamespaceMatching(@"NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace\d")
+                .DoNotResideInNamespaceMatching(@"NetArchTest.TestStructure.Names.Namespace\d")
                 .GetReflectionTypes();
 
-            Assert.Equal(10, result.Count());
-        }
-
-        [Fact(DisplayName = "ResideInNamespaceStartingWith")]
-        public void ResideInNamespaceStartingWith()
-        {
-            var result = GetTypesThat()
-                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching")
-                .GetReflectionTypes();
-
-            Assert.Equal(11, result.Count());
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
-        }
-
-        [Fact(DisplayName = "DoNotResideInNamespaceStartingWith")]
-        public void DoNotResideInNamespaceStartingWith()
-        {
-            var result = GetTypesThat()
-                .DoNotResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching.Namespace2")
-                .GetReflectionTypes();
-
-            Assert.Equal(9, result.Count()); 
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
-        }
+            Assert.Empty(result);
+        }      
 
         [Fact(DisplayName = "ResideInNamespaceEndingWith")]
         public void ResideInNamespaceEndingWith()
         {
             var result = GetTypesThat()
-                .ResideInNamespaceEndingWith(".NameMatching.Namespace1")
+                .ResideInNamespaceEndingWith(".Names.Namespace1")
                 .GetReflectionTypes();
 
-            Assert.Equal(3, result.Count());
+            Assert.Equal(4, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
+            Assert.Contains<Type>(typeof(ClassA2), result);
+            Assert.Contains<Type>(typeof(ClassB1), result);            
         }
 
         [Fact(DisplayName = "DoNotResideInNamespaceEndingWith")]
         public void DoNotResideInNamespaceEndingWith()
         {
             var result = GetTypesThat()
-                .DoNotResideInNamespaceEndingWith(".NameMatching.Namespace1")
+                .DoNotResideInNamespaceEndingWith(".Names.Namespace1")
                 .GetReflectionTypes();
 
-            Assert.Equal(8, result.Count());            
-            Assert.Contains<Type>(typeof(ClassA3), result);        
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(4, result.Count());
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+            Assert.Contains<Type>(typeof(ClassG1<>), result);
         }
 
         [Fact(DisplayName = "ResideInNamespaceContaining")]
-        public void ResideInNamespaceContaining_ClassSelected()
+        public void ResideInNamespaceContaining()
         {
             var result = GetTypesThat()
-                .ResideInNamespaceContaining(".NameMatching.")
+                .ResideInNamespaceContaining(".Names.")
                 .GetReflectionTypes();
 
-            Assert.Equal(11, result.Count()); 
-            Assert.Contains<Type>(typeof(ClassA1), result);
-            Assert.Contains<Type>(typeof(ClassA2), result);
-            Assert.Contains<Type>(typeof(ClassA3), result);
-            Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(ClassB2), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
+            Assert.Equal(8, result.Count()); 
         }
 
         [Fact(DisplayName = "DoNotResideInNamespaceContaining")]
@@ -333,14 +304,11 @@ namespace NetArchTest.UnitTests
                 .DoNotResideInNamespaceContaining("Namespace2")
                 .GetReflectionTypes();
 
-            Assert.Equal(9, result.Count()); 
+            Assert.Equal(5, result.Count());
             Assert.Contains<Type>(typeof(ClassA1), result);
+            Assert.Contains<Type>(typeof(CLASSa1), result);
             Assert.Contains<Type>(typeof(ClassA2), result);
             Assert.Contains<Type>(typeof(ClassB1), result);
-            Assert.Contains<Type>(typeof(SomeThing), result);
-            Assert.Contains<Type>(typeof(SomethingElse), result);
-            Assert.Contains<Type>(typeof(SomeEntity), result);
-            Assert.Contains<Type>(typeof(SomeIdentity), result);
-        }
+        }    
     }
 }

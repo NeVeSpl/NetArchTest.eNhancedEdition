@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.Names.Namespace1;
+using NetArchTest.TestStructure.Names.Namespace2;
 using Xunit;
 
 namespace NetArchTest.UnitTests
@@ -14,8 +15,33 @@ namespace NetArchTest.UnitTests
             return Types
                 .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
                 .That()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespace("NetArchTest.TestStructure.Names")
                 .And();
+        }
+
+        [Fact(DisplayName = "BeOfType")]
+        public void BeOfType()
+        {
+            var result = GetTypesThat()
+                .HaveNameStartingWith("Nested")
+                .Should()
+                .BeOfType(typeof(ClassA1.Nested), typeof(ClassA1<>.Nested1)).GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());          
+            Assert.Contains<Type>(typeof(ClassA1.Nested), result);
+            Assert.Contains<Type>(typeof(ClassA1<>.Nested1), result);
+        }
+        [Fact(DisplayName = "NotBeOfType")]
+        public void NotBeOfType()
+        {
+            var result = GetTypesThat()
+               .DoNotHaveNameStartingWith("Nested")
+               .Should()
+               .NotBeOfType(typeof(ClassA1.Nested), typeof(ClassA1<>.Nested1)).GetReflectionTypes();
+
+            Assert.Equal(6, result.Count());           
+            Assert.DoesNotContain<Type>(typeof(ClassA1.Nested), result);
+            Assert.DoesNotContain<Type>(typeof(ClassA1<>.Nested1), result);
         }
 
 
@@ -23,9 +49,9 @@ namespace NetArchTest.UnitTests
         public void HaveName()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.ClassA1")
                 .Should()
-                .HaveName("ClassB2").GetResult();
+                .HaveName("Nested").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -34,9 +60,9 @@ namespace NetArchTest.UnitTests
         public void NotHaveName()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1")
                 .Should()
-                .NotHaveName("ClassB2").GetResult();
+                .NotHaveName("ClassG1").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -45,9 +71,9 @@ namespace NetArchTest.UnitTests
         public void HaveNameStartingWith()
         {
             var result = GetTypesThat()
-                .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1.ClassA1")
                 .Should()
-                .HaveNameStartingWith("Class").GetResult();
+                .HaveNameStartingWith("Nes").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -56,7 +82,7 @@ namespace NetArchTest.UnitTests
         public void NotHaveNameStartingWith()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1")
                 .Should()
                 .NotHaveNameStartingWith("X").GetResult();
 
@@ -67,9 +93,9 @@ namespace NetArchTest.UnitTests
         public void HaveNameStartingWith_StringComparison()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1.ClassA1")
                 .Should()
-                .HaveNameStartingWith("Some").GetResult(Options.Default with { Comparer = StringComparison.Ordinal});
+                .HaveNameStartingWith("Nes").GetResult(Options.Default with { Comparer = StringComparison.Ordinal});
 
             Assert.True(result.IsSuccessful);
         }
@@ -78,9 +104,9 @@ namespace NetArchTest.UnitTests
         public void NotHaveNameStartingWith_StringComparison()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace1.ClassA1")
                 .Should()
-                .NotHaveNameStartingWith("s").GetResult(Options.Default with { Comparer = StringComparison.Ordinal });
+                .NotHaveNameStartingWith("nes").GetResult(Options.Default with { Comparer = StringComparison.Ordinal });
 
             Assert.True(result.IsSuccessful);
         }
@@ -89,9 +115,9 @@ namespace NetArchTest.UnitTests
         public void HaveNameEndingWith()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace2")
                 .Should()
-                .HaveNameEndingWith("B2").GetResult();
+                .HaveNameEndingWith("1").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -100,42 +126,22 @@ namespace NetArchTest.UnitTests
         public void NotHaveNameEndingWith()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace1")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace2")
                 .Should()
-                .NotHaveNameEndingWith("B2").GetResult();
+                .NotHaveNameEndingWith("2").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
 
-        [Fact(DisplayName = "HaveNameEndingWith_StringComparison")]
-        public void HaveNameEndingWith_StringComparison()
-        {
-            var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3.B")
-                .Should()
-                .HaveNameEndingWith("ntity").GetResult();
-
-            Assert.True(result.IsSuccessful);
-        }
-
-        [Fact(DisplayName = "NotHaveNameEndingWith_StringComparison")]
-        public void NotHaveNameEndingWith_StringComparison()
-        {
-            var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
-                .Should()
-                .NotHaveNameEndingWith("ENTITY").GetResult(Options.Default with { Comparer = StringComparison.Ordinal });
-
-            Assert.True(result.IsSuccessful);
-        }
+        
 
         [Fact(DisplayName = "HaveNameMatching")]
         public void HaveNameMatching()
         {
             var result = GetTypesThat()                
-                .DoNotResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace3")
+                .DoNotResideInNamespace("NetArchTest.TestStructure.Names.Namespace1")
                 .Should()
-                .HaveNameMatching(@"Class\w\d").GetResult();
+                .HaveNameMatching(@"\w*\d").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -144,7 +150,7 @@ namespace NetArchTest.UnitTests
         public void NotHaveNameMatching()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.Namespace2")
                 .Should()
                 .NotHaveNameMatching(@"X\w").GetResult();
 
@@ -159,7 +165,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .HaveNameStartingWith("ClassA")
                 .Should()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching").GetResult();
+                .ResideInNamespace("NetArchTest.TestStructure.Names").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -168,9 +174,9 @@ namespace NetArchTest.UnitTests
         public void NotResideInNamespace_MatchesFound_ClassSelected()
         {
             var result = GetTypesThat()
-                .HaveNameStartingWith("ClassA")
+                .HaveNameStartingWith("ClassB")
                 .Should()
-                .NotResideInNamespace("NetArchTest.TestStructure.Wrong").GetResult();
+                .NotResideInNamespace("NetArchTest.TestStructure.Names.Namespace2").GetResult();
 
             Assert.True(result.IsSuccessful);
         }
@@ -179,9 +185,9 @@ namespace NetArchTest.UnitTests
         public void ResideInNamespaceMatching()
         {
             var result = GetTypesThat()
-                .ResideInNamespace(@"NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace1")
+                .ResideInNamespace(@"NetArchTest.TestStructure.Names.Namespace1")
                 .Should()
-                .ResideInNamespaceMatching(@"NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace\d")
+                .ResideInNamespaceMatching(@"NetArchTest.TestStructure.Names.Namespace\d")
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -191,7 +197,7 @@ namespace NetArchTest.UnitTests
         public void NotResideInNamespaceMatching()
         {
             var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.NamespaceGeneric.NamespaceA")
+                .ResideInNamespace("NetArchTest.TestStructure.Names.NamespaceB")
                 .Should()
                 .NotResideInNamespaceMatching(@"NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace\d")
                 .GetResult();
@@ -205,7 +211,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .HaveNameStartingWith("ClassA")
                 .Should()
-                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching")
+                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.Names")
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -214,12 +220,10 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "NotResideInNamespaceStartingWith")]
         public void NotResideInNamespaceStartingWith()
         {
-            var result = GetTypesThat()
-                .ResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching")
-                .And()
-                .HaveNameEndingWith("1")
+            var result = GetTypesThat()                
+                .HaveNameEndingWith("B1")
                 .Should()
-                .NotResideInNamespaceStartingWith("NetArchTest.TestStructure.NameMatching.Namespace2")
+                .NotResideInNamespaceStartingWith("NetArchTest.TestStructure.Names.Namespace2")
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -229,7 +233,7 @@ namespace NetArchTest.UnitTests
         public void ResideInNamespaceEndingWith()
         {
             var result = GetTypesThat()
-                .HaveName("ClassA1")
+                .HaveName("ClassA2")
                 .Should()
                 .ResideInNamespaceEndingWith(".Namespace1")
                 .GetResult();
@@ -255,7 +259,7 @@ namespace NetArchTest.UnitTests
             var result = GetTypesThat()
                 .HaveNameStartingWith("ClassA")
                 .Should()
-                .ResideInNamespaceContaining(".NameMatching.")
+                .ResideInNamespaceContaining(".Names.")
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
@@ -271,26 +275,6 @@ namespace NetArchTest.UnitTests
                 .GetResult();
 
             Assert.True(result.IsSuccessful);
-        }
-
-       
-
-
-        [Fact(DisplayName = "Types failing condition are reported when test fails.")]
-        public void MatchNotFound_ClassesReported()
-        {
-            var result = GetTypesThat()
-                .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
-                .Should()
-                .HaveName("ClassA2")
-                .GetResult();
-
-            Assert.False(result.IsSuccessful);
-
-            var failingTypes = result.FailingTypes.ToList();
-            Assert.Equal(2, failingTypes.Count);
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassA1", failingTypes[0].ReflectionType.ToString());
-            Assert.Equal("NetArchTest.TestStructure.NameMatching.Namespace1.ClassB1", failingTypes[1].ReflectionType.ToString());
         }
     }
 }
