@@ -12,16 +12,20 @@ NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/
 NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. 
 
 What **eNhancedEdition** has to offer, that is not available in the NetArchTest v1.3.2:
- - [Slices](#slices)
- - added BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
- - fixed BenMorris/NetArchTest#98 - ResideInNamespaceMatching with nested+internal types 
- - fixed BenMorris/NetArchTest#101 - Conditions.OnlyHaveDependenciessOn fails when switch expression is used
- - fixed BenMorris/NetArchTest#119 - Fixed nulls for Success result
- - fixed BenMorris/NetArchTest#120 - Add support for records and init-only properties
- - fixed NeVeSpl/NetArchTest.eNhancedEdition#3 - generic type parameters: `T*`, `T[]`, `T&` were detected as dependencies
- - added BenMorris/NetArchTest#126 - Add support for structs, enums and delegates
- - added BenMorris/NetArchTest#131 - Add support for all access modifiers: public, internal, private, protected, private protected, protected internal
- - fixed BenMorris/NetArchTest#130 - remove number of type parameters (e.g. `1) from the name of generic type
+ - fixed all know bugs present in v1.3.2 :
+     - BenMorris/NetArchTest#98,
+     - BenMorris/NetArchTest#101,
+     - BenMorris/NetArchTest#120,
+     - NeVeSpl/NetArchTest.eNhancedEdition#3
+ - corrected design mistakes:
+     - BenMorris/NetArchTest#119 - Fixed nulls for Success result
+     - BenMorris/NetArchTest#130 - remove number of type parameters (e.g. `1) from the name of generic type
+ - added new feature:
+     - [Slices](#slices)
+     - BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
+     - BenMorris/NetArchTest#126 - Add support for structs, enums and delegates
+     - BenMorris/NetArchTest#131 - Add support for all access modifiers: public, internal, private, protected, private protected, protected internal
+ 
 
 ## Index
 
@@ -140,7 +144,7 @@ Available predicates/conditions:
 | 2N | [NotHaveDependencyOnAll(D1, D2)](documentation/api.md#conditionnothavedependencyonall)  | not all  |  yes | a, b, c, d, e, f |  g, h   |
 | 3N | [HaveDependencyOtherThan(D1, D2)](documentation/api.md#conditionhavedependencyotherthan)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
 
-
+Explnation why a type fails dependecy search test is available on the failing type: [IType.Explanation](documentation/api.md#itypeexplanation)
 
 ## Slices 
 
