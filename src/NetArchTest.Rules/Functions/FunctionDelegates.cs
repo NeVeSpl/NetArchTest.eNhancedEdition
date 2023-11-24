@@ -79,5 +79,16 @@ namespace NetArchTest.Functions
                 return input.Where(t => !rule.MeetsRule(t.Definition));
             }
         }
+        internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, Func<TypeDefinition, bool> rule, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(t => rule(t.Definition));
+            }
+            else
+            {
+                return input.Where(t => !rule(t.Definition));
+            }
+        }
     }
 }

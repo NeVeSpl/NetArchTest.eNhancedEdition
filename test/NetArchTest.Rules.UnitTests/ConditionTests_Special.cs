@@ -58,8 +58,8 @@ namespace NetArchTest.UnitTests
         }
 
 
-        [Fact(DisplayName = "AreStateless")]
-        public void AreStateless()
+        [Fact(DisplayName = "BeStateless")]
+        public void BeStateless()
         {
             var result = Types
                 .InAssembly(Assembly.GetAssembly(typeof(StatelessClass_StaticField)))

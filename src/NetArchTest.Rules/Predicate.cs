@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mono.Cecil;
 using NetArchTest.Assemblies;
 using NetArchTest.Functions;
 using NetArchTest.RuleEngine;
@@ -197,6 +198,15 @@ namespace NetArchTest.Rules
         /// <param name="rule">An instance of the custom rule.</param>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList MeetCustomRule(ICustomRule rule)
+        {
+            AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
+            return CreatePredicateList();
+        }
+        /// <summary>
+        /// Selects types that meet a custom rule.
+        /// </summary>        
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList MeetCustomRule(Func<TypeDefinition, bool> rule)
         {
             AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
             return CreatePredicateList();
