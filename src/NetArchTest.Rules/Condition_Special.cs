@@ -74,5 +74,32 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.OnlyHaveNonNullableMembers(x, true));
             return CreateConditionList();
         }
+
+
+        /// <summary>
+        /// Check if the name of a type is consistent with its source file name
+        /// </summary>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveSourceFileNameMatchingName()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveFileNameMatchingTypeName(context, inputTypes, true));
+            return CreateConditionList();
+        }
+
+        /// <summary>
+        /// Check if the namespace of a type is consistent with its source file path
+        /// </summary>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveSourceFilePathMatchingNamespace()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveFilePathMatchingTypeNamespace(context, inputTypes, true));
+            return CreateConditionList();
+        }
     }
 }

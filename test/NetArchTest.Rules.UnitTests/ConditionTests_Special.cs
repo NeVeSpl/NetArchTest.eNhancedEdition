@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using NetArchTest.Rules;
+using NetArchTest.TestStructure.File;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Stateless;
 using Xunit;
@@ -120,6 +121,68 @@ namespace NetArchTest.UnitTests
                 .DoNotHaveNameStartingWith("NonNullableClass1", "NonNullableClass2", "NullableClass")
                 .Should()
                 .OnlyHaveNonNullableMembers().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+
+        [Fact(DisplayName = "HaveFileNameMatchingTypeName_Should")]
+        public void HaveFileNameMatchingTypeName_Should()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()
+                .ResideInNamespace(namespaceof<SourceFileNameType>())
+                .And()
+                .DoNotHaveNameStartingWith("Incorrect")
+                .Should()
+                .HaveSourceFileNameMatchingName().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "HaveFileNameMatchingTypeName_ShouldNot")]
+        public void HaveFileNameMatchingTypeName_ShouldNot()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()
+                .ResideInNamespace(namespaceof<SourceFileNameType>())
+                .And()
+                .HaveNameStartingWith("Incorrect")
+                .ShouldNot()
+                .HaveSourceFileNameMatchingName().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+
+        [Fact(DisplayName = "HaveSourceFilePathMatchingTypeNamespace_Should")]
+        public void HaveSourceFilePathMatchingTypeNamespace_Should()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()
+                .ResideInNamespace(namespaceof<SourceFileNameType>())
+                .And()
+                .ResideInNamespaceContaining(@"\.Correct")
+                .Should()
+                .HaveSourceFilePathMatchingNamespace().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "HaveSourceFilePathMatchingTypeNamespace_ShouldNot")]
+        public void HaveSourceFilePathMatchingTypeNamespace_ShouldNot()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()
+                .ResideInNamespace(namespaceof<SourceFileNameType>())
+                .And()
+                .ResideInNamespaceContaining(".Incorrect")
+                .ShouldNot()
+                .HaveSourceFilePathMatchingNamespace().GetResult();
 
             Assert.True(result.IsSuccessful);
         }

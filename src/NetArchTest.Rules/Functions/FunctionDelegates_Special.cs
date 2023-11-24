@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Mono.Cecil;
 using NetArchTest.Assemblies;
+using NetArchTest.RuleEngine;
 
 namespace NetArchTest.Functions
 {
@@ -65,6 +68,48 @@ namespace NetArchTest.Functions
             else
             {
                 return input.Where(c => !c.Definition.IsStateless());
+            }
+        }
+
+        internal static IEnumerable<TypeSpec> HaveFileNameMatchingTypeName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => IsMatching(c.SourceFilePath, c.Definition.GetName(), context.UserOptions.Comparer));
+            }
+            else
+            {
+                return input.Where(c => !IsMatching(c.SourceFilePath, c.Definition.GetName(), context.UserOptions.Comparer));
+            }
+
+            static bool IsMatching(string sourceFilePath, string typeName, StringComparison comparer)
+            {
+                if (string.IsNullOrEmpty(sourceFilePath)) return true;
+
+                var fileName = Path.GetFileNameWithoutExtension(sourceFilePath);
+                return fileName.Equals(typeName, comparer);
+            }
+        }
+
+        internal static IEnumerable<TypeSpec> HaveFilePathMatchingTypeNamespace(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => IsMatching(c.SourceFilePath, c.Definition.GetNamespace(), context.UserOptions.Comparer));
+            }
+            else
+            {
+                return input.Where(c => !IsMatching(c.SourceFilePath, c.Definition.GetNamespace(), context.UserOptions.Comparer));
+            }
+
+            static bool IsMatching(string sourceFilePath, string @namespace, StringComparison comparer)
+            {
+                if (string.IsNullOrEmpty(sourceFilePath)) return true;
+
+                var fullPath = Path.GetDirectoryName(sourceFilePath);
+                var pathAsNamespace = fullPath.Replace(Path.DirectorySeparatorChar, '.');                
+
+                return pathAsNamespace.EndsWith(@namespace, comparer);
             }
         }
     }
