@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 using NetArchTest.Assemblies;
+using NetArchTest.RuleEngine;
 using NetArchTest.Rules;
 
 namespace NetArchTest.Functions
@@ -48,7 +49,20 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsSubclassOf(target));
             }
         }
-        
+
+        internal static IEnumerable<TypeSpec> BeInherited(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
+        {
+            var InheritedTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.BaseType?.FullName).Where(x => x is not null));
+            if (condition)
+            {
+                return input.Where(c => InheritedTypes.Contains(c.Definition.FullName));
+            }
+            else
+            {
+                return input.Where(c => !InheritedTypes.Contains(c.Definition.FullName));
+            }
+        }
+
         internal static IEnumerable<TypeSpec> ImplementInterface(IEnumerable<TypeSpec> input, Type typeInterface, bool condition)
         {
             if (!typeInterface.IsInterface)

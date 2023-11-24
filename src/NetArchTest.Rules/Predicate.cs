@@ -134,6 +134,27 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
+        /// Selects types that are inherited by any type
+        /// </summary>        
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        public PredicateList AreInheritedByAnyType()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.BeInherited(context, inputTypes, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that are not inherited by any type
+        /// </summary>        
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
+        public PredicateList AreNotInheritedByAnyType()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.BeInherited(context, inputTypes, false));
+            return CreatePredicateList();
+        }
+
+
+        /// <summary>
         /// Selects types that do not inherit a particular type.
         /// </summary>
         /// <param name="type">The type to match against.</param>

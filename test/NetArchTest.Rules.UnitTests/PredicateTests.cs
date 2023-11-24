@@ -123,6 +123,38 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(NotDerivedClass), result);
         }
 
+
+        [Fact(DisplayName = "AreInheritedByAnyType")]
+        public void AreInheritedByAnyType()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
+                .And()
+                .AreInheritedByAnyType().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(BaseClass), result);
+            Assert.Contains<Type>(typeof(DerivedClass), result);
+        }
+
+        [Fact(DisplayName = "AreNotInheritedByAnyType")]
+        public void AreNotInheritedByAnyType()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
+                .And()
+                .AreNotInheritedByAnyType().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(DerivedDerivedClass), result);
+            Assert.Contains<Type>(typeof(NotDerivedClass), result);
+        }
+
+
         [Fact(DisplayName = "ImplementInterface")]
         public void ImplementInterface()
         {
