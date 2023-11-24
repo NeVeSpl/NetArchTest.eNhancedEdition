@@ -23,8 +23,8 @@ namespace NetArchTest.RuleEngine
         public IEnumerable<TypeSpec> Execute(Options options)
         {
             IEnumerable<TypeSpec> result = types;
-            result = PredicateContext.Sequence.Execute(result, options);
-            result = ConditionContext.Sequence.Execute(result, options); 
+            result = PredicateContext.Sequence.Execute(result, options, types);
+            result = ConditionContext.Sequence.Execute(result, options, types); 
             return result;
         }
 
@@ -32,8 +32,8 @@ namespace NetArchTest.RuleEngine
         {
             bool success;
 
-            var filteredTypes = PredicateContext.Sequence.Execute(types, options);
-            var passingTypes = ConditionContext.Sequence.Execute(filteredTypes, options);
+            var filteredTypes = PredicateContext.Sequence.Execute(types, options, types);
+            var passingTypes = ConditionContext.Sequence.Execute(filteredTypes, options, types);
 
             if (ConditionContext.Should)
             {
@@ -52,7 +52,7 @@ namespace NetArchTest.RuleEngine
             }
 
             // If we've failed, get a collection of failing types so these can be reported in a failing test.
-            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(filteredTypes, selected: !ConditionContext.Should, options);
+            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(filteredTypes, selected: !ConditionContext.Should, options, types);
             return TestResult.Failure(failedTypes);
         }
 

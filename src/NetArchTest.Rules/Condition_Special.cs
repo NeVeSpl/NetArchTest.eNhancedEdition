@@ -1,4 +1,6 @@
-﻿using NetArchTest.Functions;
+﻿using System;
+using Mono.Cecil;
+using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
@@ -77,7 +79,7 @@ namespace NetArchTest.Rules
 
 
         /// <summary>
-        /// Check if the name of a type is consistent with its source file name
+        /// For each type, check if the name is consistent with its source file name.
         /// </summary>
         /// <remarks>
         /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
@@ -90,7 +92,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Check if the namespace of a type is consistent with its source file path
+        /// For each type, check if the namespace is consistent with its source file path.
         /// </summary>
         /// <remarks>
         /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
@@ -99,6 +101,16 @@ namespace NetArchTest.Rules
         public ConditionList HaveSourceFilePathMatchingNamespace()
         {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveFilePathMatchingTypeNamespace(context, inputTypes, true));
+            return CreateConditionList();
+        }
+               
+        /// <summary>
+        /// For each type, check if a matching type with the given name exists.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveMatchingTypeWithName(Func<TypeDefinition, string> getMatchingTypeName)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveMatchingTypeWithName(context, inputTypes, getMatchingTypeName, true));
             return CreateConditionList();
         }
     }

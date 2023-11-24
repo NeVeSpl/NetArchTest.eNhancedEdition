@@ -2,6 +2,8 @@
 using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.File;
+using NetArchTest.TestStructure.File.Correct;
+using NetArchTest.TestStructure.File.Incorrect.Yabadabado;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Stateless;
 using Xunit;
@@ -183,6 +185,32 @@ namespace NetArchTest.UnitTests
                 .ResideInNamespaceContaining(".Incorrect")
                 .ShouldNot()
                 .HaveSourceFilePathMatchingNamespace().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "HaveMatchingTypeWithName_Should")]
+        public void HaveMatchingTypeWithName_Should()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()
+                .AreOfType(typeof(CorrectSourceFileNameType))
+                .Should()
+                .HaveMatchingTypeWithName(x => x.Name + "Tests").GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "HaveMatchingTypeWithName_ShouldNot")]
+        public void HaveMatchingTypeWithName_ShouldNot()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+                .That()               
+                .AreNotOfType(typeof(CorrectSourceFileNameType))
+                .ShouldNot()
+                .HaveMatchingTypeWithName(x => x.Name + "Tests").GetResult();
 
             Assert.True(result.IsSuccessful);
         }

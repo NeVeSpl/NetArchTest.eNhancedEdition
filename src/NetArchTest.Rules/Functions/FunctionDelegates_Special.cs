@@ -112,5 +112,18 @@ namespace NetArchTest.Functions
                 return pathAsNamespace.EndsWith(@namespace, comparer);
             }
         }
+
+        internal static IEnumerable<TypeSpec> HaveMatchingTypeWithName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, Func<TypeDefinition, string> getMatchingTypeName, bool condition)
+        {
+            var exisitingTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.GetName()));
+            if (condition)
+            {
+                return input.Where(c => exisitingTypes.Contains(getMatchingTypeName(c.Definition)));
+            }
+            else
+            {
+                return input.Where(c => !exisitingTypes.Contains(getMatchingTypeName(c.Definition)));
+            }
+        }
     }
 }
