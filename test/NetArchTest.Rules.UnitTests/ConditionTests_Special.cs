@@ -1,7 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
+using NetArchTest.TestStructure.Stateless;
 using Xunit;
+using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
@@ -50,6 +53,22 @@ namespace NetArchTest.UnitTests
                 .HaveName("MutableClass_PublicPropertyPrivateSet", "MutableClass_PrivateField")
                 .Should()
                 .BeImmutableExternally().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+
+        [Fact(DisplayName = "AreStateless")]
+        public void AreStateless()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(StatelessClass_StaticField)))
+                .That()
+                .ResideInNamespace(namespaceof<StatelessClass_StaticField>())
+                .And()
+                .HaveNameStartingWith("Stateless")
+                .Should()
+                .BeStateless().GetResult();
 
             Assert.True(result.IsSuccessful);
         }

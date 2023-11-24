@@ -5,7 +5,9 @@ using NetArchTest.Rules;
 using NetArchTest.TestStructure.Mutability;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Nullable;
+using NetArchTest.TestStructure.Stateless;
 using Xunit;
+using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
@@ -68,6 +70,23 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(ImmutableRecord), result);
             Assert.Contains<Type>(typeof(MutableClass_PublicPropertyPrivateSet), result);
             Assert.Contains<Type>(typeof(MutableClass_PrivateField), result);           
+        }
+
+        [Fact(DisplayName = "AreStateless")]
+        public void AreStateless()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(StatelessClass_StaticField)))
+                .That()
+                .ResideInNamespace(namespaceof<StatelessClass_StaticField>())
+                .And()
+                .AreStateless().GetReflectionTypes();
+
+            Assert.Equal(4, result.Count());
+            Assert.Contains<Type>(typeof(StatelessClass_StaticField), result);
+            Assert.Contains<Type>(typeof(StatelessClass_ConstField), result);
+            Assert.Contains<Type>(typeof(StatelessClass_StaticReadonlyField), result);
+            Assert.Contains<Type>(typeof(StatelessClass_Prop), result);
         }
 
         [Fact(DisplayName = "OnlyHaveNullableMembers")]

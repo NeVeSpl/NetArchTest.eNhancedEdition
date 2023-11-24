@@ -54,5 +54,18 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.OnlyHasNonNullableMembers());
             }
         }
+
+
+        internal static IEnumerable<TypeSpec> BeStateless(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => c.Definition.IsStateless());
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.IsStateless());
+            }
+        }
     }
 }

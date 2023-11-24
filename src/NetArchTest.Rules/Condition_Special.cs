@@ -34,6 +34,17 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
+
+        /// <summary>
+        /// Selects types that are stateless, they do not have instance state
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList BeStateless()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeStateless(x, true));
+            return CreateConditionList();
+        }
+
         /// <summary>
         /// Selects types according to whether they have nullable members.
         /// </summary>

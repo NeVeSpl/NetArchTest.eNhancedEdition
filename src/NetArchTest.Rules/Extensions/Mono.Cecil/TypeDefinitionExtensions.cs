@@ -66,7 +66,7 @@ namespace Mono.Cecil
         /// <param name="typeDefinition">The type definition to convert.</param>
         /// <returns>The equivalent <see cref="Type"/> object instance.</returns>
         public static Type ToType(this TypeDefinition typeDefinition)
-        {            
+        {
             var fullName = RuntimeNameToReflectionName(typeDefinition.FullName);
             return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
         }
@@ -105,7 +105,7 @@ namespace Mono.Cecil
         }
 
 
-      
+
         public static bool OnlyHasNullableMembers(this TypeDefinition typeDefinition)
         {
             var propertiesAreNullable = typeDefinition.Properties.All(p => p.IsNullable());
@@ -159,7 +159,7 @@ namespace Mono.Cecil
             return typeDefinition.FullName.RemoveGenericPart();
         }
 
-       
+
 
 
         public static bool IsDelegate(this TypeDefinition typeDefinition)
@@ -174,7 +174,7 @@ namespace Mono.Cecil
 
 
         public static string GetFilePath(this TypeDefinition typeDefinition)
-        {            
+        {
             if (typeDefinition.HasMethods)
             {
                 foreach (var method in typeDefinition.Methods)
@@ -189,6 +189,23 @@ namespace Mono.Cecil
                 }
             }
             return null;
+        }
+
+        public static bool IsStateless(this TypeDefinition type)
+        {
+            // Check if the type has any instance fields
+            if (type.HasFields)
+            {
+                foreach (var field in type.Fields)
+                {
+                    // If the field is not static, the type is not stateless
+                    if (!field.IsStatic)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

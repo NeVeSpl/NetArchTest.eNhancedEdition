@@ -13,7 +13,7 @@ namespace NetArchTest.Assemblies
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Type> _reflactionType;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<string> _filePath;
+        private readonly Lazy<string> _sourceFilePath;
 
 
         internal TypeContainer(TypeDefinition monoTypeDefinition, string explanation)
@@ -30,7 +30,7 @@ namespace NetArchTest.Assemblies
                 }
                 return null;
             });
-            _filePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
+            _sourceFilePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
             Explanation = explanation;
         }
 
@@ -39,7 +39,7 @@ namespace NetArchTest.Assemblies
         public string FullName => _monoTypeDefinition.FullName;     
         public string Name => _monoTypeDefinition.Name;
         public string Explanation { get; }
-        public string FilePath => _filePath.Value;
+        public string SourceFilePath => _sourceFilePath.Value;
 
 
         public static implicit operator System.Type(TypeContainer type)

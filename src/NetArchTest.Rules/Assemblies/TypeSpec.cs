@@ -7,7 +7,7 @@ namespace NetArchTest.Assemblies
     [DebuggerDisplay("TypeSpec: {FullName}")]
     internal sealed class TypeSpec
     {
-        private readonly Lazy<string> _filePath;
+        private readonly Lazy<string> _sourceFilePath;
 
         public TypeDefinition Definition { get; }
         public string FullName => Definition.FullName;
@@ -16,13 +16,13 @@ namespace NetArchTest.Assemblies
         // Can be use by any function
         internal bool IsPassing { get; set; }
         public string Explanation { get; set; }
-        public string FilePath => _filePath.Value;
+        public string SourceFilePath => _sourceFilePath.Value;
 
 
         public TypeSpec(TypeDefinition definition)
         {
             Definition = definition;
-            _filePath = new Lazy<string>(() => Definition.GetFilePath());
+            _sourceFilePath = new Lazy<string>(() => Definition.GetFilePath());
         }
 
 

@@ -35,6 +35,16 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
+        /// Selects types that are stateless, they do not have instance state
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList AreStateless()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeStateless(x, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
         /// Selects types that have only nullable members.
         /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
