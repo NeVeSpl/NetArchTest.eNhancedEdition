@@ -29,5 +29,14 @@ namespace NetArchTest.Rules
         /// It contains explanation why this Type has failed dependecy search.
         /// </summary>
         string Explanation { get; }
+
+
+        /// <summary>
+        /// Path to the source file where type is defined.
+        /// </summary>
+        /// <remarks>
+        /// This property may be null if assembly debug symbols (PDB) were not loaded correctly or given type does not have any instructions inside.
+        /// </remarks>
+        string FilePath { get; }
     }
 }

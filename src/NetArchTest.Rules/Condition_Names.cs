@@ -28,7 +28,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that have a specific name.
         /// </summary>
-        /// <param name="name">The name of the class to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveName(string name)
         {
@@ -39,7 +41,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that do not have a particular name.
         /// </summary>
-        /// <param name="name">The name of the class to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveName(string name)
         {
@@ -72,7 +76,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types whose names start with the specified text.
         /// </summary>
-        /// <param name="start">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameStartingWith(string start)
         {
@@ -83,18 +89,22 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types whose names do not start with the specified text.
         /// </summary>
-        /// <param name="start">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameStartingWith(string start)
         {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, new[] { start }, false));
             return CreateConditionList();
-        }   
+        }
 
         /// <summary>
         /// Selects types whose names do not end with the specified text.
         /// </summary>
-        /// <param name="end">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameEndingWith(string end)
         {
@@ -105,7 +115,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types whose names do not end with the specified text.
         /// </summary>
-        /// <param name="end">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing
+        /// </remarks>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameEndingWith(string end)
         {

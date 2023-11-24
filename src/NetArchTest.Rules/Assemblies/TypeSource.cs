@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using NetArchTest.Dependencies.DataStructures;
 
 namespace NetArchTest.Assemblies
 {
     internal sealed class TypeSource
     {
-        private static readonly List<string> exclusionList = new List<string>{ "System", "Microsoft", "Mono.Cecil", "netstandard", "NetArchTest.Rules", "<Module>", "xunit", "<PrivateImplementationDetails>" };
+        private static readonly List<string> exclusionList = new List<string>{ "System", "Microsoft", "Mono.Cecil", "netstandard", "NetArchTest.Rules", "<Module>", "xunit", "NuGet" , "<PrivateImplementationDetails>" };
         private static readonly NamespaceTree exclusionTree = new NamespaceTree(exclusionList);
 
 
@@ -17,13 +18,13 @@ namespace NetArchTest.Assemblies
         public static IEnumerable<TypeSpec> FromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
         {
             foreach (var assembly in assemblies)
-            {
-                if (exclusionTree.GetAllMatchingNames(assembly.FullName).Any() || assembly.IsDynamic)
+            {               
+                if (exclusionTree.GetAllMatchingNames(assembly.GetName().Name).Any() || assembly.IsDynamic)
                 {
                     continue;
                 }
 
-                foreach (var type in ReadTypes(assembly.Location))
+                foreach (var type in ReadTypes(assembly.Location, searchDirectories: searchDirectories))
                 {
                     yield return type;
                 }
@@ -33,16 +34,16 @@ namespace NetArchTest.Assemblies
         {
             foreach (var fileName in fileNames)
             {
-                foreach (var type in ReadTypes(fileName))
+                foreach (var type in ReadTypes(fileName, searchDirectories: searchDirectories))
                 {
                     yield return type;
                 }
             }
         }
 
-        private static IEnumerable<TypeSpec> ReadTypes(string assemblyLocation, IEnumerable<string> searchDirectories = null)
+        private static IEnumerable<TypeSpec> ReadTypes(string assemblyLocation, bool readSymbols = true, IEnumerable<string> searchDirectories = null)
         {
-            ReaderParameters readerParameters = null;
+            ReaderParameters readerParameters = new ReaderParameters { ReadSymbols = readSymbols, SymbolReaderProvider = new DefaultSymbolReaderProvider(false) };
 
             if (searchDirectories?.Any() == true)
             {
@@ -52,7 +53,7 @@ namespace NetArchTest.Assemblies
                     assemblyResolver.AddSearchDirectory(searchDirectory);
                 }
 
-                readerParameters = new ReaderParameters { AssemblyResolver = assemblyResolver };
+                readerParameters = new ReaderParameters { AssemblyResolver = assemblyResolver, ReadSymbols = readSymbols, SymbolReaderProvider = new DefaultSymbolReaderProvider(false) };
             }
 
             var assemblyDefinition = ReadAssemblyDefinition(assemblyLocation, readerParameters);

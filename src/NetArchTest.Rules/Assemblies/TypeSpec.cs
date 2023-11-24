@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Mono.Cecil;
 
 namespace NetArchTest.Assemblies
@@ -6,6 +7,8 @@ namespace NetArchTest.Assemblies
     [DebuggerDisplay("TypeSpec: {FullName}")]
     internal sealed class TypeSpec
     {
+        private readonly Lazy<string> _filePath;
+
         public TypeDefinition Definition { get; }
         public string FullName => Definition.FullName;
         // Only for use by FunctionSequence
@@ -13,18 +16,20 @@ namespace NetArchTest.Assemblies
         // Can be use by any function
         internal bool IsPassing { get; set; }
         public string Explanation { get; set; }
+        public string FilePath => _filePath.Value;
 
 
         public TypeSpec(TypeDefinition definition)
         {
             Definition = definition;
+            _filePath = new Lazy<string>(() => Definition.GetFilePath());
         }
 
 
 
-        public TypeWrapper CreateWrapper()
+        public TypeContainer CreateWrapper()
         {
-            return new TypeWrapper(Definition, Explanation);
+            return new TypeContainer(Definition, Explanation);
         }
     }
 }

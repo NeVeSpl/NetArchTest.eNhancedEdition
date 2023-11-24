@@ -28,7 +28,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that have a specific name.
         /// </summary>
-        /// <param name="name">The name of the class to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveName(params string[] name)
         {            
@@ -39,7 +41,9 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that do not have a particular name.
         /// </summary>
-        /// <param name="name">The name of the class to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveName(params string[] name)
         {
@@ -72,40 +76,48 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types whose names start with the specified text.
         /// </summary>
-        /// <param name="start">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameStartingWith(params string[] start)
         {           
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, true));            
             return CreatePredicateList();
-        }       
+        }
 
         /// <summary>
         /// Selects types whose names do not start with the specified text.
         /// </summary>
-        /// <param name="start">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameStartingWith(params string[] start)
         {            
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, false));            
             return CreatePredicateList();
-        }       
+        }
 
         /// <summary>
         /// Selects types whose names end with the specified text.
         /// </summary>
-        /// <param name="end">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(params string[] end)
         {            
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));            
             return CreatePredicateList();
-        }     
+        }
 
         /// <summary>
         /// Selects types whose names do not end with the specified text.
         /// </summary>
-        /// <param name="end">The text to match against.</param>
+        /// <remarks>
+        /// StringComparison.InvariantCultureIgnoreCase is used for comparing, can be changed through Options
+        /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(params string[] end)
         {          

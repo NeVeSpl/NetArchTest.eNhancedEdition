@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Mono.Cecil
@@ -169,6 +169,26 @@ namespace Mono.Cecil
         public static bool IsStruct(this TypeDefinition typeDefinition)
         {
             return typeDefinition.IsValueType && typeDefinition.BaseType?.FullName == "System.ValueType";
+        }
+
+
+
+        public static string GetFilePath(this TypeDefinition typeDefinition)
+        {            
+            if (typeDefinition.HasMethods)
+            {
+                foreach (var method in typeDefinition.Methods)
+                {
+                    if (method.DebugInformation.HasSequencePoints)
+                    {
+                        foreach (var s in method.DebugInformation.SequencePoints)
+                        {
+                            return s.Document.Url;
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

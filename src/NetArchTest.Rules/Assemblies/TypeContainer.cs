@@ -6,17 +6,20 @@ using NetArchTest.Rules;
 namespace NetArchTest.Assemblies
 {
     [DebuggerDisplay("{FullName}")]
-    internal sealed class TypeWrapper : IType
+    internal sealed class TypeContainer : IType
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly TypeDefinition _monoTypeDefinition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<Type> _type;
+        private readonly Lazy<Type> _reflactionType;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Lazy<string> _filePath;
 
-        internal TypeWrapper(TypeDefinition monoTypeDefinition, string explanation)
+
+        internal TypeContainer(TypeDefinition monoTypeDefinition, string explanation)
         {
             _monoTypeDefinition = monoTypeDefinition;
-            _type = new Lazy<Type>(() =>
+            _reflactionType = new Lazy<Type>(() =>
             {                
                 try
                 {
@@ -27,17 +30,19 @@ namespace NetArchTest.Assemblies
                 }
                 return null;
             });
+            _filePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
             Explanation = explanation;
         }
 
 
-        public Type ReflectionType => _type.Value;  
+        public Type ReflectionType => _reflactionType.Value;  
         public string FullName => _monoTypeDefinition.FullName;     
         public string Name => _monoTypeDefinition.Name;
         public string Explanation { get; }
+        public string FilePath => _filePath.Value;
 
 
-        public static implicit operator System.Type(TypeWrapper type)
+        public static implicit operator System.Type(TypeContainer type)
         {
             return type.ReflectionType;
         }
