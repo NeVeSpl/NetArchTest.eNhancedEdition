@@ -1,4 +1,7 @@
-﻿[![net-workflow](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml/badge.svg?branch=main)](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml)
+{{~ config.AddGeneratedFilesToVSProject = false
+    capture output 
+~}}
+[![net-workflow](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml/badge.svg?branch=main)](https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/actions/workflows/net-workflow.yml)
 [![Nuget](https://img.shields.io/nuget/v/NetArchTest.eNhancedEdition?color=%23004880&label=NetArchTest.eNhancedEdition%20nuget)](https://www.nuget.org/packages/NetArchTest.eNhancedEdition)
 
 # NetArchTest.eNhancedEdition
@@ -61,40 +64,9 @@ The library is available as a package on NuGet: [NetArchTest.eNhancedEdition](ht
 ### Examples
 
 ```csharp
-[TestClass]
-public class SampleApp_ModuleAlpha_Tests
-{
-    static readonly Assembly AssemblyUnderTest = typeof(SampleApp.ModuleAlpha.TestUtils).Assembly;
-    [TestMethod]
-    public void PersistenceIsNotAccessibleFromOutsideOfModuleExceptOfDbContext()
-    {
-        var result = Types.InAssembly(AssemblyUnderTest)
-                          .That()
-                          .ResideInNamespace("SampleApp.ModuleAlpha.Persistence")                              
-                          .And()
-                          .DoNotHaveNameEndingWith("DbContext")
-                          .Should()
-                          .NotBePublic()
-                          .GetResult();
-        Assert.IsTrue(result.IsSuccessful);
-    }
-    [TestMethod]
-    public void DomainIsIndependent()
-    {
-        var result = Types.InAssembly(AssemblyUnderTest)
-                          .That()
-                          .ResideInNamespace("SampleApp.ModuleAlpha.Domain")
-                          .ShouldNot()
-                          .HaveDependencyOtherThan(
-                            "System",
-                            "SampleApp.ModuleAlpha.Domain",
-                            "SampleApp.SharedKernel.Domain",
-                            "SampleApp.BuildingBlocks.Domain"                              
-                          )
-                          .GetResult();
-        Assert.IsTrue(result.IsSuccessful, "Domain has lost its independence!");
-    }
-}
+{{ sample = data.Classes | Symbols.WhereNameMatches "SampleApp_ModuleAlpha_Tests" | Array.First
+   sample.SourceCode
+}}
 ```
 
 
@@ -223,3 +195,7 @@ Available options:
 NetArchTest is build on top of [jbevain/cecil](https://github.com/jbevain/cecil) thus it works on CLI level. Unfortunately not every feature of C# language is represented in CLI, thus some things will never be available in NetArchTest, e.g.:
 - BenMorris/NetArchTest#81 - NetArchTest ignores a nameof expression 
 
+{{   
+    end
+    Save output "../readme.md"
+-}}
