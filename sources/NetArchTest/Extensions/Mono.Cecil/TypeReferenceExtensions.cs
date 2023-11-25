@@ -25,5 +25,21 @@ namespace Mono.Cecil
             }
             return typeReference.Namespace;
         }
+
+
+        public static string GetFullNameWithoutGenericParameters(this TypeReference typeReference)
+        {
+            if (typeReference is GenericInstanceType genericInstanceType && genericInstanceType.HasGenericArguments)
+            {
+                return typeReference.GetNamespace() + "." + typeReference.Name;
+            }
+
+            if (typeReference.HasGenericParameters == true )
+            {
+                return typeReference.GetNamespace() + "." + typeReference.Name;
+            }
+
+            return typeReference.FullName;
+        }
     }
 }

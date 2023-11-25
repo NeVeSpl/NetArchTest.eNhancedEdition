@@ -90,7 +90,7 @@ namespace NetArchTest.UnitTests
                 .Inherit(typeof(BaseClass)).GetReflectionTypes();
 
             Assert.Equal(2, result.Count());
-            Assert.Contains<Type>(typeof(DerivedClass), result);
+            Assert.Contains<Type>(typeof(DerivedClass<>), result);
             Assert.Contains<Type>(typeof(DerivedDerivedClass), result);
         }
 
@@ -135,8 +135,8 @@ namespace NetArchTest.UnitTests
                 .AreInheritedByAnyType().GetReflectionTypes();
 
             Assert.Equal(2, result.Count());
-            Assert.Contains<Type>(typeof(BaseClass), result);
-            Assert.Contains<Type>(typeof(DerivedClass), result);
+            Assert.Contains<Type>(typeof(BaseClass), result);           
+            Assert.Contains<Type>(typeof(DerivedClass<>), result);
         }
 
         [Fact(DisplayName = "AreNotInheritedByAnyType")]
@@ -165,8 +165,25 @@ namespace NetArchTest.UnitTests
                 .And()
                 .ImplementInterface(typeof(IExample)).GetReflectionTypes();
 
-            Assert.Single(result); 
+            Assert.Equal(3, result.Count());
             Assert.Contains<Type>(typeof(ImplementsExampleInterface), result);
+            Assert.Contains<Type>(typeof(IGenericExample<>), result);
+            Assert.Contains<Type>(typeof(ImplementsGenericExampleInterface), result);
+        }
+
+        [Fact(DisplayName = "ImplementInterface_OpenGeneric")]
+        public void ImplementInterface_OpenGeneric()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
+                .And()
+                .ImplementInterface(typeof(IGenericExample<>))
+                .GetReflectionTypes();
+
+            Assert.Equal(1, result.Count());          
+            Assert.Contains<Type>(typeof(ImplementsGenericExampleInterface), result);
         }
 
         [Fact(DisplayName = "DoNotImplementInterface")]

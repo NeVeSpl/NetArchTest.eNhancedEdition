@@ -75,11 +75,11 @@ namespace NetArchTest.Functions
         {
             if (condition)
             {
-                return input.Where(c => IsMatching(c.SourceFilePath, c.Definition.GetName(), context.UserOptions.Comparer));
+                return input.Where(c => IsMatching(c.SourceFilePath, c.Definition.GetNameWithoutGenericPart(), context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !IsMatching(c.SourceFilePath, c.Definition.GetName(), context.UserOptions.Comparer));
+                return input.Where(c => !IsMatching(c.SourceFilePath, c.Definition.GetNameWithoutGenericPart(), context.UserOptions.Comparer));
             }
 
             static bool IsMatching(string sourceFilePath, string typeName, StringComparison comparer)
@@ -115,7 +115,7 @@ namespace NetArchTest.Functions
 
         internal static IEnumerable<TypeSpec> HaveMatchingTypeWithName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, Func<TypeDefinition, string> getMatchingTypeName, bool condition)
         {
-            var exisitingTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.GetName()));
+            var exisitingTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.GetNameWithoutGenericPart()));
             if (condition)
             {
                 return input.Where(c => exisitingTypes.Contains(getMatchingTypeName(c.Definition)));

@@ -3,7 +3,7 @@ using SampleApp.ModuleAlpha.App.Users.Output;
 
 namespace SampleApp.ModuleAlpha.App.Users
 {
-    internal class UsersService
+    internal sealed class UsersService
     {
 
         public async Task<long> CreateUser(CreateUser createUser)

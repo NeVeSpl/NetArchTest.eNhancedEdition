@@ -1,6 +1,6 @@
 ﻿namespace NetArchTest.TestStructure.Inheritance
 {
-    public class DerivedDerivedClass : DerivedClass
+    public class DerivedDerivedClass : DerivedClass<string>
     {
     }
 }

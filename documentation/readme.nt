@@ -64,8 +64,11 @@ The library is available as a package on NuGet: [NetArchTest.eNhancedEdition](ht
 ### Examples
 
 ```csharp
-{{ sample = data.Classes | Symbols.WhereNameMatches "SampleApp_ModuleAlpha_Tests" | Array.First
-   sample.SourceCode
+{{ sample1 = data.Classes | Symbols.WhereNameMatches "SampleApp_ModuleAlpha_Tests" | Array.First
+   sample1.SourceCode}}
+
+{{ sample2 = data.Classes | Symbols.WhereNameMatches "SampleApp_ModuleOmega_Tests" | Array.First
+   sample2.SourceCode
 }}
 ```
 

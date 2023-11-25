@@ -57,7 +57,7 @@ namespace NetArchTest.Functions
 
         internal static IEnumerable<TypeSpec> BeInherited(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
         {
-            var InheritedTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.BaseType?.FullName).Where(x => x is not null));
+            var InheritedTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.BaseType?.GetFullNameWithoutGenericParameters()).Where(x => x is not null));
             if (condition)
             {
                 return input.Where(c => InheritedTypes.Contains(c.Definition.FullName));
@@ -84,7 +84,14 @@ namespace NetArchTest.Functions
                 return input.Where(c => !Implements(c.Definition, typeInterface));
             }
 
-            static bool Implements(TypeDefinition c, Type typeInterface) => c.Interfaces.Any(t => t.InterfaceType.FullName.Equals(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
+            static bool Implements(TypeDefinition c, Type typeInterface)
+            {
+                if (typeInterface.IsGenericType)
+                {
+                    return c.Interfaces.Any(t => t.InterfaceType.FullName.StartsWith(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
+                }
+                return c.Interfaces.Any(t => t.InterfaceType.FullName.Equals(typeInterface.FullName, StringComparison.InvariantCultureIgnoreCase));
+            }
         } 
 
         internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)

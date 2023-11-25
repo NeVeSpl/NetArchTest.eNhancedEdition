@@ -135,14 +135,14 @@ namespace Mono.Cecil
         {
             if (typeDefinition.IsNested)
             {
-                return typeDefinition.DeclaringType.GetFullName();
+                return typeDefinition.DeclaringType.FullName;
             }
             return typeDefinition.Namespace;
         }
 
 
 
-        public static string GetName(this TypeDefinition typeDefinition)
+        public static string GetNameWithoutGenericPart(this TypeDefinition typeDefinition)
         {
             if (typeDefinition.HasGenericParameters == false)
             {
@@ -150,14 +150,7 @@ namespace Mono.Cecil
             }
             return typeDefinition.Name.RemoveGenericPart();
         }
-        public static string GetFullName(this TypeDefinition typeDefinition)
-        {
-            if (typeDefinition.HasGenericParameters == false)
-            {
-                return typeDefinition.FullName;
-            }
-            return typeDefinition.FullName.RemoveGenericPart();
-        }
+        
 
 
 

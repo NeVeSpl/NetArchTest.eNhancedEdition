@@ -11,7 +11,7 @@ namespace System
             if (string.IsNullOrEmpty(name)) 
                 return name;
 
-            int index = name.IndexOf('`');
+            int index = name.LastIndexOf('`');
             if (index > 0)
             {
                 return name.Substring(0, index);

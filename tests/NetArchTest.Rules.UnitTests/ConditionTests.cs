@@ -125,7 +125,7 @@ namespace NetArchTest.UnitTests
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
-                .DoNotHaveNameStartingWith("Implements")
+                .HaveNameStartingWith("DoesNotImplement")
                 .Should()
                 .NotImplementInterface(typeof(IExample)).GetResult();
 

@@ -32,11 +32,11 @@ namespace NetArchTest.Functions
             var plainNames = names.Select(x => x.RemoveGenericPart()).ToArray();
             if (condition)
             {
-                return input.Where(c => HasName(c.Definition.GetName(), plainNames, context.UserOptions.Comparer));
+                return input.Where(c => HasName(c.Definition.GetNameWithoutGenericPart(), plainNames, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !HasName(c.Definition.GetName(), plainNames, context.UserOptions.Comparer));
+                return input.Where(c => !HasName(c.Definition.GetNameWithoutGenericPart(), plainNames, context.UserOptions.Comparer));
             }
 
             static bool HasName(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.Equals(x, comparer));
@@ -47,11 +47,11 @@ namespace NetArchTest.Functions
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
             if (condition)
             {
-                return input.Where(c => r.Match(c.Definition.GetName()).Success);
+                return input.Where(c => r.Match(c.Definition.GetNameWithoutGenericPart()).Success);
             }
             else
             {
-                return input.Where(c => !r.Match(c.Definition.GetName()).Success);
+                return input.Where(c => !r.Match(c.Definition.GetNameWithoutGenericPart()).Success);
             }
         }
 
@@ -59,11 +59,11 @@ namespace NetArchTest.Functions
         {
             if (condition)
             {
-                return input.Where(c => StartsWith(c.Definition.GetName(), prefixes, context.UserOptions.Comparer));
+                return input.Where(c => StartsWith(c.Definition.GetNameWithoutGenericPart(), prefixes, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !StartsWith(c.Definition.GetName(), prefixes, context.UserOptions.Comparer));
+                return input.Where(c => !StartsWith(c.Definition.GetNameWithoutGenericPart(), prefixes, context.UserOptions.Comparer));
             }
 
             static bool StartsWith(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.StartsWith(x, comparer));
@@ -73,11 +73,11 @@ namespace NetArchTest.Functions
         {
             if (condition)
             {
-                return input.Where(c => EndsWith(c.Definition.GetName(), suffixes, context.UserOptions.Comparer));
+                return input.Where(c => EndsWith(c.Definition.GetNameWithoutGenericPart(), suffixes, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !EndsWith(c.Definition.GetName(), suffixes, context.UserOptions.Comparer));
+                return input.Where(c => !EndsWith(c.Definition.GetNameWithoutGenericPart(), suffixes, context.UserOptions.Comparer));
             }
 
             static bool EndsWith(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.EndsWith(x, comparer));

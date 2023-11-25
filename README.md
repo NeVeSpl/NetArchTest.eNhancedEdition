@@ -64,20 +64,23 @@ The library is available as a package on NuGet: [NetArchTest.eNhancedEdition](ht
 [TestClass]
 public class SampleApp_ModuleAlpha_Tests
 {
-    static readonly Assembly AssemblyUnderTest = typeof(SampleApp.ModuleAlpha.TestUtils).Assembly;
+    static readonly Assembly AssemblyUnderTest = typeof(TestUtils).Assembly;
+
     [TestMethod]
     public void PersistenceIsNotAccessibleFromOutsideOfModuleExceptOfDbContext()
     {
         var result = Types.InAssembly(AssemblyUnderTest)
                           .That()
-                          .ResideInNamespace("SampleApp.ModuleAlpha.Persistence")                              
+                          .ResideInNamespace("SampleApp.ModuleAlpha.Persistence")
                           .And()
                           .DoNotHaveNameEndingWith("DbContext")
                           .Should()
                           .NotBePublic()
                           .GetResult();
+
         Assert.IsTrue(result.IsSuccessful);
     }
+
     [TestMethod]
     public void DomainIsIndependent()
     {
@@ -89,10 +92,31 @@ public class SampleApp_ModuleAlpha_Tests
                             "System",
                             "SampleApp.ModuleAlpha.Domain",
                             "SampleApp.SharedKernel.Domain",
-                            "SampleApp.BuildingBlocks.Domain"                              
+                            "SampleApp.BuildingBlocks.Domain"
                           )
                           .GetResult();
+
         Assert.IsTrue(result.IsSuccessful, "Domain has lost its independence!");
+    }
+
+}
+
+[TestClass]
+public class SampleApp_ModuleOmega_Tests
+{
+    static readonly Assembly AssemblyUnderTest = typeof(TestUtils).Assembly;
+
+    [TestMethod]
+    public void RequestHandlersShouldBeSealed()
+    {            
+        var result = Types.InAssembly(AssemblyUnderTest)
+                          .That()
+                          .ImplementInterface(typeof(IRequestHandler<,>))
+                          .Should()
+                          .BeSealed()
+                          .GetResult();
+
+        Assert.IsTrue(result.IsSuccessful);
     }
 }
 ```

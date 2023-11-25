@@ -3,4 +3,9 @@
     public class ImplementsExampleInterface : IExample
     {
     }
+
+
+    public class ImplementsGenericExampleInterface : IGenericExample<string>
+    {
+    }
 }
