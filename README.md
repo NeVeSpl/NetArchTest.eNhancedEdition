@@ -18,13 +18,19 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
      - BenMorris/NetArchTest#120,
      - NeVeSpl/NetArchTest.eNhancedEdition#3
  - corrected design mistakes:
-     - BenMorris/NetArchTest#119 - Fixed nulls for Success result
+     - BenMorris/NetArchTest#119 - fixed nulls for Success result
      - BenMorris/NetArchTest#130 - for generic type, number of type parameters (e.g. `1) is no longer considered as a part of its name
  - added new features:
      - [Slices](#slices)
+     - BenMorris/NetArchTest#67 - added predicates: AreOfType, AreNotOfType and conditions: BeOfType, NotBeOfType
+     - BenMorris/NetArchTest#97 - added rules: HaveSourceFileNameMatchingName, HaveSourceFilePathMatchingNamespace
+     - BenMorris/NetArchTest#100 - differentiate two kinds of immutability : AreImmutable and AreImmutableExternally
+     - BenMorris/NetArchTest#100 - added rules: AreStateless, BeStateless
+     - BenMorris/NetArchTest#104 - added rule: HaveMatchingTypeWithName
      - BenMorris/NetArchTest#105 - dependency search functions: HaveDependencyOnAny/OnlyHaveDependencyOn explain why a type fails test through [IType.Explanation](documentation/api.md#itypeexplanation) 
-     - BenMorris/NetArchTest#126 - Added predicates/conditions for structs, enums and delegates
-     - BenMorris/NetArchTest#131 - Added predicates/conditions for all access modifiers: public, internal, private, protected, private protected, protected internal
+     - BenMorris/NetArchTest#126 - added predicates/conditions for structs, enums and delegates
+     - BenMorris/NetArchTest#131 - added predicates/conditions for all access modifiers: public, internal, private, protected, private protected, protected internal
+     - BenMorris/NetArchTest#133 - added rules: AreInheritedByAnyType, AreNotInheritedByAnyType
  
 
 ## Index
