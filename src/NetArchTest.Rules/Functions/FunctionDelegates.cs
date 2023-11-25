@@ -38,6 +38,11 @@ namespace NetArchTest.Functions
         
         internal static IEnumerable<TypeSpec> Inherit(IEnumerable<TypeSpec> input, Type type, bool condition)
         {
+            if (type.IsInterface)
+            {
+                throw new ArgumentException($"The type {type.FullName} is an interface. interfaces are implemented not inherited, please use ImplementInterface instead.");
+            }
+
             // Convert the incoming type to a definition
             var target = type.ToTypeDefinition();
             if (condition)
