@@ -20,6 +20,8 @@
 * [AreEnums](#PredicateAreEnums)
 * [AreGeneric](#PredicateAreGeneric)
 * [AreImmutable](#PredicateAreImmutable)
+* [AreImmutableExternally](#PredicateAreImmutableExternally)
+* [AreInheritedByAnyType](#PredicateAreInheritedByAnyType)
 * [AreInterfaces](#PredicateAreInterfaces)
 * [AreInternal](#PredicateAreInternal)
 * [AreMutable](#PredicateAreMutable)
@@ -29,9 +31,11 @@
 * [AreNotDelegates](#PredicateAreNotDelegates)
 * [AreNotEnums](#PredicateAreNotEnums)
 * [AreNotGeneric](#PredicateAreNotGeneric)
+* [AreNotInheritedByAnyType](#PredicateAreNotInheritedByAnyType)
 * [AreNotInterfaces](#PredicateAreNotInterfaces)
 * [AreNotInternal](#PredicateAreNotInternal)
 * [AreNotNested](#PredicateAreNotNested)
+* [AreNotOfType](#PredicateAreNotOfType)
 * [AreNotPrivate](#PredicateAreNotPrivate)
 * [AreNotPrivateProtected](#PredicateAreNotPrivateProtected)
 * [AreNotProtected](#PredicateAreNotProtected)
@@ -40,16 +44,20 @@
 * [AreNotSealed](#PredicateAreNotSealed)
 * [AreNotStatic](#PredicateAreNotStatic)
 * [AreNotStructures](#PredicateAreNotStructures)
+* [AreOfType](#PredicateAreOfType)
 * [ArePrivate](#PredicateArePrivate)
 * [ArePrivateProtected](#PredicateArePrivateProtected)
 * [AreProtected](#PredicateAreProtected)
 * [AreProtectedInternal](#PredicateAreProtectedInternal)
 * [ArePublic](#PredicateArePublic)
 * [AreSealed](#PredicateAreSealed)
+* [AreStateless](#PredicateAreStateless)
 * [AreStatic](#PredicateAreStatic)
 * [AreStructures](#PredicateAreStructures)
 * [DoNotHaveCustomAttribute](#PredicateDoNotHaveCustomAttribute)
+* [DoNotHaveCustomAttribute<T>](#PredicateDoNotHaveCustomAttribute)
 * [DoNotHaveCustomAttributeOrInherit](#PredicateDoNotHaveCustomAttributeOrInherit)
+* [DoNotHaveCustomAttributeOrInherit<T>](#PredicateDoNotHaveCustomAttributeOrInherit)
 * [DoNotHaveDependencyOnAll](#PredicateDoNotHaveDependencyOnAll)
 * [DoNotHaveDependencyOnAny](#PredicateDoNotHaveDependencyOnAny)
 * [DoNotHaveName](#PredicateDoNotHaveName)
@@ -57,13 +65,17 @@
 * [DoNotHaveNameMatching](#PredicateDoNotHaveNameMatching)
 * [DoNotHaveNameStartingWith](#PredicateDoNotHaveNameStartingWith)
 * [DoNotImplementInterface](#PredicateDoNotImplementInterface)
+* [DoNotImplementInterface<T>](#PredicateDoNotImplementInterface)
 * [DoNotInherit](#PredicateDoNotInherit)
+* [DoNotInherit<T>](#PredicateDoNotInherit)
 * [DoNotResideInNamespace](#PredicateDoNotResideInNamespace)
 * [DoNotResideInNamespaceContaining](#PredicateDoNotResideInNamespaceContaining)
 * [DoNotResideInNamespaceEndingWith](#PredicateDoNotResideInNamespaceEndingWith)
 * [DoNotResideInNamespaceMatching](#PredicateDoNotResideInNamespaceMatching)
 * [HaveCustomAttribute](#PredicateHaveCustomAttribute)
+* [HaveCustomAttribute<T>](#PredicateHaveCustomAttribute)
 * [HaveCustomAttributeOrInherit](#PredicateHaveCustomAttributeOrInherit)
+* [HaveCustomAttributeOrInherit<T>](#PredicateHaveCustomAttributeOrInherit)
 * [HaveDependencyOnAll](#PredicateHaveDependencyOnAll)
 * [HaveDependencyOnAny](#PredicateHaveDependencyOnAny)
 * [HaveDependencyOtherThan](#PredicateHaveDependencyOtherThan)
@@ -73,9 +85,13 @@
 * [HaveNameStartingWith](#PredicateHaveNameStartingWith)
 * [HaveSomeNonNullableMembers](#PredicateHaveSomeNonNullableMembers)
 * [ImplementInterface](#PredicateImplementInterface)
+* [ImplementInterface<T>](#PredicateImplementInterface)
 * [Inherit](#PredicateInherit)
+* [Inherit<T>](#PredicateInherit)
+* [MeetCustomRule](#PredicateMeetCustomRule)
 * [MeetCustomRule](#PredicateMeetCustomRule)
 * [OnlyHaveDependencyOn](#PredicateOnlyHaveDependencyOn)
+* [OnlyHaveNonNullableMembers](#PredicateOnlyHaveNonNullableMembers)
 * [OnlyHaveNullableMembers](#PredicateOnlyHaveNullableMembers)
 * [ResideInNamespace](#PredicateResideInNamespace)
 * [ResideInNamespaceContaining](#PredicateResideInNamespaceContaining)
@@ -99,30 +115,41 @@
 * [BeEnums](#ConditionBeEnums)
 * [BeGeneric](#ConditionBeGeneric)
 * [BeImmutable](#ConditionBeImmutable)
+* [BeImmutableExternally](#ConditionBeImmutableExternally)
 * [BeInterfaces](#ConditionBeInterfaces)
 * [BeInternal](#ConditionBeInternal)
 * [BeMutable](#ConditionBeMutable)
 * [BeNested](#ConditionBeNested)
+* [BeOfType](#ConditionBeOfType)
 * [BePrivate](#ConditionBePrivate)
 * [BePrivateProtected](#ConditionBePrivateProtected)
 * [BeProtected](#ConditionBeProtected)
 * [BeProtectedInternal](#ConditionBeProtectedInternal)
 * [BePublic](#ConditionBePublic)
 * [BeSealed](#ConditionBeSealed)
+* [BeStateless](#ConditionBeStateless)
 * [BeStatic](#ConditionBeStatic)
 * [BeStructures](#ConditionBeStructures)
 * [HaveCustomAttribute](#ConditionHaveCustomAttribute)
+* [HaveCustomAttribute<T>](#ConditionHaveCustomAttribute)
 * [HaveCustomAttributeOrInherit](#ConditionHaveCustomAttributeOrInherit)
+* [HaveCustomAttributeOrInherit<T>](#ConditionHaveCustomAttributeOrInherit)
 * [HaveDependencyOnAll](#ConditionHaveDependencyOnAll)
 * [HaveDependencyOnAny](#ConditionHaveDependencyOnAny)
 * [HaveDependencyOtherThan](#ConditionHaveDependencyOtherThan)
+* [HaveMatchingTypeWithName](#ConditionHaveMatchingTypeWithName)
 * [HaveName](#ConditionHaveName)
 * [HaveNameEndingWith](#ConditionHaveNameEndingWith)
 * [HaveNameMatching](#ConditionHaveNameMatching)
 * [HaveNameStartingWith](#ConditionHaveNameStartingWith)
 * [HaveSomeNonNullableMembers](#ConditionHaveSomeNonNullableMembers)
+* [HaveSourceFileNameMatchingName](#ConditionHaveSourceFileNameMatchingName)
+* [HaveSourceFilePathMatchingNamespace](#ConditionHaveSourceFilePathMatchingNamespace)
 * [ImplementInterface](#ConditionImplementInterface)
+* [ImplementInterface<T>](#ConditionImplementInterface)
 * [Inherit](#ConditionInherit)
+* [Inherit<T>](#ConditionInherit)
+* [MeetCustomRule](#ConditionMeetCustomRule)
 * [MeetCustomRule](#ConditionMeetCustomRule)
 * [NotBeAbstract](#ConditionNotBeAbstract)
 * [NotBeClasses](#ConditionNotBeClasses)
@@ -132,6 +159,7 @@
 * [NotBeInterfaces](#ConditionNotBeInterfaces)
 * [NotBeInternal](#ConditionNotBeInternal)
 * [NotBeNested](#ConditionNotBeNested)
+* [NotBeOfType](#ConditionNotBeOfType)
 * [NotBePrivate](#ConditionNotBePrivate)
 * [NotBePrivateProtected](#ConditionNotBePrivateProtected)
 * [NotBeProtected](#ConditionNotBeProtected)
@@ -141,7 +169,9 @@
 * [NotBeStatic](#ConditionNotBeStatic)
 * [NotBeStructures](#ConditionNotBeStructures)
 * [NotHaveCustomAttribute](#ConditionNotHaveCustomAttribute)
+* [NotHaveCustomAttribute<T>](#ConditionNotHaveCustomAttribute)
 * [NotHaveCustomAttributeOrInherit](#ConditionNotHaveCustomAttributeOrInherit)
+* [NotHaveCustomAttributeOrInherit<T>](#ConditionNotHaveCustomAttributeOrInherit)
 * [NotHaveDependencyOnAll](#ConditionNotHaveDependencyOnAll)
 * [NotHaveDependencyOnAny](#ConditionNotHaveDependencyOnAny)
 * [NotHaveName](#ConditionNotHaveName)
@@ -149,12 +179,15 @@
 * [NotHaveNameMatching](#ConditionNotHaveNameMatching)
 * [NotHaveNameStartingWith](#ConditionNotHaveNameStartingWith)
 * [NotImplementInterface](#ConditionNotImplementInterface)
+* [NotImplementInterface<T>](#ConditionNotImplementInterface)
 * [NotInherit](#ConditionNotInherit)
+* [NotInherit<T>](#ConditionNotInherit)
 * [NotResideInNamespace](#ConditionNotResideInNamespace)
 * [NotResideInNamespaceContaining](#ConditionNotResideInNamespaceContaining)
 * [NotResideInNamespaceEndingWith](#ConditionNotResideInNamespaceEndingWith)
 * [NotResideInNamespaceMatching](#ConditionNotResideInNamespaceMatching)
 * [OnlyHaveDependencyOn](#ConditionOnlyHaveDependencyOn)
+* [OnlyHaveNonNullableMembers](#ConditionOnlyHaveNonNullableMembers)
 * [OnlyHaveNullableMembers](#ConditionOnlyHaveNullableMembers)
 * [ResideInNamespace](#ConditionResideInNamespace)
 * [ResideInNamespaceContaining](#ConditionResideInNamespaceContaining)
@@ -179,6 +212,7 @@
 * [FullName](#ITypeFullName)
 * [Name](#ITypeName)
 * [ReflectionType](#ITypeReflectionType)
+* [SourceFilePath](#ITypeSourceFilePath)
 
 ## Options
 
@@ -266,7 +300,17 @@ Selects types that have generic parameters.
 ```csharp
 PredicateList Predicate.AreImmutable()
 ```
-Selects types that are immutable.
+Selects types that are immutable, and their state cannot be changed after creation. (shallow immutability). Stronger constraint than AreImmutableExternally()
+### Predicate.AreImmutableExternally
+```csharp
+PredicateList Predicate.AreImmutableExternally()
+```
+Selects types that are immutable from the outside of the given type. (shallow immutability).  Weaker constraint than AreImmutable()
+### Predicate.AreInheritedByAnyType
+```csharp
+PredicateList Predicate.AreInheritedByAnyType()
+```
+Selects types that are inherited by any type
 ### Predicate.AreInterfaces
 ```csharp
 PredicateList Predicate.AreInterfaces()
@@ -312,6 +356,11 @@ Selects types that are not enums.
 PredicateList Predicate.AreNotGeneric()
 ```
 Selects types that do not have generic parameters.
+### Predicate.AreNotInheritedByAnyType
+```csharp
+PredicateList Predicate.AreNotInheritedByAnyType()
+```
+Selects types that are not inherited by any type
 ### Predicate.AreNotInterfaces
 ```csharp
 PredicateList Predicate.AreNotInterfaces()
@@ -327,6 +376,11 @@ Selects types that are not declared as internal.
 PredicateList Predicate.AreNotNested()
 ```
 Selects types that are not nested.
+### Predicate.AreNotOfType
+```csharp
+PredicateList Predicate.AreNotOfType(params Type[] type)
+```
+Selects types that are not exactly of given type. (inheritance is not considered)
 ### Predicate.AreNotPrivate
 ```csharp
 PredicateList Predicate.AreNotPrivate()
@@ -367,6 +421,11 @@ Selects types that are not static.
 PredicateList Predicate.AreNotStructures()
 ```
 Selects types that are not structures.
+### Predicate.AreOfType
+```csharp
+PredicateList Predicate.AreOfType(params Type[] type)
+```
+Selects types that are exactly of given type. (inheritance is not considered)
 ### Predicate.ArePrivate
 ```csharp
 PredicateList Predicate.ArePrivate()
@@ -397,6 +456,11 @@ Selects types that have public scope.
 PredicateList Predicate.AreSealed()
 ```
 Selects types according that are marked as sealed.
+### Predicate.AreStateless
+```csharp
+PredicateList Predicate.AreStateless()
+```
+Selects types that are stateless, they do not have instance state
 ### Predicate.AreStatic
 ```csharp
 PredicateList Predicate.AreStatic()
@@ -412,9 +476,19 @@ Selects types that are structures.
 PredicateList Predicate.DoNotHaveCustomAttribute(Type attribute)
 ```
 Selects types that are not decorated with a specific custom attribute.
+### Predicate.DoNotHaveCustomAttribute<T>
+```csharp
+PredicateList Predicate.DoNotHaveCustomAttribute<T>()
+```
+Selects types that are not decorated with a specific custom attribute.
 ### Predicate.DoNotHaveCustomAttributeOrInherit
 ```csharp
 PredicateList Predicate.DoNotHaveCustomAttributeOrInherit(Type attribute)
+```
+Selects types that are not decorated with a specific custom attribute or derived one.
+### Predicate.DoNotHaveCustomAttributeOrInherit<T>
+```csharp
+PredicateList Predicate.DoNotHaveCustomAttributeOrInherit<T>()
 ```
 Selects types that are not decorated with a specific custom attribute or derived one.
 ### Predicate.DoNotHaveDependencyOnAll
@@ -434,7 +508,7 @@ PredicateList Predicate.DoNotHaveName(params string[] name)
 Selects types that do not have a particular name.
 ### Predicate.DoNotHaveNameEndingWith
 ```csharp
-PredicateList Predicate.DoNotHaveNameEndingWith(string end)
+PredicateList Predicate.DoNotHaveNameEndingWith(params string[] end)
 ```
 Selects types whose names do not end with the specified text.
 ### Predicate.DoNotHaveNameMatching
@@ -452,9 +526,19 @@ Selects types whose names do not start with the specified text.
 PredicateList Predicate.DoNotImplementInterface(Type interfaceType)
 ```
 Selects types that do not implement a particular interface.
+### Predicate.DoNotImplementInterface<T>
+```csharp
+PredicateList Predicate.DoNotImplementInterface<T>()
+```
+Selects types that do not implement a particular interface.
 ### Predicate.DoNotInherit
 ```csharp
 PredicateList Predicate.DoNotInherit(Type type)
+```
+Selects types that do not inherit a particular type.
+### Predicate.DoNotInherit<T>
+```csharp
+PredicateList Predicate.DoNotInherit<T>()
 ```
 Selects types that do not inherit a particular type.
 ### Predicate.DoNotResideInNamespace
@@ -482,9 +566,19 @@ Selects types whose namespaces do not match a regular expression.
 PredicateList Predicate.HaveCustomAttribute(Type attribute)
 ```
 Selects types that are decorated with a specific custom attribute.
+### Predicate.HaveCustomAttribute<T>
+```csharp
+PredicateList Predicate.HaveCustomAttribute<T>()
+```
+Selects types that are decorated with a specific custom attribute.
 ### Predicate.HaveCustomAttributeOrInherit
 ```csharp
 PredicateList Predicate.HaveCustomAttributeOrInherit(Type attribute)
+```
+Selects types that are decorated with a specific custom attribute or derived one.
+### Predicate.HaveCustomAttributeOrInherit<T>
+```csharp
+PredicateList Predicate.HaveCustomAttributeOrInherit<T>()
 ```
 Selects types that are decorated with a specific custom attribute or derived one.
 ### Predicate.HaveDependencyOnAll
@@ -509,7 +603,7 @@ PredicateList Predicate.HaveName(params string[] name)
 Selects types that have a specific name.
 ### Predicate.HaveNameEndingWith
 ```csharp
-PredicateList Predicate.HaveNameEndingWith(string end)
+PredicateList Predicate.HaveNameEndingWith(params string[] end)
 ```
 Selects types whose names end with the specified text.
 ### Predicate.HaveNameMatching
@@ -532,9 +626,19 @@ Selects types that have some non-nullable members.
 PredicateList Predicate.ImplementInterface(Type interfaceType)
 ```
 Selects types that implement a particular interface.
+### Predicate.ImplementInterface<T>
+```csharp
+PredicateList Predicate.ImplementInterface<T>()
+```
+Selects types that implement a particular interface.
 ### Predicate.Inherit
 ```csharp
 PredicateList Predicate.Inherit(Type type)
+```
+Selects types that inherit a particular type.
+### Predicate.Inherit<T>
+```csharp
+PredicateList Predicate.Inherit<T>()
 ```
 Selects types that inherit a particular type.
 ### Predicate.MeetCustomRule
@@ -542,11 +646,21 @@ Selects types that inherit a particular type.
 PredicateList Predicate.MeetCustomRule(ICustomRule rule)
 ```
 Selects types that meet a custom rule.
+### Predicate.MeetCustomRule
+```csharp
+PredicateList Predicate.MeetCustomRule(Func<TypeDefinition, bool> rule)
+```
+Selects types that meet a custom rule.
 ### Predicate.OnlyHaveDependencyOn
 ```csharp
 PredicateList Predicate.OnlyHaveDependencyOn(params string[] dependencies)
 ```
 Selects types that have a dependency on any of the supplied types and cannot have any other dependency.
+### Predicate.OnlyHaveNonNullableMembers
+```csharp
+PredicateList Predicate.OnlyHaveNonNullableMembers()
+```
+Selects types that have only non-nullable members.
 ### Predicate.OnlyHaveNullableMembers
 ```csharp
 PredicateList Predicate.OnlyHaveNullableMembers()
@@ -635,7 +749,12 @@ Selects types that have generic parameters.
 ```csharp
 ConditionList Condition.BeImmutable()
 ```
-Selects types that are immutable.
+Selects types that are immutable, and their state cannot be changed after creation. (shallow immutability). Stronger constraint than AreImmutableExternally()
+### Condition.BeImmutableExternally
+```csharp
+ConditionList Condition.BeImmutableExternally()
+```
+Selects types that are immutable from the outside of the given type. (shallow immutability).  Weaker constraint than AreImmutable()
 ### Condition.BeInterfaces
 ```csharp
 ConditionList Condition.BeInterfaces()
@@ -656,6 +775,11 @@ Selects types that are mutable.
 ConditionList Condition.BeNested()
 ```
 Selects types that are nested.
+### Condition.BeOfType
+```csharp
+ConditionList Condition.BeOfType(params Type[] type)
+```
+Selects types that are exactly of given type. (inheritance is not considered)
 ### Condition.BePrivate
 ```csharp
 ConditionList Condition.BePrivate()
@@ -686,6 +810,11 @@ Selects types that are have public scope.
 ConditionList Condition.BeSealed()
 ```
 Selects types according that are marked as sealed.
+### Condition.BeStateless
+```csharp
+ConditionList Condition.BeStateless()
+```
+Selects types that are stateless, they do not have instance state
 ### Condition.BeStatic
 ```csharp
 ConditionList Condition.BeStatic()
@@ -701,9 +830,19 @@ Selects types that are structures.
 ConditionList Condition.HaveCustomAttribute(Type attribute)
 ```
 Selects types are decorated with a specific custom attribut.
+### Condition.HaveCustomAttribute<T>
+```csharp
+ConditionList Condition.HaveCustomAttribute<T>()
+```
+Selects types are decorated with a specific custom attribut.
 ### Condition.HaveCustomAttributeOrInherit
 ```csharp
 ConditionList Condition.HaveCustomAttributeOrInherit(Type attribute)
+```
+Selects types that are decorated with a specific custom attribute or derived one.
+### Condition.HaveCustomAttributeOrInherit<T>
+```csharp
+ConditionList Condition.HaveCustomAttributeOrInherit<T>()
 ```
 Selects types that are decorated with a specific custom attribute or derived one.
 ### Condition.HaveDependencyOnAll
@@ -721,6 +860,11 @@ Selects types that have a dependency on any of the supplied types.
 ConditionList Condition.HaveDependencyOtherThan(params string[] dependencies)
 ```
 Selects types that have a dependency other than any of the given dependencies.
+### Condition.HaveMatchingTypeWithName
+```csharp
+ConditionList Condition.HaveMatchingTypeWithName(Func<TypeDefinition, string> getMatchingTypeName)
+```
+For each type, check if a matching type with the given name exists.
 ### Condition.HaveName
 ```csharp
 ConditionList Condition.HaveName(string name)
@@ -746,9 +890,24 @@ Selects types whose names start with the specified text.
 ConditionList Condition.HaveSomeNonNullableMembers()
 ```
 Selects types according to whether they have nullable members.
+### Condition.HaveSourceFileNameMatchingName
+```csharp
+ConditionList Condition.HaveSourceFileNameMatchingName()
+```
+For each type, check if the name is consistent with its source file name.
+### Condition.HaveSourceFilePathMatchingNamespace
+```csharp
+ConditionList Condition.HaveSourceFilePathMatchingNamespace()
+```
+For each type, check if the namespace is consistent with its source file path.
 ### Condition.ImplementInterface
 ```csharp
 ConditionList Condition.ImplementInterface(Type interfaceType)
+```
+Selects types that implement a particular interface.
+### Condition.ImplementInterface<T>
+```csharp
+ConditionList Condition.ImplementInterface<T>()
 ```
 Selects types that implement a particular interface.
 ### Condition.Inherit
@@ -756,6 +915,16 @@ Selects types that implement a particular interface.
 ConditionList Condition.Inherit(Type type)
 ```
 Selects types that inherit a particular type.
+### Condition.Inherit<T>
+```csharp
+ConditionList Condition.Inherit<T>()
+```
+Selects types that inherit a particular type.
+### Condition.MeetCustomRule
+```csharp
+ConditionList Condition.MeetCustomRule(Func<TypeDefinition, bool> rule)
+```
+Selects types that meet a custom rule.
 ### Condition.MeetCustomRule
 ```csharp
 ConditionList Condition.MeetCustomRule(ICustomRule rule)
@@ -801,6 +970,11 @@ Selects types that are not internal.
 ConditionList Condition.NotBeNested()
 ```
 Selects types that are not nested.
+### Condition.NotBeOfType
+```csharp
+ConditionList Condition.NotBeOfType(params Type[] type)
+```
+Selects types that are not exactly of given type. (inheritance is not considered)
 ### Condition.NotBePrivate
 ```csharp
 ConditionList Condition.NotBePrivate()
@@ -846,9 +1020,19 @@ Selects types that are not structures.
 ConditionList Condition.NotHaveCustomAttribute(Type attribute)
 ```
 Selects types that are not decorated with a specific custom attribute.
+### Condition.NotHaveCustomAttribute<T>
+```csharp
+ConditionList Condition.NotHaveCustomAttribute<T>()
+```
+Selects types that are not decorated with a specific custom attribute.
 ### Condition.NotHaveCustomAttributeOrInherit
 ```csharp
 ConditionList Condition.NotHaveCustomAttributeOrInherit(Type attribute)
+```
+Selects types are not decorated with a specific custom attribute or derived one.
+### Condition.NotHaveCustomAttributeOrInherit<T>
+```csharp
+ConditionList Condition.NotHaveCustomAttributeOrInherit<T>()
 ```
 Selects types are not decorated with a specific custom attribute or derived one.
 ### Condition.NotHaveDependencyOnAll
@@ -886,9 +1070,19 @@ Selects types whose names do not start with the specified text.
 ConditionList Condition.NotImplementInterface(Type interfaceType)
 ```
 Selects types that do not implement a particular interface.
+### Condition.NotImplementInterface<T>
+```csharp
+ConditionList Condition.NotImplementInterface<T>()
+```
+Selects types that do not implement a particular interface.
 ### Condition.NotInherit
 ```csharp
 ConditionList Condition.NotInherit(Type type)
+```
+Selects types that do not inherit a particular type.
+### Condition.NotInherit<T>
+```csharp
+ConditionList Condition.NotInherit<T>()
 ```
 Selects types that do not inherit a particular type.
 ### Condition.NotResideInNamespace
@@ -916,6 +1110,11 @@ Selects types that do not reside in a namespace matching a regular expression.
 ConditionList Condition.OnlyHaveDependencyOn(params string[] dependencies)
 ```
 Selects types that have a dependency on any of the supplied types and cannot have any other dependency.
+### Condition.OnlyHaveNonNullableMembers
+```csharp
+ConditionList Condition.OnlyHaveNonNullableMembers()
+```
+Selects types according to whether they have only non-nullable members.
 ### Condition.OnlyHaveNullableMembers
 ```csharp
 ConditionList Condition.OnlyHaveNullableMembers()
@@ -997,6 +1196,11 @@ Name of the type
 ReflectionType
 ```
 System.Type
+### IType.SourceFilePath
+```csharp
+SourceFilePath
+```
+Path to the source file where type is defined.
 
 ## Options
 ### Options.Comparer
