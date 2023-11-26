@@ -127,16 +127,16 @@ public class SampleApp_ModuleOmega_Tests
 
 The fluent API should direct you in building up a rule, based on a combination of [predicates](documentation/api.md#predicate), [conditions](documentation/api.md#condition) and conjunctions. 
 
-The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from a path, assembly.
+The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from a assembly, domain or patth.
 
 ```csharp
 var types = Types.InAssembly(typeof(MyClass).Assembly);
 ```
-Once you have selected the types you can filter them using one or more predicates. These can be chained together using `And()` or `Or()` conjunctions:
+Once you have loaded the types, you can filter them using one or more predicates. These can be chained together using `And()` or `Or()` conjunctions:
 ```csharp
 types.That().ResideInNamespace("MyProject.Data");
 ```
-Once the set of classes have been filtered you can apply a set of conditions using the `Should()` or `ShouldNot()` methods, e.g.
+Once the set of  types have been filtered, you can apply a set of conditions using the `Should()` or `ShouldNot()` methods, e.g.
 ```csharp
 types.That().ResideInNamespace("MyProject.Data").Should().BeSealed();
 ```

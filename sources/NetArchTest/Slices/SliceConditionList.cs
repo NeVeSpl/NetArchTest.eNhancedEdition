@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NetArchTest.Assemblies;
 using NetArchTest.Rules;
 using NetArchTest.Slices.Model;
 
@@ -42,12 +43,13 @@ namespace NetArchTest.Slices
 
             if (isSuccessful)
             {
-                return TestResult.Success();
+                // todo replace Array.Empty<TypeSpec>() with real data
+                return new TestResult(Array.Empty<TypeSpec>(), Array.Empty<TypeSpec>(), Array.Empty<TypeSpec>(), true);
             }
             else
             {
                 var failingTypes = filteredTypes.Where(x => x.IsPassing == !successIsWhen);
-                return TestResult.Failure(failingTypes.Select(x => x.TypeSpec));
+                return new TestResult(Array.Empty<TypeSpec>(), Array.Empty<TypeSpec>(), failingTypes.Select(x => x.TypeSpec), false);
             }
         }
     }

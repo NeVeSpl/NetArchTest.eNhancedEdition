@@ -29,16 +29,16 @@ namespace NetArchTest.RuleEngine
         }
 
 
-        public IEnumerable<TypeSpec> ExecuteToGetFailingTypes(IEnumerable<TypeSpec> inputTypes, bool selected, Options options, IEnumerable<TypeSpec> allTypes)
+        public IReadOnlyList<TypeSpec> ExecuteToGetFailingTypes(IReadOnlyList<TypeSpec> inputTypes, bool selected, Options options, IEnumerable<TypeSpec> allTypes)
         {
             return Execute(inputTypes, selected, true, options, allTypes);
         }
-        public IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes, Options options, IEnumerable<TypeSpec> allTypes)
+        public IReadOnlyList<TypeSpec> Execute(IReadOnlyList<TypeSpec> inputTypes, Options options, IEnumerable<TypeSpec> allTypes)
         {
             return Execute(inputTypes, true, false, options, allTypes);
         }
 
-        private IEnumerable<TypeSpec> Execute(IEnumerable<TypeSpec> inputTypes, bool selected, bool isFailPathRun, Options options, IEnumerable<TypeSpec> allTypes)
+        private IReadOnlyList<TypeSpec> Execute(IReadOnlyList<TypeSpec> inputTypes, bool selected, bool isFailPathRun, Options options, IEnumerable<TypeSpec> allTypes)
         {
             if (isEmpty) return inputTypes;
 

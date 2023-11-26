@@ -30,7 +30,6 @@ namespace NetArchTest.Rules
         /// </summary>
         string Explanation { get; }
 
-
         /// <summary>
         /// Path to the source file where type is defined.
         /// </summary>
