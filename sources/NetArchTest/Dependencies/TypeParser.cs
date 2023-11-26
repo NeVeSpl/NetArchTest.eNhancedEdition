@@ -26,7 +26,7 @@
            
             var monoTypeParser = Activator.CreateInstance(mono_TypeParserType, BindingFlags.Instance | BindingFlags.NonPublic, null, args: new object[] { fullName }, null);
             var monoType = mono_ParseTypeMethod.Invoke(monoTypeParser, new object[] { false });
-            foreach(var token in WalkThroughMonoType(monoType))
+            foreach (var token in WalkThroughMonoType(monoType))
             {
                 yield return token;
             }
@@ -83,5 +83,75 @@
                 }
             }
         }
+
+
+
+
+        public static string ParseReflectionNameToRuntimeName(string fullName)
+        {
+            var monoTypeParser = Activator.CreateInstance(mono_TypeParserType, BindingFlags.Instance | BindingFlags.NonPublic, null, args: new object[] { fullName }, null);
+            var monoType = mono_ParseTypeMethod.Invoke(monoTypeParser, new object[] { false });
+            return string.Concat(WalkThroughMonoType2(monoType));
+        }
+
+        private static IEnumerable<string> WalkThroughMonoType2(object monoType)
+        {
+            yield return mono_type_fullnameField.GetValue(monoType) as string;
+
+            var nested = mono_nested_namesField.GetValue(monoType) as string[];
+            if (nested != null)
+            {
+                foreach (var nestedName in nested)
+                {
+                    yield return "/";
+                    yield return nestedName;
+                }
+            }
+
+            var generics = mono_generic_argumentsField.GetValue(monoType) as object[];
+            if (generics != null)
+            {
+                yield return "<";
+                for (int i = 0; i < generics.Length; i++)
+                {
+                    object generic = generics[i];
+                    foreach (var token in WalkThroughMonoType(generic))
+                    {
+                        yield return token;
+                    }
+                    if (i < generics.Length - 1)
+                    {
+                        yield return ",";
+                    }
+                }
+                yield return ">";
+            }
+
+            var specs = mono_specsField.GetValue(monoType) as int[];
+            if (specs != null)
+            {
+                for (int i = 0; i < specs.Length; ++i)
+                {
+                    if (specs[i] == -1)
+                    {
+                        yield return "*";
+                    }
+                    if (specs[i] == -2)
+                    {
+                        yield return "&";
+                    }
+                    if (specs[i] == -3)
+                    {
+                        yield return "[]";
+                    }
+                    if (specs[i] >= 2)
+                    {
+                        yield return "[,]";
+                    }
+                }
+            }
+        }
+      
+
     }
 }

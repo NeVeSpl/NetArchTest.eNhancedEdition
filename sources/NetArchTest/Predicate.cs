@@ -44,7 +44,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttribute(Type attribute)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveCustomAttribute(context, inputTypes, attribute, true));
             return CreatePredicateList();
         }
         /// <summary>
@@ -63,7 +63,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveCustomAttribute(Type attribute)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveCustomAttribute(context, inputTypes, attribute, false));
             return CreatePredicateList();
         }
         /// <summary>

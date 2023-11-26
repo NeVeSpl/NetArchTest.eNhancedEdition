@@ -5,6 +5,7 @@ using NetArchTest.CrossAssemblyTest.A;
 using NetArchTest.CrossAssemblyTest.B;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.CustomAttributes;
+using NetArchTest.TestStructure.CustomAttributes.Attributes;
 using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
@@ -25,11 +26,72 @@ namespace NetArchTest.UnitTests
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
-                .HaveCustomAttribute(typeof(ClassCustomAttribute)).GetReflectionTypes();
+                .HaveCustomAttribute(typeof(ClassCustomAttribute))
+                .GetReflectionTypes();
 
             Assert.Single(result);
             Assert.Contains<Type>(typeof(AttributePresent), result);
         }
+
+        [Fact(DisplayName = "HaveCustomAttribute_Nested")]
+        public void HaveCustomAttribute_Nested()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+                .That()
+                .ResideInNamespace(namespaceof<AttributePresent>())
+                .And()
+                .HaveCustomAttribute(typeof(ClassCustomAttribute.ClassNestedCustomAttribute.ClassNestedNestedCustomAttribute))
+                .GetReflectionTypes();
+
+            Assert.Single(result);
+            Assert.Contains<Type>(typeof(AttributePresent), result);
+        }
+
+        [Fact(DisplayName = "HaveCustomAttribute_Generic_Unbound")]
+        public void HaveCustomAttribute_Generic_Unbound()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+                .That()
+                .ResideInNamespace(namespaceof<AttributePresent>())
+                .And()              
+                .HaveCustomAttribute(typeof(GenericCustomAttribute<>))
+                .GetReflectionTypes();
+
+            Assert.Single(result);
+            Assert.Contains<Type>(typeof(AttributePresent), result);
+        }
+
+        [Fact(DisplayName = "HaveCustomAttribute_Generic_Closed")]
+        public void HaveCustomAttribute_Generic_Closed()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+                .That()
+                .ResideInNamespace(namespaceof<AttributePresent>())
+                .And()
+                .HaveCustomAttribute(typeof(GenericCustomAttribute<int>))
+                .GetReflectionTypes();
+
+            Assert.Single(result);
+            Assert.Contains<Type>(typeof(AttributePresent), result);
+        }
+
+        [Fact(DisplayName = "HaveCustomAttribute_FromDifferentAssembly")]
+        public void HaveCustomAttribute_FromDifferentAssembly()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+                .That()
+                .ResideInNamespace(namespaceof<AttributePresent>())
+                .And()
+                .HaveCustomAttribute(typeof(ClassCustomAttributeFromA))
+                .GetReflectionTypes();
+
+            Assert.Single(result);
+            Assert.Contains<Type>(typeof(AttributePresent), result);
+        }       
 
         [Fact(DisplayName = "DoNotHaveCustomAttribute")]
         public void DoNotHaveCustomAttribute()
@@ -41,7 +103,7 @@ namespace NetArchTest.UnitTests
                 .And()
                 .DoNotHaveCustomAttribute(typeof(ClassCustomAttribute)).GetReflectionTypes();
 
-            Assert.Equal(4, result.Count()); 
+            Assert.Equal(7, result.Count()); 
             Assert.Contains<Type>(typeof(NoAttributes), result);
             Assert.Contains<Type>(typeof(ClassCustomAttribute), result);
             Assert.Contains<Type>(typeof(InheritAttributePresent), result);
@@ -63,6 +125,23 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(InheritAttributePresent), result);
         }
 
+        [Fact(DisplayName = "HaveCustomAttributeOrInheri_FromDifferentAssemblyt")]
+        public void HaveCustomAttributeOrInheri_FromDifferentAssemblyt()
+        {
+            var result = Types
+                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+                .That()
+                .ResideInNamespace(typeof(AttributePresent).Namespace)
+                .And()
+                .HaveCustomAttributeOrInherit(typeof(ClassCustomAttributeFromA)).GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(AttributePresent), result);
+            Assert.Contains<Type>(typeof(InheritAttributePresent), result);
+        }
+
+
+
         [Fact(DisplayName = "DoNotHaveCustomAttributeOrInherit")]
         public void DoNotHaveCustomAttributeOrInherit()
         {
@@ -73,7 +152,7 @@ namespace NetArchTest.UnitTests
                 .And()
                 .DoNotHaveCustomAttributeOrInherit(typeof(ClassCustomAttribute)).GetReflectionTypes();
 
-            Assert.Equal(3, result.Count());
+            Assert.Equal(6, result.Count());
             Assert.Contains<Type>(typeof(NoAttributes), result);
             Assert.Contains<Type>(typeof(ClassCustomAttribute), result);          
             Assert.Contains<Type>(typeof(InheritClassCustomAttribute), result);

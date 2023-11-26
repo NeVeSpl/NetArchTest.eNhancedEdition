@@ -7,13 +7,13 @@ namespace Mono.Cecil
 {
     static internal class TypeDefinitionExtensions
     {
-        /// <summary>
-        /// Tests whether one class inherits from another.
-        /// </summary>
-        /// <param name="child">The class that is inheriting from the parent.</param>
-        /// <param name="parent">The parent that is inherited.</param>
-        /// <returns>An indication of whether the child inherits from the parent.</returns>
-        public static bool IsSubclassOf(this TypeDefinition child, TypeDefinition parent)
+        public static bool IsSubclassOf(this TypeReference child, TypeReference parent)
+        {
+            var typeDef = child.Resolve();
+            return typeDef.IsSubclassOf(parent);
+        }
+
+        public static bool IsSubclassOf(this TypeDefinition child, TypeReference parent)
         {
             if (parent != null)
             {
@@ -22,36 +22,8 @@ namespace Mono.Cecil
             }
 
             return false;
-        }
+        }        
 
-        /// <summary>
-        /// Tests whether two type definitions are from the same assembly.
-        /// The comparison is based on the full assembly names.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns>An indication of whether the both types are from the same assembly.</returns>
-        public static bool IsFromSameAssemblyAs(this TypeDefinition a, TypeDefinition b)
-        {
-            return a.Module.Assembly.ToString() == b.Module.Assembly.ToString();
-        }
-
-        /// <summary>
-        /// Tests whether the provided types are the same type.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns>An indication of whether the types are the same.</returns>
-        public static bool IsSameTypeAs(this TypeDefinition a, TypeDefinition b)
-        {
-            return a.IsFromSameAssemblyAs(b) && a.MetadataToken == b.MetadataToken;
-        }
-
-        /// <summary>
-        /// Enumerate the base classes throughout the chain of inheritence.
-        /// </summary>
-        /// <param name="classType">The class to enumerate.</param>
-        /// <returns>The enumeration of base classes.</returns>
         private static IEnumerable<TypeDefinition> EnumerateBaseClasses(this TypeDefinition classType)
         {
             for (var typeDefinition = classType; typeDefinition != null; typeDefinition = typeDefinition.BaseType?.Resolve())
@@ -60,6 +32,26 @@ namespace Mono.Cecil
             }
         }
 
+        public static bool IsAlmostEqualTo(this TypeReference child, TypeDefinition parent)
+        {            
+            if (child is GenericInstanceType genericInstanceTypeB)
+            {
+                if (parent.IsSameTypeAs(genericInstanceTypeB.ElementType))
+                {
+                    return true;
+                }
+            }
+
+            if (parent.IsSameTypeAs(child))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
         /// <summary>
         /// Convert the definition to a <see cref="Type"/> object instance.
         /// </summary>
@@ -67,20 +59,10 @@ namespace Mono.Cecil
         /// <returns>The equivalent <see cref="Type"/> object instance.</returns>
         public static Type ToType(this TypeDefinition typeDefinition)
         {
-            var fullName = RuntimeNameToReflectionName(typeDefinition.FullName);
+            var fullName = typeDefinition.FullName.RuntimeNameToReflectionName();
             return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
         }
-        public static string RuntimeNameToReflectionName(this string cliName)
-        {
-            // Nested types have a forward slash that should be replaced with "+"
-            // C++ template instantiations contain comma separator for template arguments,
-            // getting address operators and pointer type designations which should be prefixed by backslash
-            var fullName = cliName.Replace("/", "+")
-                .Replace(",", "\\,")
-                .Replace("&", "\\&")
-                .Replace("*", "\\*");
-            return fullName;
-        }
+       
 
 
 
@@ -150,9 +132,9 @@ namespace Mono.Cecil
             }
             return typeDefinition.Name.RemoveGenericPart();
         }
+
+
         
-
-
 
 
         public static bool IsDelegate(this TypeDefinition typeDefinition)

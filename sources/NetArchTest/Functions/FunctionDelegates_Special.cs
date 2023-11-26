@@ -116,6 +116,7 @@ namespace NetArchTest.Functions
         internal static IEnumerable<TypeSpec> HaveMatchingTypeWithName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, Func<TypeDefinition, string> getMatchingTypeName, bool condition)
         {
             var exisitingTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.GetNameWithoutGenericPart()));
+
             if (condition)
             {
                 return input.Where(c => exisitingTypes.Contains(getMatchingTypeName(c.Definition)));

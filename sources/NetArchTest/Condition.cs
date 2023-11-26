@@ -49,7 +49,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveCustomAttribute(Type attribute)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveCustomAttribute(context, inputTypes, attribute, true));
             return CreateConditionList();
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveCustomAttribute(Type attribute)
         {
-            AddFunctionCall(x => FunctionDelegates.HaveCustomAttribute(x, attribute, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveCustomAttribute(context, inputTypes, attribute, false));
             return CreateConditionList();
         }
         /// <summary>

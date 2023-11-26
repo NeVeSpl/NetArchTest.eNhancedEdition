@@ -41,5 +41,31 @@ namespace Mono.Cecil
 
             return typeReference.FullName;
         }
+
+        public static bool IsSameTypeAs(this TypeReference a, TypeReference b)
+        {
+            bool sameAssembly = a.IsFromSameAssemblyAs(b);
+            bool sameName = string.Equals(a.FullName, b.FullName, StringComparison.Ordinal);
+            return sameAssembly && sameName;
+        }
+        private static bool IsFromSameAssemblyAs(this TypeReference a, TypeReference b)
+        {
+            var aName = GetAssemblyName(a.Scope);
+            var bName = GetAssemblyName(b.Scope);
+
+            return aName == bName;
+        }
+        private static string GetAssemblyName(IMetadataScope scope)
+        {
+            if (scope is ModuleDefinition moduleDefinition)
+            {
+                return moduleDefinition.Assembly.FullName;
+            }
+            if (scope is AssemblyNameReference assemblyNameReference)
+            {
+                return assemblyNameReference.FullName;
+            }
+            return scope.Name;
+        }
     }
 }

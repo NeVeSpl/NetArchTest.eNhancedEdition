@@ -14,17 +14,16 @@ namespace NetArchTest.Functions
 
         internal static IEnumerable<TypeSpec> AreOfType(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, Type[] types, bool condition)
         {
-            var fullNames = new HashSet<string>(types.Select(x => x.FullName));
+            var targets = types.Select(x =>  x.ToTypeDefinition());
+
             if (condition)
             {
-                return input.Where(c => HasFullName(c.Definition.FullName.RuntimeNameToReflectionName(), fullNames, context.UserOptions.Comparer));
+                return input.Where(c => targets.Any(t => c.Definition.IsAlmostEqualTo(t)));
             }
             else
             {
-                return input.Where(c => !HasFullName(c.Definition.FullName.RuntimeNameToReflectionName(), fullNames, context.UserOptions.Comparer));
+                return input.Where(c => !targets.Any(t => c.Definition.IsAlmostEqualTo(t)));
             }
-
-            static bool HasFullName(string typeName, HashSet<string> lookigFor, StringComparison comparer) => lookigFor.Contains(typeName);
         }
 
         internal static IEnumerable<TypeSpec> HaveName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string[] names, bool condition)

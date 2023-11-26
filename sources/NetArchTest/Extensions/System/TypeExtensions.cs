@@ -1,30 +1,41 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Mono.Cecil;
+using NetArchTest.Dependencies;
 
 namespace System
-{   
+{
     static internal class TypeExtensions
     {
-        /// <summary>
-        /// Converts the value to a <see cref="TypeDefinition"/> instance.
-        /// </summary>
-        /// <param name="type">The type to convert.</param>
-        /// <returns>The converted value.</returns>
         public static TypeDefinition ToTypeDefinition(this Type type)
         {
-            // Get the assembly using reflection
-            var assembly = Assembly.GetAssembly(type);
+            var reflectionAssembly = Assembly.GetAssembly(type);
+            var assemblyDef = AssemblyDefinition.ReadAssembly(reflectionAssembly.Location);
 
-            // Load the assembly into the Mono.Cecil library
-            var assemblyDef = AssemblyDefinition.ReadAssembly(assembly.Location);
+            foreach (var module in assemblyDef.Modules)
+            {
+                var typeRef = module.GetType(type.FullName, true);
+                var typeDef = typeRef?.Resolve();
+                if (typeDef is not null) return typeDef;
+            }
 
-            // Find the matching type
-            var dependencies = (assemblyDef.Modules
-                .SelectMany(t => t.Types)
-                .Where(t => t.IsClass && t.Namespace != null && t.FullName.Equals(type.FullName, StringComparison.InvariantCultureIgnoreCase)));
+            return null;
+        }
 
-            return dependencies.FirstOrDefault();
+        public static string GetNormalizedFullName(this Type type)
+        {
+            var name = type.Name;
+            var fullName = type.FullName;
+            var toString = type.ToString();
+            var assemblyQualifiedName = type.AssemblyQualifiedName;
+
+            var monoName = TypeParser.ParseReflectionNameToRuntimeName(type.FullName);
+
+            if (type.IsGenericType && type.ContainsGenericParameters == false)
+            {
+                //return toString.ReflectionNameToRuntimeName();
+            }
+
+            return monoName;
         }
     }
 }

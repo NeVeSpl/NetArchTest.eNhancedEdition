@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-	  <LangVersion>10.0</LangVersion>
+	  <LangVersion>11.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -14,6 +14,10 @@
     <Compile Remove="Scope\**" />
     <EmbeddedResource Remove="Scope\**" />
     <None Remove="Scope\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetArchTest.CrossAssemblyTest.B\NetArchTest.CrossAssemblyTest.B.csproj" />
   </ItemGroup>
   
 </Project>
