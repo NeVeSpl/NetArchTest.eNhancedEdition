@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.File;
-using NetArchTest.TestStructure.File.Correct;
 using NetArchTest.TestStructure.File.Incorrect.Yabadabado;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Stateless;
@@ -11,13 +9,19 @@ using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Special
+    public class ConditionTests_Special : IClassFixture<SpecialFixture>
     {
+        SpecialFixture fixture;
+
+        public ConditionTests_Special(SpecialFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         [Fact(DisplayName = "BeImmutable")]
         public void BeImmutable()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types               
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -31,8 +35,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "BeMutable")]
         public void BeMutable()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -46,8 +49,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "BeImmutableExternally")]
         public void BeImmutableExternally()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -64,8 +66,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "BeStateless")]
         public void BeStateless()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(StatelessClass_StaticField)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<StatelessClass_StaticField>())
                 .And()
@@ -79,8 +80,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "OnlyHaveNullableMembers")]
         public void OnlyHaveNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
@@ -96,8 +96,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveSomeNonNullableMembers")]
         public void HaveSomeNonNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
@@ -113,8 +112,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "OnlyHaveNonNullableMembers")]
         public void OnlyHaveNonNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
@@ -131,8 +129,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveFileNameMatchingTypeName_Should")]
         public void HaveFileNameMatchingTypeName_Should()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<SourceFileNameType>())
                 .And()
@@ -146,8 +143,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveFileNameMatchingTypeName_ShouldNot")]
         public void HaveFileNameMatchingTypeName_ShouldNot()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<SourceFileNameType>())
                 .And()
@@ -162,8 +158,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveSourceFilePathMatchingTypeNamespace_Should")]
         public void HaveSourceFilePathMatchingTypeNamespace_Should()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<SourceFileNameType>())
                 .And()
@@ -177,8 +172,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveSourceFilePathMatchingTypeNamespace_ShouldNot")]
         public void HaveSourceFilePathMatchingTypeNamespace_ShouldNot()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<SourceFileNameType>())
                 .And()
@@ -192,8 +186,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveMatchingTypeWithName_Should")]
         public void HaveMatchingTypeWithName_Should()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()
                 .AreOfType(typeof(CorrectSourceFileNameType))
                 .Should()
@@ -205,8 +198,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveMatchingTypeWithName_ShouldNot")]
         public void HaveMatchingTypeWithName_ShouldNot()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(SourceFileNameType)))
+            var result = fixture.Types
                 .That()               
                 .AreNotOfType(typeof(CorrectSourceFileNameType))
                 .ShouldNot()

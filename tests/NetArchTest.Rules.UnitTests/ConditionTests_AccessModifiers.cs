@@ -1,16 +1,21 @@
-﻿using System.Reflection;
-using NetArchTest.Rules;
-using NetArchTest.TestStructure.AccessModifiers;
+﻿using NetArchTest.Rules;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_AccessModifiers
+    public class ConditionTests_AccessModifiers : IClassFixture<AccessModifiersFixture>
     {
+        AccessModifiersFixture fixture;
+
+        public ConditionTests_AccessModifiers(AccessModifiersFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(PublicClass)))
+            return fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.AccessModifiers")
                 .And();

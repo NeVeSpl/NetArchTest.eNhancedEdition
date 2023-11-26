@@ -1,16 +1,12 @@
 ﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Mono.Cecil;
     using NetArchTest.Assemblies;
     using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
-    using NetArchTest.TestStructure.Dependencies.Search;
-    using NetArchTest.TestStructure.Dependencies.Search.DependencyLocation;
     using Xunit;
 
     internal static class Utils

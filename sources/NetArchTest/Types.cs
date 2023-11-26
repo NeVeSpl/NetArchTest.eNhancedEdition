@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Mono.Cecil;
 using NetArchTest.Assemblies;
 using NetArchTest.RuleEngine;
 using NetArchTest.Slices;
@@ -16,10 +17,10 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed class Types
     {
-        private readonly IEnumerable<TypeSpec> types;
+        private readonly IEnumerable<TypeDefinition> types;
 
 
-        private Types(IEnumerable<TypeSpec> types)
+        private Types(IEnumerable<TypeDefinition> types)
         {
             this.types = types;
         }

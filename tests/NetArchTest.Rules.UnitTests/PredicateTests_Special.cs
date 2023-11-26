@@ -11,13 +11,27 @@ using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests_Special
+    public class SpecialFixture
     {
+        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+    }
+
+
+
+    public class PredicateTests_Special : IClassFixture<SpecialFixture>
+    {
+        SpecialFixture fixture;
+
+        public PredicateTests_Special(SpecialFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
         [Fact(DisplayName = "AreImmutable")]
         public void AreImmutable()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types                
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -35,8 +49,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "AreMutable")]
         public void AreMutable()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types                
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -54,8 +67,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "AreImmutableExternally")]
         public void AreImmutableExternally()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Mutability")
                 .And()
@@ -75,8 +87,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "AreStateless")]
         public void AreStateless()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(StatelessClass_StaticField)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<StatelessClass_StaticField>())
                 .And()
@@ -92,8 +103,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "OnlyHaveNullableMembers")]
         public void OnlyHaveNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")                
                 .And()
@@ -106,8 +116,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveSomeNonNullableMembers")]
         public void HaveSomeNonNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()
@@ -125,8 +134,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "OnlyHaveNonNullableMembers")]
         public void OnlyHaveNonNullableMembers()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Nullable")
                 .And()

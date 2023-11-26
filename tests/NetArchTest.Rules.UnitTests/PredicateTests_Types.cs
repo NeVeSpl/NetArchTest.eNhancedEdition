@@ -7,12 +7,25 @@ using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests_Types
+    public class TypesFixture
     {
+        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(ExampleClass)));
+    }
+
+
+    public class PredicateTests_Types : IClassFixture<TypesFixture> 
+    {
+        TypesFixture fixture;
+
+        public PredicateTests_Types(TypesFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(ExampleClass)))
+            return fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Types")
                 .And();

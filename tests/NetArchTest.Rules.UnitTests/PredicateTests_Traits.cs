@@ -8,12 +8,25 @@ using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests_Traits
+    public class TraitsFixture
     {
+        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(StaticClass)));
+    }
+
+    public class PredicateTests_Traits : IClassFixture<TraitsFixture>
+    {
+        TraitsFixture fixture;
+
+        public PredicateTests_Traits(TraitsFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(StaticClass)))
+            return fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Traits")
                 .And();

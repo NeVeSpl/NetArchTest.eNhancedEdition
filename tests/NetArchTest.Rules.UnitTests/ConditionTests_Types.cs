@@ -1,16 +1,21 @@
-﻿using System.Reflection;
-using NetArchTest.Rules;
-using NetArchTest.TestStructure.Types;
+﻿using NetArchTest.Rules;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Types
+    public class ConditionTests_Types : IClassFixture<TypesFixture>
     {
+        TypesFixture fixture;
+
+        public ConditionTests_Types(TypesFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(ExampleClass)))
+            return fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Types")
                 .And();

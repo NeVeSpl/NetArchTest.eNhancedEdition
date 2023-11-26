@@ -15,7 +15,7 @@ namespace NetArchTest.Assemblies
 
 
        
-        public static IEnumerable<TypeSpec> FromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
+        public static IEnumerable<TypeDefinition> FromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
         {
             foreach (var assembly in assemblies)
             {               
@@ -30,7 +30,7 @@ namespace NetArchTest.Assemblies
                 }
             }
         }
-        public static IEnumerable<TypeSpec> FromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
+        public static IEnumerable<TypeDefinition> FromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
         {
             foreach (var fileName in fileNames)
             {
@@ -41,7 +41,7 @@ namespace NetArchTest.Assemblies
             }
         }
 
-        private static IEnumerable<TypeSpec> ReadTypes(string assemblyLocation, bool readSymbols = true, IEnumerable<string> searchDirectories = null)
+        private static IEnumerable<TypeDefinition> ReadTypes(string assemblyLocation, bool readSymbols = true, IEnumerable<string> searchDirectories = null)
         {
             ReaderParameters readerParameters = new ReaderParameters { ReadSymbols = readSymbols, SymbolReaderProvider = new DefaultSymbolReaderProvider(false) };
 
@@ -87,7 +87,7 @@ namespace NetArchTest.Assemblies
                 return null;
             }
         }
-        private static IEnumerable<TypeSpec> GetAllTypes(IEnumerable<TypeDefinition> types)
+        private static IEnumerable<TypeDefinition> GetAllTypes(IEnumerable<TypeDefinition> types)
         {
             foreach (var type in types)
             {
@@ -96,7 +96,7 @@ namespace NetArchTest.Assemblies
                     continue;
                 }
 
-                yield return new TypeSpec(type);
+                yield return type;
 
                 if (type.NestedTypes?.Any() == true)
                 {

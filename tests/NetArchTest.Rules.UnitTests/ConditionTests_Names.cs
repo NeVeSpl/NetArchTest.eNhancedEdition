@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Names.Namespace1;
 using NetArchTest.TestStructure.Names.Namespace2;
@@ -8,12 +7,18 @@ using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Names
+    public class ConditionTests_Names : IClassFixture<NamesFixture>
     {
+        NamesFixture fixture;
+
+        public ConditionTests_Names(NamesFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            return fixture.Types                
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Names")
                 .And();

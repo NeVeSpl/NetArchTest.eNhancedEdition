@@ -1,17 +1,24 @@
-﻿using System.Reflection;
-using NetArchTest.Rules;
+﻿using NetArchTest.Rules;
 using NetArchTest.TestStructure.Dependencies.Examples;
 using NetArchTest.TestStructure.Dependencies.Implementation;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Dependencies
+    public class ConditionTests_Dependencies : IClassFixture<DependenciesFixture>
     {
+        DependenciesFixture fixture;
+
+        public ConditionTests_Dependencies(DependenciesFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            return fixture.Types                
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .And();

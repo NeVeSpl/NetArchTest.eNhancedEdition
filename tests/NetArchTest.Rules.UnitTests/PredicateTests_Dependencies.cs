@@ -8,12 +8,26 @@ using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests_Dependencies
+    public class DependenciesFixture
     {
+        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(HasDependency)));
+    }
+
+
+    public class PredicateTests_Dependencies : IClassFixture<DependenciesFixture>
+    {
+        DependenciesFixture fixture;
+
+        public PredicateTests_Dependencies(DependenciesFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            return fixture.Types                
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .And();

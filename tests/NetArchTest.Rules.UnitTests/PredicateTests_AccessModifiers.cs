@@ -8,12 +8,25 @@ using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateTests_AccessModifiers
+    public class AccessModifiersFixture
     {
+        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(PublicClass)));
+    }
+
+
+    public class PredicateTests_AccessModifiers : IClassFixture<AccessModifiersFixture>
+    {
+        AccessModifiersFixture fixture;
+
+        public PredicateTests_AccessModifiers(AccessModifiersFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+
         private Predicate GetTypesThat()
         {
-            return Types
-                .InAssembly(Assembly.GetAssembly(typeof(PublicClass)))
+            return fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<PublicClass>())
                 .And();
