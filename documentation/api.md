@@ -44,6 +44,7 @@
 * [AreNotSealed](#PredicateAreNotSealed)
 * [AreNotStatic](#PredicateAreNotStatic)
 * [AreNotStructures](#PredicateAreNotStructures)
+* [AreNotUsedByAny](#PredicateAreNotUsedByAny)
 * [AreOfType](#PredicateAreOfType)
 * [ArePrivate](#PredicateArePrivate)
 * [ArePrivateProtected](#PredicateArePrivateProtected)
@@ -54,6 +55,7 @@
 * [AreStateless](#PredicateAreStateless)
 * [AreStatic](#PredicateAreStatic)
 * [AreStructures](#PredicateAreStructures)
+* [AreUsedByAny](#PredicateAreUsedByAny)
 * [DoNotHaveCustomAttribute](#PredicateDoNotHaveCustomAttribute)
 * [DoNotHaveCustomAttribute<T>](#PredicateDoNotHaveCustomAttribute)
 * [DoNotHaveCustomAttributeOrInherit](#PredicateDoNotHaveCustomAttributeOrInherit)
@@ -130,6 +132,7 @@
 * [BeStateless](#ConditionBeStateless)
 * [BeStatic](#ConditionBeStatic)
 * [BeStructures](#ConditionBeStructures)
+* [BeUsedByAny](#ConditionBeUsedByAny)
 * [HaveCustomAttribute](#ConditionHaveCustomAttribute)
 * [HaveCustomAttribute<T>](#ConditionHaveCustomAttribute)
 * [HaveCustomAttributeOrInherit](#ConditionHaveCustomAttributeOrInherit)
@@ -168,6 +171,7 @@
 * [NotBeSealed](#ConditionNotBeSealed)
 * [NotBeStatic](#ConditionNotBeStatic)
 * [NotBeStructures](#ConditionNotBeStructures)
+* [NotBeUsedByAny](#ConditionNotBeUsedByAny)
 * [NotHaveCustomAttribute](#ConditionNotHaveCustomAttribute)
 * [NotHaveCustomAttribute<T>](#ConditionNotHaveCustomAttribute)
 * [NotHaveCustomAttributeOrInherit](#ConditionNotHaveCustomAttributeOrInherit)
@@ -205,6 +209,8 @@
 
 * [FailingTypes](#TestResultFailingTypes)
 * [IsSuccessful](#TestResultIsSuccessful)
+* [LoadedTypes](#TestResultLoadedTypes)
+* [SelectedTypesForTesting](#TestResultSelectedTypesForTesting)
 
 ## IType
 
@@ -421,6 +427,11 @@ Selects types that are not static.
 PredicateList Predicate.AreNotStructures()
 ```
 Selects types that are not structures.
+### Predicate.AreNotUsedByAny
+```csharp
+PredicateList Predicate.AreNotUsedByAny(params string[] users)
+```
+Selects types that are not used by any of the supplied types.
 ### Predicate.AreOfType
 ```csharp
 PredicateList Predicate.AreOfType(params Type[] type)
@@ -471,6 +482,11 @@ Selects types that are static.
 PredicateList Predicate.AreStructures()
 ```
 Selects types that are structures.
+### Predicate.AreUsedByAny
+```csharp
+PredicateList Predicate.AreUsedByAny(params string[] users)
+```
+Selects types that are used by any of the supplied types.
 ### Predicate.DoNotHaveCustomAttribute
 ```csharp
 PredicateList Predicate.DoNotHaveCustomAttribute(Type attribute)
@@ -825,6 +841,11 @@ Selects types that are static.
 ConditionList Condition.BeStructures()
 ```
 Selects types that are structures.
+### Condition.BeUsedByAny
+```csharp
+ConditionList Condition.BeUsedByAny(params string[] users)
+```
+Selects types that are used by any of the supplied types.
 ### Condition.HaveCustomAttribute
 ```csharp
 ConditionList Condition.HaveCustomAttribute(Type attribute)
@@ -922,12 +943,12 @@ ConditionList Condition.Inherit<T>()
 Selects types that inherit a particular type.
 ### Condition.MeetCustomRule
 ```csharp
-ConditionList Condition.MeetCustomRule(Func<TypeDefinition, bool> rule)
+ConditionList Condition.MeetCustomRule(ICustomRule rule)
 ```
 Selects types that meet a custom rule.
 ### Condition.MeetCustomRule
 ```csharp
-ConditionList Condition.MeetCustomRule(ICustomRule rule)
+ConditionList Condition.MeetCustomRule(Func<TypeDefinition, bool> rule)
 ```
 Selects types that meet a custom rule.
 ### Condition.NotBeAbstract
@@ -1015,6 +1036,11 @@ Selects types that are not static.
 ConditionList Condition.NotBeStructures()
 ```
 Selects types that are not structures.
+### Condition.NotBeUsedByAny
+```csharp
+ConditionList Condition.NotBeUsedByAny(params string[] users)
+```
+Selects types that are not used by any of the particular types.
 ### Condition.NotHaveCustomAttribute
 ```csharp
 ConditionList Condition.NotHaveCustomAttribute(Type attribute)
@@ -1174,6 +1200,16 @@ Gets a list of the types that failed the test.
 IsSuccessful
 ```
 Gets a flag indicating the success or failure of the test.
+### TestResult.LoadedTypes
+```csharp
+LoadedTypes
+```
+Gets a list of all the types that were loded by <see cref="T:NetArchTest.Rules.Types"/>.
+### TestResult.SelectedTypesForTesting
+```csharp
+SelectedTypesForTesting
+```
+Gets a list of the types that passed filtering by predicates and were used as input to conditions.
 
 ## IType
 ### IType.Explanation

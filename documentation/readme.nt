@@ -33,6 +33,7 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
      - BenMorris/NetArchTest#126 - added rules for structs, enums and delegates
      - BenMorris/NetArchTest#131 - added rules for all access modifiers: public, internal, private, protected, private protected, protected internal
      - BenMorris/NetArchTest#133 - added rules: AreInheritedByAnyType, AreNotInheritedByAnyType
+     - added rules : AreUsedByAny, AreNotUsedByAny
  
 
 ## Index
@@ -91,7 +92,13 @@ Once the set of  types have been filtered, you can apply a set of conditions usi
 ```csharp
 types.That().ResideInNamespace("MyProject.Data").Should().BeSealed();
 ```
-Finally, you obtain a result from the rule by using an executor, i.e. use `GetTypes()` to return the types that match the rule or `GetResult()` to determine whether the rule has been met. Note that the result will also return a list of types that failed to meet the conditions.
+Finally, you obtain a result from the rule by using an executor, i.e. use `GetTypes()` to return the types that match the rule or `GetResult()` to determine whether the rule has been met.
+
+Note that `GetResult()` returns [`TestResult`](documentation/api.md#testresult) which contains a few lists of types:
+- `LoadedTypes` - all types loded by `Types`
+- `SelectedTypesForTesting` - types that passed predicates
+- `FailingTypes`- types that failed to meet the conditions
+
 ```csharp
 var result = types.That().ResideInNamespace("MyProject.Data").Should().BeSealed().GetResult();
 var isValid = result.IsSuccessful;
@@ -115,9 +122,9 @@ Dependency matrix:
 | h | x  | x  | x  |
 
 
-Available predicates/conditions:
+Available rules:
 
-|   | Predicate   | number<br> of required<br> dependencies <br>from the list  | type can have<br>a dependency<br>that is not<br>on the list  |  passing types |  failing types |
+|   | Rule   | number<br> of required<br> dependencies <br>from the list  | type can have<br>a dependency<br>that is not<br>on the list  |  passing types |  failing types |
 |---|---|---|---|---|---|
 | 1 | [HaveDependencyOnAny(D1, D2)](documentation/api.md#conditionhavedependencyonany) | at least 1  | yes  |  c, d, e, f, g, h, |  a, b |
 | 2 | [HaveDependencyOnAll(D1, D2)](documentation/api.md#conditionhavedependencyonall)  | all  |  yes |  g, h | a, b, c, d, e, f  |
@@ -127,6 +134,14 @@ Available predicates/conditions:
 | 3N | [HaveDependencyOtherThan(D1, D2)](documentation/api.md#conditionhavedependencyotherthan)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
 
 Explnation why a type fails dependecy search test is available on the failing type: [IType.Explanation](documentation/api.md#itypeexplanation)
+
+
+### Reverse dependency search
+
+|   | Predicate   | number<br> of required<br> dependencies <br>from the list  | type can use<br>a type<br>that is not<br>on the list  |  passing types |  failing types |
+|---|---|---|---|---|---|
+| R1 | [AreUsedByAny(c, d)](documentation/api.md#predicateareusedbyany) | at least 1  | yes  |  D2, D3 |  D1 |
+| R1N | [AreNotUsedByAny(c, d)](documentation/api.md#predicatearenotusedbyany)  | none  |  yes |  D1 |  D2, D3  |
 
 ## Slices 
 
