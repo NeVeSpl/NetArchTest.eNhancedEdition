@@ -69,5 +69,27 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
             return CreatePredicateList();
         }
+
+        /// <summary>
+        /// Selects types that are used by any of the supplied types.
+        /// </summary>
+        /// <param name="users">The types to match against. These can be namespaces or specific types.</param>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList AreUsedByAny(params string[] users)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreUsedByAny(context, inputTypes, users, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that are not used by any of the supplied types.
+        /// </summary>
+        /// <param name="users">The types to match against. These can be namespaces or specific types.</param>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList AreNotUsedByAny(params string[] users)
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.AreUsedByAny(context, inputTypes, users, false));
+            return CreatePredicateList();
+        }
     }
 }

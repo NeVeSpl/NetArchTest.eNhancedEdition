@@ -35,5 +35,14 @@ namespace NetArchTest.Functions
 
             return input.Where(t => t.IsPassing == condition);
         }
+
+
+
+        internal static IEnumerable<TypeSpec> AreUsedByAny(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
+        {
+            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var results = search.FindTypesThatAreUsedByAny(input, dependencies, context.AllTypes);
+            return input.Where(t => t.IsPassing == condition);
+        }
     }
 }

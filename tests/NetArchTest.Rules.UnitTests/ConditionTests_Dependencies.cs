@@ -121,5 +121,35 @@ namespace NetArchTest.UnitTests
             Assert.True(result.IsSuccessful);
         }
 
+
+        [Fact(DisplayName = "BeUsedByAny")]
+        public void BeUsedByAny()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(typeof(ExampleDependency).Namespace)
+                .And()
+                .AreOfType(typeof(ExampleDependency), typeof(AnotherExampleDependency))
+                .Should()
+                .BeUsedByAny(typeof(HasDependencies).FullName, typeof(HasAnotherDependency).FullName)
+                .GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "NotBeUsedByAny")]
+        public void NotBeUsedByAny()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(typeof(ExampleDependency).Namespace)
+                .And()
+                .AreNotOfType(typeof(ExampleDependency), typeof(AnotherExampleDependency))
+                .Should()
+                .NotBeUsedByAny(typeof(HasDependencies).FullName, typeof(HasAnotherDependency).FullName)
+                .GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
     }
 }

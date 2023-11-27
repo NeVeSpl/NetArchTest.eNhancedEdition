@@ -1,35 +1,36 @@
 ﻿using Mono.Cecil;
 using NetArchTest.Assemblies;
-using NetArchTest.Dependencies.DataStructures;
 using NetArchTest.Rules;
 
 namespace NetArchTest.Dependencies
 {
-    internal class TypeDefinitionCheckingContext
-    {
-        private readonly TypeSpec _typeToCheck;
-        private readonly TypeDefinitionCheckingResult _result;        
+    internal class TypeCheckingContext
+    {      
         private readonly bool _serachForDependencyInFieldConstant;
         private readonly bool explainYourself;
         private readonly IDependencyFilter dependencyFilter;
+        private TypeSpec _typeToCheck;
+        private ITypeCheckingStrategy _result;
 
-        public TypeDefinitionCheckingContext(TypeSpec typeToCheck, TypeDefinitionCheckingResult.SearchType searchType, ISearchTree searchTree, bool serachForDependencyInFieldConstant = false, bool explainYourself = false, IDependencyFilter dependencyFilter = null)
-        {
-            _typeToCheck = typeToCheck;
-            _result = new TypeDefinitionCheckingResult(searchType, searchTree);
+
+        public TypeCheckingContext(bool serachForDependencyInFieldConstant = false, bool explainYourself = false, IDependencyFilter dependencyFilter = null)
+        {          
             _serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
             this.explainYourself = explainYourself;
             this.dependencyFilter = dependencyFilter;
         }
 
-        public bool IsTypeFound()
+
+        public void PerformCheck(TypeSpec typeToCheck, ITypeCheckingStrategy checkingStrategy)
         {
+            _typeToCheck = typeToCheck;
+            _result = checkingStrategy;
+
             CheckType(_typeToCheck.Definition);
             if (explainYourself)
             {
                 _typeToCheck.Explanation = _result.ExplainWhy();
-            }
-            return _result.IsTypeFound();
+            }            
         }
 
 
@@ -106,7 +107,7 @@ namespace NetArchTest.Dependencies
                     CheckTypeReference(field.FieldType);
                     if (_serachForDependencyInFieldConstant && field.HasConstant && field.FieldType.FullName == typeof(string).FullName)
                     {
-                        _result.CheckDependency(field.Constant.ToString());
+                        _result.CheckType(field.Constant.ToString());
                     }
                 }
             }
@@ -287,15 +288,13 @@ namespace NetArchTest.Dependencies
             }            
         }
         private void CheckDependency(TypeReference dependency)
-        {
-            if (dependencyFilter != null)
+        {            
+            if (dependencyFilter?.ShouldDependencyBeChecked(dependency) == false)
             {
-                if (dependencyFilter.ShouldDependencyBeChecked(dependency) == false)
-                {
-                    return;
-                }
-            }
-            _result.CheckDependency(dependency);           
+                return;
+            }      
+            
+            _result.CheckType(dependency);           
         }
     }
 }

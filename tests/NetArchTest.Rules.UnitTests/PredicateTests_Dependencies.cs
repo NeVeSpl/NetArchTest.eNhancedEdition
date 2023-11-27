@@ -34,7 +34,7 @@ namespace NetArchTest.UnitTests
         }
 
 
-        [Fact(DisplayName = "Types can be selected if they have a dependency on a specific item.")]
+        [Fact(DisplayName = "HaveDependencyOnAny")]
         public void HaveDependencyOnAny()
         {
             var result = GetTypesThat()
@@ -128,6 +128,37 @@ namespace NetArchTest.UnitTests
             Assert.Equal(2, result.Count());
             Assert.Equal<Type>(typeof(HasAnotherDependency), result.First());
             Assert.Equal<Type>(typeof(HasDependencies), result.Skip(1).First());
+        }
+
+
+        [Fact(DisplayName = "AreUsedByAny")]
+        public void AreUsedByAny()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(typeof(ExampleDependency).Namespace)
+                .And()
+                .AreUsedByAny(typeof(HasDependencies).FullName)
+                .GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(ExampleDependency), result);
+            Assert.Contains<Type>(typeof(AnotherExampleDependency), result);
+        }
+
+        [Fact(DisplayName = "AreNotUsedByAny")]
+        public void AreNotUsedByAny()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(typeof(ExampleDependency).Namespace)
+                .And()
+                .AreNotUsedByAny(typeof(HasDependencies).FullName)
+                .GetReflectionTypes();
+
+            Assert.Equal(32, result.Count());
+            Assert.DoesNotContain<Type>(typeof(ExampleDependency), result);
+            Assert.DoesNotContain<Type>(typeof(AnotherExampleDependency), result);
         }
     }
 }

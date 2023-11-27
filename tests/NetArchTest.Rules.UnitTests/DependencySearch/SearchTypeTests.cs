@@ -4,10 +4,12 @@
     using System.Reflection;
     using NetArchTest.Dependencies;
     using NetArchTest.Rules;
+    using NetArchTest.TestStructure.AccessModifiers;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D1;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D2;
+    using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D3;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - search type tests ")]
@@ -181,6 +183,27 @@
             // Assert           
             Assert.Equal(1, result.Count);
             Assert.Equal(typeof(Class_G).FullName, result[0].FullName);          
+        }
+
+        [Fact(DisplayName = "FindTypesThatAreUsedByAny")]
+        public void FindTypesThatAreUsedByAny()
+        {
+            // Arrange
+            var search = new DependencySearch(false);
+            var typeList = Types
+                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+                .That()
+                .ResideInNamespace(typeof(Class_A).Namespace)                          
+                .GetTypeSpecifications();
+
+            // Act
+            var result = search.FindTypesThatAreUsedByAny(typeList, new string[] { typeof(Class_D).FullName }, typeList).Where(x => x.IsPassing).ToList();          
+
+
+            // Assert           
+            Assert.Equal(2, result.Count);
+            Assert.Equal(typeof(Dependency_3).FullName, result[0].FullName);
+            Assert.Equal(typeof(Dependency_2).FullName, result[1].FullName);
         }
     }
 }

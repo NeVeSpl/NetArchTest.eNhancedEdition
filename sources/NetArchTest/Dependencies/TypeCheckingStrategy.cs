@@ -7,19 +7,27 @@ using NetArchTest.Dependencies.DataStructures;
 
 namespace NetArchTest.Dependencies
 {
-    internal class TypeDefinitionCheckingResult
+    internal interface ITypeCheckingStrategy
     {
-        public enum SearchType 
-        { 
+        bool CanWeSkipFurtherSearch();
+        void CheckType(string dependencyTypeFullName);
+        void CheckType(TypeReference dependency);
+        string ExplainWhy();      
+    }
+
+    internal class HaveDependency_CheckingStrategy : ITypeCheckingStrategy
+    {
+        public enum TypeOfCheck
+        {
             HaveDependencyOnAny,
-            HaveDependencyOnAll, 
+            HaveDependencyOnAll,
             OnlyHaveDependenciesOnAnyOrNone,
             OnlyHaveDependenciesOnAny,
-            OnlyHaveDependenciesOnAll 
+            OnlyHaveDependenciesOnAll
         }
 
-        private readonly SearchType _searchType;
-        private readonly ISearchTree _searchTree;
+        private readonly TypeOfCheck _typeOfCheck;
+        private readonly ISearchTree _dependencySearchTree;
         /// <summary> The list of dependencies that have been found in the search.</summary>
         private HashSet<string> _foundDependencies = new HashSet<string>();
         private bool _hasDependencyFromOutsideOfSearchTree;
@@ -27,38 +35,39 @@ namespace NetArchTest.Dependencies
         TypeReference lastFoundDependency = null;
         TypeReference lastFoundDependencyOutsideOfSearchTree = null;
 
-        public TypeDefinitionCheckingResult(SearchType searchType, ISearchTree searchTree)
+
+        public HaveDependency_CheckingStrategy(TypeOfCheck searchType, ISearchTree dependencySearchTree)
         {
-            _searchType = searchType;
-            _searchTree = searchTree;
+            _typeOfCheck = searchType;
+            _dependencySearchTree = dependencySearchTree;
             _hasDependencyFromOutsideOfSearchTree = false;
         }
 
 
-        public bool IsTypeFound()
-        {            
-            switch (_searchType)
+        public bool DoesTypePassCheck()
+        {
+            switch (_typeOfCheck)
             {
-                case SearchType.HaveDependencyOnAll:
-                    return _foundDependencies.Count == _searchTree.TerminatedNodesCount;
-                case SearchType.HaveDependencyOnAny:
+                case TypeOfCheck.HaveDependencyOnAll:
+                    return _foundDependencies.Count == _dependencySearchTree.TerminatedNodesCount;
+                case TypeOfCheck.HaveDependencyOnAny:
                     return _foundDependencies.Count > 0;
-                case SearchType.OnlyHaveDependenciesOnAnyOrNone:
+                case TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone:
                     return !_hasDependencyFromOutsideOfSearchTree && _foundDependencies.Count >= 0;
-                case SearchType.OnlyHaveDependenciesOnAny:
+                case TypeOfCheck.OnlyHaveDependenciesOnAny:
                     return !_hasDependencyFromOutsideOfSearchTree && _foundDependencies.Count > 0;
-                case SearchType.OnlyHaveDependenciesOnAll:
-                    return !_hasDependencyFromOutsideOfSearchTree && _foundDependencies.Count == _searchTree.TerminatedNodesCount;
+                case TypeOfCheck.OnlyHaveDependenciesOnAll:
+                    return !_hasDependencyFromOutsideOfSearchTree && _foundDependencies.Count == _dependencySearchTree.TerminatedNodesCount;
                 default:
                     throw new NotImplementedException();
             }
         }
         public string ExplainWhy()
         {
-            var isTypeFound = IsTypeFound();
-            switch (_searchType)
+            var isTypeFound = DoesTypePassCheck();
+            switch (_typeOfCheck)
             {
-                case SearchType.HaveDependencyOnAll:
+                case TypeOfCheck.HaveDependencyOnAll:
                     if (isTypeFound)
                     {
                         return "Has dependency on all provided inputs";
@@ -66,8 +75,8 @@ namespace NetArchTest.Dependencies
                     else
                     {
                         return string.Empty;
-                    }                    
-                case SearchType.HaveDependencyOnAny:
+                    }
+                case TypeOfCheck.HaveDependencyOnAny:
                     if (isTypeFound)
                     {
                         return $"Has dependency on: {lastFoundDependency}";
@@ -75,8 +84,8 @@ namespace NetArchTest.Dependencies
                     else
                     {
                         return "Does not have a dependency on any provided inputs";
-                    }                    
-                case SearchType.OnlyHaveDependenciesOnAnyOrNone:
+                    }
+                case TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone:
                     if (isTypeFound)
                     {
                         return "Does not have a dependency outside of provided inputs";
@@ -94,25 +103,25 @@ namespace NetArchTest.Dependencies
         /// If we already know the final answer to the question if type was found,
         /// doing another search will not change the result
         /// </summary>     
-        public bool CanWeSkipFurtherSearch()
+        public bool CanWeSkipFurtherSearch()    
         {
-            switch (_searchType)
+            switch (_typeOfCheck)
             {
-                case SearchType.HaveDependencyOnAny:                  
-                case SearchType.HaveDependencyOnAll:
-                    return IsTypeFound() == true;
-                case SearchType.OnlyHaveDependenciesOnAnyOrNone:                   
-                case SearchType.OnlyHaveDependenciesOnAny:               
-                case SearchType.OnlyHaveDependenciesOnAll:
-                    return _hasDependencyFromOutsideOfSearchTree;                  
+                case TypeOfCheck.HaveDependencyOnAny:
+                case TypeOfCheck.HaveDependencyOnAll:
+                    return DoesTypePassCheck() == true;
+                case TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone:
+                case TypeOfCheck.OnlyHaveDependenciesOnAny:
+                case TypeOfCheck.OnlyHaveDependenciesOnAll:
+                    return _hasDependencyFromOutsideOfSearchTree;
                 default:
                     throw new NotImplementedException();
-            }           
+            }
         }
 
-        public void CheckDependency(string dependencyTypeFullName)
+        public void CheckType(string dependencyTypeFullName)
         {
-            var matchedDependencies = _searchTree.GetAllMatchingNames(dependencyTypeFullName);
+            var matchedDependencies = _dependencySearchTree.GetAllMatchingNames(dependencyTypeFullName);
             if (matchedDependencies.Any())
             {
                 foreach (var match in matchedDependencies)
@@ -122,9 +131,9 @@ namespace NetArchTest.Dependencies
             }
         }
 
-        public void CheckDependency(TypeReference dependency)
+        public void CheckType(TypeReference dependency)
         {
-            var matchedDependencies = _searchTree.GetAllMatchingNames(dependency);
+            var matchedDependencies = _dependencySearchTree.GetAllMatchingNames(dependency);
             if (matchedDependencies.Any())
             {
                 foreach (var match in matchedDependencies)
@@ -132,7 +141,7 @@ namespace NetArchTest.Dependencies
                     _foundDependencies.Add(match);
                 }
                 lastFoundDependency = dependency;
-            } 
+            }
             else
             {
                 if (_hasDependencyFromOutsideOfSearchTree == false)
@@ -150,5 +159,38 @@ namespace NetArchTest.Dependencies
                 }
             }
         }
+    }
+
+
+    internal class AreUsedBy_CheckingStrategy : ITypeCheckingStrategy
+    {
+        HashSet<string> usedTypes = new HashSet<string>();
+
+       
+        public bool IsTypeUsed(TypeReference type)
+        {
+            return usedTypes.Contains(type.FullName);
+        }
+
+
+        public bool CanWeSkipFurtherSearch()
+        {
+            return false;
+        }
+
+        public void CheckType(string dependencyTypeFullName)
+        {
+             
+        }
+
+        public void CheckType(TypeReference dependency)
+        {
+            usedTypes.Add(dependency.FullName);
+        }
+
+        public string ExplainWhy()
+        {
+            return "todo";
+        }     
     }
 }
