@@ -38,7 +38,8 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
 * [Getting started](#getting-started)
     * [Examples](#examples)
     * [Writing rules](#writing-rules)
-* [Dependency search](#dependency-search)
+* [Rules for dependency analysis](#rules-for-dependency-analysis)
+* [Rules for assessing design and architectural principles](#rules-for-assessing-design-and-architectural-principles)
 * [Slices](#slices)
 * [Custom rules](#custom-rules)
 * [Options](#options)
@@ -128,7 +129,7 @@ public class SampleApp_ModuleOmega_Tests
 
 The fluent API should direct you in building up a rule, based on a combination of [predicates](documentation/api.md#predicate), [conditions](documentation/api.md#condition) and conjunctions. 
 
-The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from a assembly, domain or patth.
+The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from an assembly, domain or path.
 
 ```csharp
 var types = Types.InAssembly(typeof(MyClass).Assembly);
@@ -144,9 +145,9 @@ types.That().ResideInNamespace("MyProject.Data").Should().BeSealed();
 Finally, you obtain a result from the rule by using an executor, i.e. use `GetTypes()` to return the types that match the rule or `GetResult()` to determine whether the rule has been met.
 
 Note that `GetResult()` returns [`TestResult`](documentation/api.md#testresult) which contains a few lists of types:
-- `LoadedTypes` - all types loded by `Types`
-- `SelectedTypesForTesting` - types that passed predicates
-- `FailingTypes`- types that failed to meet the conditions
+- `LoadedTypes` - all types loded by [`Types`](documentation/api.md#types)
+- `SelectedTypesForTesting` - types that passed [predicates](documentation/api.md#predicate)
+- `FailingTypes`- types that failed to meet the [conditions](documentation/api.md#condition)
 
 ```csharp
 var result = types.That().ResideInNamespace("MyProject.Data").Should().BeSealed().GetResult();
@@ -155,7 +156,7 @@ var types = result.FailingTypes;
 ```
 
 
-## Dependency search
+## Rules for dependency analysis
 
 Dependency matrix:
 
@@ -171,7 +172,7 @@ Dependency matrix:
 | h | x  | x  | x  |
 
 
-Available rules:
+#### Dependency search:
 
 |   | Rule   | number<br> of required<br> dependencies <br>from the list  | type can have<br>a dependency<br>that is not<br>on the list  |  passing types |  failing types |
 |---|---|---|---|---|---|
@@ -185,12 +186,35 @@ Available rules:
 Explnation why a type fails dependecy search test is available on the failing type: [IType.Explanation](documentation/api.md#itypeexplanation)
 
 
-### Reverse dependency search
+#### Reverse dependency search
 
 |   | Predicate   | number<br> of required<br> dependencies <br>from the list  | type can use<br>a type<br>that is not<br>on the list  |  passing types |  failing types |
 |---|---|---|---|---|---|
 | R1 | [AreUsedByAny(c, d)](documentation/api.md#predicateareusedbyany) | at least 1  | yes  |  D2, D3 |  D1 |
 | R1N | [AreNotUsedByAny(c, d)](documentation/api.md#predicatearenotusedbyany)  | none  |  yes |  D1 |  D2, D3  |
+
+
+## Rules for assessing design and architectural principles
+
+#### BeImmutable
+
+A Type is considered as immutable when all its state (instance and static, fields, properties and events) cannot be changed after creation. Shallow immutability.
+
+#### BeImmutableExternally
+
+A Type is considered as externally immutable when its state (instance and static, fields, properties and events) with a public access modifier cannot be changed from the outside of the type. Shallow immutability.
+
+#### BeStateless
+
+A Type is considered as stateless when it does not have an instance state (fields, properties and events).
+
+#### HaveSourceFileNameMatchingName
+
+#### HaveSourceFilePathMatchingNamespace
+
+#### HaveMatchingTypeWithName
+
+
 
 ## Slices 
 
