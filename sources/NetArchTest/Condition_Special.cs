@@ -48,6 +48,16 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
+        /// Selects types that are staticless, they do not have static state
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList BeStaticless()
+        {
+            AddFunctionCall(x => FunctionDelegates.BeStaticless(x, true));
+            return CreateConditionList();
+        }
+
+        /// <summary>
         /// Selects types according to whether they have nullable members.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>

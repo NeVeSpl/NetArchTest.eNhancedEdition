@@ -167,14 +167,27 @@ namespace Mono.Cecil
         }
 
         public static bool IsStateless(this TypeDefinition type)
-        {
-            // Check if the type has any instance fields
+        {            
             if (type.HasFields)
             {
                 foreach (var field in type.Fields)
                 {
                     // If the field is not static, the type is not stateless
                     if (!field.IsStatic)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        public static bool IsStaticless(this TypeDefinition type)
+        {           
+            if (type.HasFields)
+            {
+                foreach (var field in type.Fields)
+                {                    
+                    if (field.IsStatic && field.HasConstant == false)
                     {
                         return false;
                     }

@@ -70,6 +70,17 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.IsStateless());
             }
         }
+        internal static IEnumerable<TypeSpec> BeStaticless(IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => c.Definition.IsStaticless());
+            }
+            else
+            {
+                return input.Where(c => !c.Definition.IsStaticless());
+            }
+        }
 
         internal static IEnumerable<TypeSpec> HaveFileNameMatchingTypeName(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
         {

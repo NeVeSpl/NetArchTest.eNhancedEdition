@@ -100,6 +100,25 @@ namespace NetArchTest.UnitTests
             Assert.Contains<Type>(typeof(StatelessClass_Prop), result);
         }
 
+        [Fact(DisplayName = "AreStaticless")]
+        public void AreStaticless()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(namespaceof<StatelessClass_StaticField>())
+                .And()
+                .AreStaticless().GetReflectionTypes();
+
+            Assert.Equal(6, result.Count());
+    
+            Assert.Contains<Type>(typeof(StatelessClass_ConstField), result);
+            Assert.Contains<Type>(typeof(StatefulClass_Field), result);
+            Assert.Contains<Type>(typeof(StatefulRecordClass), result);
+            Assert.Contains<Type>(typeof(StatefulRecordStruct), result);
+            Assert.Contains<Type>(typeof(StatefulClass_Prop), result);
+            Assert.Contains<Type>(typeof(StatefulClass_ReadonlyField), result);
+        }
+
         [Fact(DisplayName = "OnlyHaveNullableMembers")]
         public void OnlyHaveNullableMembers()
         {
