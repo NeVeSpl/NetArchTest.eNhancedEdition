@@ -14,9 +14,9 @@ namespace NetArchTest.RuleEngine
         public ConditionContext ConditionContext { get; } = new ConditionContext();
 
 
-        public RuleContext(IEnumerable<TypeDefinition> inpuTypes)
+        public RuleContext(LoadedData loadedData)
         {
-            lodedTypes = inpuTypes.Select(x => new TypeSpec(x)).ToArray();
+            lodedTypes = loadedData.GetTypes().ToArray();
         }   
 
 

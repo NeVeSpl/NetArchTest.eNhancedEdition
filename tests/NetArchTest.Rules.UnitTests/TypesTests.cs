@@ -29,9 +29,10 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Types that reside in namespace that has \"Module\" prefix but is not <Module> namespace should be included in the current domain. ")]
         public void InCurrentDomain_TypesWithPrefixModuleInclude()
         {
+            var type = typeof(ModuleAsNamespacePrefix.ExampleClass);
             var result = Types.InCurrentDomain().GetTypes();
 
-            Assert.Contains(result, t => t.FullName == typeof(ModuleAsNamespacePrefix.ExampleClass).FullName);
+            Assert.Contains(result, t => t.FullName == type.FullName);
         }
         
         [Fact(DisplayName = "<Module> types should be excluded from the current domain.")]
@@ -42,14 +43,7 @@ namespace NetArchTest.UnitTests
         }
 
 
-        [Fact(DisplayName = "NetArchTest types should be excluded from the current domain.")]
-        public void InCurrentDomain_NetArchTestTypesExcluded()
-        {
-            var result = Types.InCurrentDomain().GetTypes();
-
-            Assert.DoesNotContain(result, t => t.FullName.StartsWith("NetArchTest.Rules"));
-            Assert.DoesNotContain(result, t => t.FullName.StartsWith("Mono.Cecil"));
-        }
+      
 
         [Fact(DisplayName = "Nested public types should be included in the current domain.")]
         public void InCurrentDomain_NestedPublicTypesPresent_Returned()

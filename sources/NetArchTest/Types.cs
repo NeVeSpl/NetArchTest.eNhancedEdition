@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Mono.Cecil;
 using NetArchTest.Assemblies;
 using NetArchTest.RuleEngine;
 using NetArchTest.Slices;
@@ -17,12 +16,12 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed class Types
     {
-        private readonly IEnumerable<TypeDefinition> types;
+        private readonly LoadedData loadedData;
 
 
-        private Types(IEnumerable<TypeDefinition> types)
+        private Types(LoadedData loadedData)
         {
-            this.types = types;
+            this.loadedData = loadedData;
         }
 
 
@@ -31,9 +30,8 @@ namespace NetArchTest.Rules
         /// </summary>
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         public static Types InCurrentDomain()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            return Types.InAssemblies(assemblies);
+        {            
+            return new Types(DataLoader.LoadFromCurrentDomain());
         }
 
         /// <summary>
@@ -55,16 +53,17 @@ namespace NetArchTest.Rules
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
         public static Types InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
         {
-            return new Types(TypeSource.FromAssemblies(assemblies, searchDirectories));
-        }    
+            return new Types(DataLoader.LoadFromAssemblies(assemblies, searchDirectories));
+        }
 
         /// <summary>
         /// Creates a list of all the types in a particular module file.
         /// </summary>
         /// <param name="fileName">The filename of the module. This is case insensitive.</param>
-        /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
+        /// <param name="searchDirectories">An optional list of search directories to allow resolution of referenced assemblies.</param>
         /// <remarks>Assumes that the module is in the same directory as the executing assembly.</remarks>
-        public static Types FromFile(string fileName)
+        /// <returns>A list of types that can have predicates and conditions applied to it.</returns>        
+        public static Types FromFile(string fileName, IEnumerable<string> searchDirectories = null)
         {
             if (string.IsNullOrEmpty(fileName))
             {
@@ -79,7 +78,7 @@ namespace NetArchTest.Rules
                 throw new FileNotFoundException($"Could not find the assembly file {path}.");
             }
 
-            return new Types(TypeSource.FromFiles(new string[] { path }, null));           
+            return new Types(DataLoader.LoadFromFiles(new string[] { path }, searchDirectories));           
         }
 
         /// <summary>
@@ -101,7 +100,7 @@ namespace NetArchTest.Rules
             }
 
             var files = Directory.GetFiles(path, "*.dll");
-            return new Types(TypeSource.FromFiles(files, searchDirectories));
+            return new Types(DataLoader.LoadFromFiles(files, searchDirectories));
         }
 
 
@@ -111,7 +110,7 @@ namespace NetArchTest.Rules
         /// <returns>A list of types onto which you can apply a series of filters.</returns>
         public Predicate That()
         {
-            return new Predicate(new RuleContext(types));
+            return new Predicate(new RuleContext(loadedData));
         }
 
         /// <summary>
@@ -120,7 +119,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition Should()
         {
-            return new Condition(new RuleContext(types), true);
+            return new Condition(new RuleContext(loadedData), true);
         }
 
         /// <summary>
@@ -129,7 +128,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public Condition ShouldNot()
         {
-            return new Condition(new RuleContext(types), false);
+            return new Condition(new RuleContext(loadedData), false);
         }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public SlicePredicate Slice()
         {
-            return new SlicePredicate(new RuleContext(types));
+            return new SlicePredicate(new RuleContext(loadedData));
         }
 
 
@@ -148,7 +147,7 @@ namespace NetArchTest.Rules
         /// <returns>The list of <see cref="Type"/> objects in this list.</returns>
         public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return new RuleContext(types).GetTypes(options);
+            return new RuleContext(loadedData).GetTypes(options);
         }
     }
 }

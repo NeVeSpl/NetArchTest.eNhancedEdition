@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -104,7 +105,7 @@ namespace Mono.Cecil
 
         public static bool IsCompilerGenerated(this TypeDefinition typeDefinition)
         {
-            return typeDefinition.CustomAttributes.Any(x => x?.AttributeType?.FullName == typeof(CompilerGeneratedAttribute).FullName);
+            return typeDefinition.CustomAttributes.Any(x => x?.AttributeType?.FullName == typeof(CompilerGeneratedAttribute).FullName || x?.AttributeType?.FullName == typeof(GeneratedCodeAttribute).FullName);
         }
 
         /// <summary>

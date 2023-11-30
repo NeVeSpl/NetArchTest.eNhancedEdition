@@ -9,7 +9,7 @@
     <Copyright>(c) NetArchTest.eNhancedEdition</Copyright>
     <PackageLicense>https://github.com/NeVeSpl/NetArchTest.eNhancedEdition/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/NeVeSpl/NetArchTest.eNhancedEdition</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
+    <PackageIcon>Resources\icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/NeVeSpl/NetArchTest.eNhancedEdition</RepositoryUrl>
     <PackageTags>test architecture dependencies archtest</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md">
+    <None Include="..\..\README.md" Link="Resources\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="icon.png">
+    <None Update="Resources\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
