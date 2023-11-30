@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
+using NetArchTest.Assemblies.PublicUse;
+using NetArchTest.Rules;
 
 namespace NetArchTest.Assemblies
 {
@@ -20,6 +22,12 @@ namespace NetArchTest.Assemblies
         public IEnumerable<TypeSpec> GetTypes() 
         {
             return typeDefinitions.Select(x => new TypeSpec(x));
+        }
+
+
+        public IAssembly CreateWrapper()
+        {
+            return new AssemblyContainer(assemblyDefinition);
         }
     }
 }

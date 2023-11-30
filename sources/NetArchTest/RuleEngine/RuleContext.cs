@@ -9,36 +9,37 @@ namespace NetArchTest.RuleEngine
 {
     internal class RuleContext
     {
-        private readonly IReadOnlyList<TypeSpec> lodedTypes;
+        internal readonly LoadedData loadedData;
         public PredicateContext PredicateContext { get; } = new PredicateContext();
         public ConditionContext ConditionContext { get; } = new ConditionContext();
 
 
         public RuleContext(LoadedData loadedData)
         {
-            lodedTypes = loadedData.GetTypes().ToArray();
+            this.loadedData = loadedData;
         }   
 
 
-        public IEnumerable<TypeSpec> Execute(Options options)
+        public IReadOnlyList<TypeSpec> Execute(Options options)
         {
-            var result = lodedTypes;
-            result = PredicateContext.Sequence.Execute(result, options, lodedTypes);
-            result = ConditionContext.Sequence.Execute(result, options, lodedTypes); 
-            return result;
+            var lodedTypes = loadedData.GetTypes().ToArray();           
+            var selectedTypes = PredicateContext.Sequence.Execute(lodedTypes, options, lodedTypes);
+            var passingTypes = ConditionContext.Sequence.Execute(selectedTypes, options, lodedTypes); 
+            return passingTypes;
         }
 
         public TestResult GetResult(Options options)
         {
             bool success;
 
-            var filteredTypes = PredicateContext.Sequence.Execute(lodedTypes, options, lodedTypes);
-            var passingTypes = ConditionContext.Sequence.Execute(filteredTypes, options, lodedTypes);
+            var lodedTypes = loadedData.GetTypes().ToArray();
+            var selectedTypes = PredicateContext.Sequence.Execute(lodedTypes, options, lodedTypes);
+            var passingTypes = ConditionContext.Sequence.Execute(selectedTypes, options, lodedTypes);
 
             if (ConditionContext.Should)
             {
                 // All the classes should meet the condition
-                success = (passingTypes.Count() == filteredTypes.Count());
+                success = (passingTypes.Count() == selectedTypes.Count());
             }
             else
             {
@@ -48,12 +49,12 @@ namespace NetArchTest.RuleEngine
 
             if (success)
             {
-                return new TestResult(lodedTypes, filteredTypes, Array.Empty<TypeSpec>(), true);
+                return new TestResult(loadedData.Assemblies, lodedTypes, selectedTypes, Array.Empty<TypeSpec>(), true);
             }
 
             // If we've failed, get a collection of failing types so these can be reported in a failing test.
-            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(filteredTypes, selected: !ConditionContext.Should, options, lodedTypes);
-            return new TestResult(lodedTypes, filteredTypes, failedTypes, false);
+            var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(selectedTypes, selected: !ConditionContext.Should, options, lodedTypes);
+            return new TestResult(loadedData.Assemblies, lodedTypes, selectedTypes, failedTypes, false);
         }
 
 

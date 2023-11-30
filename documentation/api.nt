@@ -5,9 +5,10 @@ capture output
       condition_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Condition"
       testresult_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^TestResult" 
       itype_type =  data.Interfaces | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^IType"
+      iassembly_type =  data.Interfaces | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^IAssembly"
       options_type =  data.Classes | Symbols.WhereNamespaceStartsWith "NetArchTest.Rules" | Symbols.WhereNameMatches "^Options"
       
-      all_types = types_type | Array.Concat predicate_type | Array.Concat condition_type | Array.Concat testresult_type | Array.Concat itype_type | Array.Concat options_type
+      all_types = types_type | Array.Concat predicate_type | Array.Concat condition_type | Array.Concat testresult_type | Array.Concat itype_type | Array.Concat iassembly_type | Array.Concat options_type
 }}    
 
 

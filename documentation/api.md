@@ -54,6 +54,7 @@
 * [AreSealed](#PredicateAreSealed)
 * [AreStateless](#PredicateAreStateless)
 * [AreStatic](#PredicateAreStatic)
+* [AreStaticless](#PredicateAreStaticless)
 * [AreStructures](#PredicateAreStructures)
 * [AreUsedByAny](#PredicateAreUsedByAny)
 * [DoNotHaveCustomAttribute](#PredicateDoNotHaveCustomAttribute)
@@ -131,6 +132,7 @@
 * [BeSealed](#ConditionBeSealed)
 * [BeStateless](#ConditionBeStateless)
 * [BeStatic](#ConditionBeStatic)
+* [BeStaticless](#ConditionBeStaticless)
 * [BeStructures](#ConditionBeStructures)
 * [BeUsedByAny](#ConditionBeUsedByAny)
 * [HaveCustomAttribute](#ConditionHaveCustomAttribute)
@@ -209,6 +211,7 @@
 
 * [FailingTypes](#TestResultFailingTypes)
 * [IsSuccessful](#TestResultIsSuccessful)
+* [LoadedAssemblies](#TestResultLoadedAssemblies)
 * [LoadedTypes](#TestResultLoadedTypes)
 * [SelectedTypesForTesting](#TestResultSelectedTypesForTesting)
 
@@ -220,6 +223,10 @@
 * [ReflectionType](#ITypeReflectionType)
 * [SourceFilePath](#ITypeSourceFilePath)
 
+## IAssembly
+
+* [FullName](#IAssemblyFullName)
+
 ## Options
 
 * [Comparer](#OptionsComparer)
@@ -227,7 +234,7 @@
 ## Types
 ### Types.FromFile
 ```csharp
-Types Types.FromFile(string fileName)
+Types Types.FromFile(string fileName, IEnumerable<string> searchDirectories = null)
 ```
 Creates a list of all the types in a particular module file.
 ### Types.FromPath
@@ -477,6 +484,11 @@ Selects types that are stateless, they do not have instance state
 PredicateList Predicate.AreStatic()
 ```
 Selects types that are static.
+### Predicate.AreStaticless
+```csharp
+PredicateList Predicate.AreStaticless()
+```
+Selects types that are staticless, they do not have static state
 ### Predicate.AreStructures
 ```csharp
 PredicateList Predicate.AreStructures()
@@ -836,6 +848,11 @@ Selects types that are stateless, they do not have instance state
 ConditionList Condition.BeStatic()
 ```
 Selects types that are static.
+### Condition.BeStaticless
+```csharp
+ConditionList Condition.BeStaticless()
+```
+Selects types that are staticless, they do not have static state
 ### Condition.BeStructures
 ```csharp
 ConditionList Condition.BeStructures()
@@ -1200,6 +1217,11 @@ Gets a list of the types that failed the test.
 IsSuccessful
 ```
 Gets a flag indicating the success or failure of the test.
+### TestResult.LoadedAssemblies
+```csharp
+LoadedAssemblies
+```
+Gets a list of all the assemblies that were loded by <see cref="T:NetArchTest.Rules.Types"/>.
 ### TestResult.LoadedTypes
 ```csharp
 LoadedTypes
@@ -1237,6 +1259,13 @@ System.Type
 SourceFilePath
 ```
 Path to the source file where type is defined.
+
+## IAssembly
+### IAssembly.FullName
+```csharp
+FullName
+```
+FullName of the assembly
 
 ## Options
 ### Options.Comparer

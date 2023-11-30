@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Mono.Cecil;
+using NetArchTest.Assemblies.PublicUse;
 
 namespace NetArchTest.Assemblies
 {

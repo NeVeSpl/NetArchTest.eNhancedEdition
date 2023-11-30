@@ -61,7 +61,7 @@ namespace NetArchTest.Assemblies
                 var assemblyDefinition = ReadAssemblyDefinition(fileName, readerParameters);
                 if (assemblyDefinition == null) continue;
 
-                if (exclusionTree.GetAllMatchingNames(assemblyDefinition.FullName).Any() == true) continue;
+                if (exclusionTree.GetAllMatchingNames(assemblyDefinition.Name.Name).Any() == true) continue;
 
                 var typeDefinitions = ReadTypes(assemblyDefinition);
 

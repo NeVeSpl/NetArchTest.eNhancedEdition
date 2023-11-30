@@ -25,6 +25,7 @@ namespace NetArchTest.Rules
         }
 
 
+
         /// <summary>
         /// Creates a list of types based on all the assemblies in the current AppDomain
         /// </summary>
@@ -102,6 +103,7 @@ namespace NetArchTest.Rules
             var files = Directory.GetFiles(path, "*.dll");
             return new Types(DataLoader.LoadFromFiles(files, searchDirectories));
         }
+
 
 
         /// <summary>

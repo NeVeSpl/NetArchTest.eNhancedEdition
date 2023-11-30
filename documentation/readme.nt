@@ -107,7 +107,7 @@ var types = result.FailingTypes;
 ```
 
 > **Tip**
-Loading types is time time-consuming, since `Type` class is immutable, it can be shared between tests.
+Loading types is time-consuming, since `Type` class is immutable, its instance can be shared between tests.
 
 ## Rules for dependency analysis
 

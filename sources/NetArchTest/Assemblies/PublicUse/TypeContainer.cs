@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Mono.Cecil;
 using NetArchTest.Rules;
 
-namespace NetArchTest.Assemblies
+namespace NetArchTest.Assemblies.PublicUse
 {
     [DebuggerDisplay("{FullName}")]
     internal sealed class TypeContainer : IType
@@ -16,33 +16,33 @@ namespace NetArchTest.Assemblies
         private readonly Lazy<string> _sourceFilePath;
 
 
-        internal TypeContainer(TypeDefinition monoTypeDefinition, string explanation)
-        {
-            _monoTypeDefinition = monoTypeDefinition;
-            _reflactionType = new Lazy<Type>(() =>
-            {                
-                try
-                {
-                    return _monoTypeDefinition.ToType();
-                }
-                catch 
-                { 
-                }
-                return null;
-            });
-            _sourceFilePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
-            Explanation = explanation;
-        }
-
-
-        public Type ReflectionType => _reflactionType.Value;  
-        public string FullName => _monoTypeDefinition.FullName;     
+        public Type ReflectionType => _reflactionType.Value;
+        public string FullName => _monoTypeDefinition.FullName;
         public string Name => _monoTypeDefinition.Name;
         public string Explanation { get; }
         public string SourceFilePath => _sourceFilePath.Value;
 
 
-        public static implicit operator System.Type(TypeContainer type)
+        internal TypeContainer(TypeDefinition monoTypeDefinition, string explanation)
+        {
+            _monoTypeDefinition = monoTypeDefinition;
+            _reflactionType = new Lazy<Type>(() =>
+            {
+                try
+                {
+                    return _monoTypeDefinition.ToType();
+                }
+                catch
+                {
+                }
+                return null;
+            });
+            _sourceFilePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
+            Explanation = explanation;
+        }       
+
+
+        public static implicit operator Type(TypeContainer type)
         {
             return type.ReflectionType;
         }

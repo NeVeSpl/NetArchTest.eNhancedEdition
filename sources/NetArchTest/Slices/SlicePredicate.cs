@@ -28,7 +28,7 @@ namespace NetArchTest.Slices
         {
             var slicer = new Slicer();
             var slicedTypes = slicer.SliceByNamespacePrefix(rule.Execute(null), prefix);
-            return new SlicePredicateList(slicedTypes);
+            return new SlicePredicateList(new SliceContext(rule.loadedData, slicedTypes));
         }
     }
 }

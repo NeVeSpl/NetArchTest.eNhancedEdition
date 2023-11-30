@@ -33,7 +33,7 @@ namespace NetArchTest.RuleEngine
         {
             return Execute(inputTypes, selected, true, options, allTypes);
         }
-        public IReadOnlyList<TypeSpec> Execute(IReadOnlyList<TypeSpec> inputTypes, Options options, IEnumerable<TypeSpec> allTypes)
+        public IReadOnlyList<TypeSpec> Execute(IReadOnlyList<TypeSpec> inputTypes, Options options, IReadOnlyList<TypeSpec> allTypes)
         {
             return Execute(inputTypes, true, false, options, allTypes);
         }
