@@ -10,10 +10,11 @@
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D1;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D2;
     using NetArchTest.TestStructure.Dependencies.TypeOfSearch.D3;
+    using NetArchTest.UnitTests.TestFixtures;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - search type tests ")]
-    public class DependencySearch_SearchTypeTests
+    public class DependencySearchTests_SearchType(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Theory(DisplayName = "A search for types with ANY dependencies returns types that have a dependency on at least one item in the list.")]
         [InlineData(new string[] { "NetArchTest.TestStructure.Dependencies.Examples.ExampleDependency", "NetArchTest.TestStructure.Dependencies.Examples.AnotherExampleDependency" }, "List contains two distinct dependencies.")]
@@ -27,8 +28,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .GetTypeSpecifications();
@@ -54,8 +54,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(HasDependency).Namespace)
                 .GetTypeSpecifications();
@@ -73,8 +72,7 @@
         {
             // Arrange
             var search = new DependencySearch(true);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
@@ -99,8 +97,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
@@ -121,8 +118,7 @@
         {
             // Arrange
             var search = new DependencySearch(true);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
@@ -145,8 +141,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
@@ -169,8 +164,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)
                 .And()
@@ -190,8 +184,7 @@
         {
             // Arrange
             var search = new DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(Class_A)))
+            var typeList = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(Class_A).Namespace)                          
                 .GetTypeSpecifications();

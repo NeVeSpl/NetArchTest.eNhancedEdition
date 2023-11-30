@@ -1,17 +1,17 @@
 ﻿using System.Linq;
 using NetArchTest.Rules;
 using NetArchTest.Slices;
-using NetArchTest.TestStructure.Dependencies.Examples;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class SlicesTests
+    public class SlicesTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "Types are divided correctly into slices for a valid tree")]
         public void TypesAreDividedCorrectlyIntoSlicesForValidTree()
         {
-            var slicedTypes = (Types.InAssembly(typeof(ExampleDependency).Assembly)
+            var slicedTypes = (fixture.Types
                                .Slice()
                                .ByNamespacePrefix("NetArchTest.TestStructure.Slices.ValidTree") as SlicePredicateList).GetSlicedTypes();
 
@@ -26,7 +26,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Valid tree does not have dependencies between slices")]
         public void ValidTreeDoesNotHaveDependenciesBetweenSlices()
         {
-            var testResult = Types.InAssembly(typeof(ExampleDependency).Assembly)
+            var testResult = fixture.Types
                                .Slice()
                                .ByNamespacePrefix("NetArchTest.TestStructure.Slices.ValidTree")
                                .Should()
@@ -39,7 +39,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Invalid tree has dependencies between slices")]
         public void InvalidTreeHasDependenciesBetweenSlices()
         {
-            var testResult = Types.InAssembly(typeof(ExampleDependency).Assembly)
+            var testResult = fixture.Types
                                .Slice()
                                .ByNamespacePrefix("NetArchTest.TestStructure.Slices.InvalidTree")
                                .Should()
@@ -47,10 +47,6 @@ namespace NetArchTest.UnitTests
                                .GetResult();
 
             Assert.False(testResult.IsSuccessful);
-
-
-
-            Types.InCurrentDomain().Slice().ByNamespacePrefix("").Should().NotHaveDependenciesBetweenSlices().GetResult();
         }
     }
 }

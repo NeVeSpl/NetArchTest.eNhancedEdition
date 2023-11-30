@@ -1,23 +1,14 @@
-﻿using System.Reflection;
-using NetArchTest.Rules;
-using NetArchTest.TestStructure.File;
+﻿using NetArchTest.TestStructure.File;
 using NetArchTest.TestStructure.File.Incorrect.Yabadabado;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Stateless;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Special : IClassFixture<SpecialFixture>
+    public class ConditionTests_Special(SpecialFixture fixture) : IClassFixture<SpecialFixture>
     {
-        SpecialFixture fixture;
-
-        public ConditionTests_Special(SpecialFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
         [Fact(DisplayName = "BeImmutable")]
         public void BeImmutable()
         {

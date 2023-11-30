@@ -1,17 +1,11 @@
 ﻿using NetArchTest.Rules;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Traits : IClassFixture<TraitsFixture>
+    public class ConditionTests_Traits(TraitsFixture fixture) : IClassFixture<TraitsFixture>
     {
-        TraitsFixture fixture;
-
-        public ConditionTests_Traits(TraitsFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
         private Predicate GetTypesThat()
         {
             return fixture.Types                

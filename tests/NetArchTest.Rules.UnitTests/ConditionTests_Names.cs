@@ -3,19 +3,13 @@ using System.Linq;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Names.Namespace1;
 using NetArchTest.TestStructure.Names.Namespace2;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_Names : IClassFixture<NamesFixture>
+    public class ConditionTests_Names(NamesFixture fixture) : IClassFixture<NamesFixture>
     {
-        NamesFixture fixture;
-
-        public ConditionTests_Names(NamesFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
         private Predicate GetTypesThat()
         {
             return fixture.Types                

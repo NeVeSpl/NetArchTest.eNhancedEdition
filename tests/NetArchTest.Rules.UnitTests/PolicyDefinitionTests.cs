@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Policies;
-using NetArchTest.Rules;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
-{    
-    public class PolicyDefinitionTests
+{
+    public class PolicyDefinitionTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         private const string POLICY_NAME = "Name";
         private const string POLICY_DESCRIPTION = "Description";
@@ -20,7 +18,7 @@ namespace NetArchTest.UnitTests
         public void Evaluate_RuleAdded_ExecutedWhenEvaluated()
         {
             // Arrange
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION)
                 .For(types)
@@ -46,7 +44,7 @@ namespace NetArchTest.UnitTests
         public void Evaluate_MultipleRulesAdded_Aggregated()
         {
             // Arrange
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION).For(types);
 
@@ -76,7 +74,7 @@ namespace NetArchTest.UnitTests
         public void Evaluate_MultipleCalls_MultipleResults()
         {
             // Arrange
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION).For(types);
 
@@ -109,7 +107,7 @@ namespace NetArchTest.UnitTests
         public void Evaluate_NAmeAndDescription_Optional()
         {
             // Arrange
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION)
                 .For(types)
@@ -132,7 +130,7 @@ namespace NetArchTest.UnitTests
         public void Evaluate_EmptyPolicy_EvaluateToEmptyResults()
         {
             // Arrange
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION)
                 .For(types);
@@ -151,7 +149,7 @@ namespace NetArchTest.UnitTests
             // Arrange
             var name = Guid.NewGuid().ToString();
             var description = Guid.NewGuid().ToString();
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(POLICY_NAME, POLICY_DESCRIPTION)
                 .For(types)
@@ -176,7 +174,7 @@ namespace NetArchTest.UnitTests
             // Arrange
             var name = Guid.NewGuid().ToString();
             var description = Guid.NewGuid().ToString();
-            var types = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
+            var types = fixture.Types;
 
             var policy = Policy.Define(name, description)
                 .For(types)

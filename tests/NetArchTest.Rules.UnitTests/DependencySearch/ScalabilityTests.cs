@@ -37,7 +37,7 @@
     /// test execution time from seconds to minutes.
     /// </remarks>
     [CollectionDefinition("Dependency Search Scalability", DisableParallelization = true)]
-    public class DependencySearch_ScalabilityTests
+    public class DependencySearchTests_Scalability
     {
         // Type definitions input sets of different size
         private static IList<TypeSpec> _inputTypesSmallSet;
@@ -64,7 +64,7 @@
         private static string _implementationNamespace = typeof(HasDependency).Namespace;
         private static string _dependencyNamespace = typeof(ExampleDependency).Namespace;
 
-        static DependencySearch_ScalabilityTests()
+        static DependencySearchTests_Scalability()
         {
             _dependenciesToSearchSmallSet = ConstructDependencyToSearchList(0x40, "ExampleDependency");     // 64 items
             _dependenciesToSearchMediumSet = ConstructDependencyToSearchList(0x80, "ExampleDependency");    // 128 items

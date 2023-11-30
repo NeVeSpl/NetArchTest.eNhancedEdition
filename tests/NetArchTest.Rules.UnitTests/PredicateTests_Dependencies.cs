@@ -1,30 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Dependencies.Examples;
 using NetArchTest.TestStructure.Dependencies.Implementation;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class DependenciesFixture
+    public class PredicateTests_Dependencies(DependenciesFixture fixture) : IClassFixture<DependenciesFixture>
     {
-        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(HasDependency)));
-    }
-
-
-    public class PredicateTests_Dependencies : IClassFixture<DependenciesFixture>
-    {
-        DependenciesFixture fixture;
-
-        public PredicateTests_Dependencies(DependenciesFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
-
         private Predicate GetTypesThat()
         {
             return fixture.Types                

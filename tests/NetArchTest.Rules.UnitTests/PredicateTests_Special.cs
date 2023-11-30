@@ -1,33 +1,16 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using NetArchTest.Rules;
 using NetArchTest.TestStructure.Mutability;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.Nullable;
 using NetArchTest.TestStructure.Stateless;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class SpecialFixture
+    public class PredicateTests_Special(SpecialFixture fixture) : IClassFixture<SpecialFixture>
     {
-        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
-    }
-
-
-
-    public class PredicateTests_Special : IClassFixture<SpecialFixture>
-    {
-        SpecialFixture fixture;
-
-        public PredicateTests_Special(SpecialFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
         [Fact(DisplayName = "AreImmutable")]
         public void AreImmutable()
         {

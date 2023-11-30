@@ -11,18 +11,18 @@ using NetArchTest.TestStructure.Interfaces;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.UnitTests.TestDoubles;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public partial class PredicateTests
+    public partial class PredicateTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "HaveCustomAttribute")]
         public void HaveCustomAttribute()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types                
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
@@ -36,8 +36,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttribute_Nested")]
         public void HaveCustomAttribute_Nested()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
@@ -51,8 +50,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttribute_Generic_Unbound")]
         public void HaveCustomAttribute_Generic_Unbound()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()              
@@ -66,8 +64,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttribute_Generic_Closed")]
         public void HaveCustomAttribute_Generic_Closed()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
@@ -81,8 +78,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttribute_FromDifferentAssembly")]
         public void HaveCustomAttribute_FromDifferentAssembly()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
@@ -96,8 +92,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "DoNotHaveCustomAttribute")]
         public void DoNotHaveCustomAttribute()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(namespaceof<AttributePresent>())
                 .And()
@@ -113,8 +108,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttributeOrInherit")]
         public void HaveCustomAttributeOrInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(AttributePresent).Namespace)
                 .And()
@@ -128,8 +122,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttributeOrInheri_FromDifferentAssemblyt")]
         public void HaveCustomAttributeOrInheri_FromDifferentAssemblyt()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(AttributePresent).Namespace)
                 .And()
@@ -145,8 +138,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "DoNotHaveCustomAttributeOrInherit")]
         public void DoNotHaveCustomAttributeOrInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(AttributePresent)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace(typeof(AttributePresent).Namespace)
                 .And()
@@ -161,8 +153,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Inherit - Types can be selected if they inherit from a type.")]
         public void Inherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -190,8 +181,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "DoNotInherit")]
         public void DoNotInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -206,8 +196,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "AreInheritedByAnyType")]
         public void AreInheritedByAnyType()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -221,8 +210,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "AreNotInheritedByAnyType")]
         public void AreNotInheritedByAnyType()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -237,8 +225,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "ImplementInterface")]
         public void ImplementInterface()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -253,8 +240,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "ImplementInterface_OpenGeneric")]
         public void ImplementInterface_OpenGeneric()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -268,8 +254,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "DoNotImplementInterface")]
         public void DoNotImplementInterface()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -287,8 +272,7 @@ namespace NetArchTest.UnitTests
             var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA3", StringComparison.InvariantCultureIgnoreCase));
 
             // Use the custom rule
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .MeetCustomRule(rule)
                 .GetReflectionTypes();

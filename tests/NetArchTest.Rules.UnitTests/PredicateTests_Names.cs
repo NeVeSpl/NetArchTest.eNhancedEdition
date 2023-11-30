@@ -1,30 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Rules;
-using NetArchTest.TestStructure.Dependencies.Implementation;
 using NetArchTest.TestStructure.Names.Namespace1;
 using NetArchTest.TestStructure.Names.Namespace2;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class NamesFixture
+    public class PredicateTests_Names(NamesFixture fixture) : IClassFixture<NamesFixture>
     {
-        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(ClassA1)));
-    }
-
-
-    public class PredicateTests_Names : IClassFixture<NamesFixture>
-    {
-        NamesFixture fixture;
-
-        public PredicateTests_Names(NamesFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
         private Predicate GetTypesThat()
         {
             return fixture.Types

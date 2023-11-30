@@ -7,17 +7,17 @@ using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
 using NetArchTest.TestStructure.NameMatching.NamespaceGeneric.Namespace1;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {  
-    public class ConditionListTests
+    public class ConditionListTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "Conditions can be grouped together using 'or' logic.")]
         public void Or_AppliedToConditions_SelectCorrectTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .Should()
@@ -40,8 +40,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Conditions can be chained together using 'and' logic.")]
         public void And_AppliedToConditions_SelectCorrectTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .Should()
@@ -61,8 +60,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "An Or() statement will signal the start of a separate group of Conditions")]
         public void Or_MultipleInstances_TreatedAsSeparateGroups()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace2")
                 .Should()
@@ -87,8 +85,7 @@ namespace NetArchTest.UnitTests
         public void ShouldNot_FollowingConditions_Inversed()
         {
             // First example - single condition
-            var predicates = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var predicates = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -98,8 +95,7 @@ namespace NetArchTest.UnitTests
             var result1Not = predicates.ShouldNot().NotImplementInterface(typeof(IExample)).GetResult();
 
             // Third example - two conditions with an or() statement
-            predicates = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            predicates = fixture.Types
                 .That()
                 .ResideInNamespace(" NetArchTest.TestStructure.NameMatching.Namespace1");
 
@@ -113,8 +109,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "If a condition fails then a list of failing types should be returned.")]
         public void GetResult_Failed_ReturnFailedTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .And()
@@ -132,8 +127,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "If a condition fails using ShouldNot logic then a list of failing types should be returned.")]
         public void GetResult_FailedShouldNot_ReturnFailedTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .ShouldNot()
@@ -150,8 +144,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "If a condition succeeds then a list of failing types should be empty.")]
         public void GetResult_Success_ReturnEmptyFailedTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching")
                 .And()

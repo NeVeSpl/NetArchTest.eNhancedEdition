@@ -5,17 +5,17 @@ using NetArchTest.Rules;
 using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.TestStructure.NameMatching.Namespace2;
 using NetArchTest.TestStructure.NameMatching.Namespace2.Namespace3;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class PredicateListTests
+    public class PredicateListTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "Predicates can be grouped together using 'or' logic.")]
         public void Or_AppliedToPredicates_SelectCorrectTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
                 .Or()
@@ -33,8 +33,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Predicates can be chained together using 'and' logic.")]
         public void And_AppliedToPredicates_SelectCorrectTypes()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")
                 .And()
@@ -51,8 +50,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "An Or() statement will signal the start of a separate group of predicates")]
         public void Or_MultipleInstances_TreatedAsSeparateGroups()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 // First group (returns ClassA1 and ClassB1)
                 .ResideInNamespace("NetArchTest.TestStructure.NameMatching.Namespace1")

@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Reflection;
-using NetArchTest.Rules;
 using NetArchTest.TestStructure.CustomAttributes;
 using NetArchTest.TestStructure.Inheritance;
 using NetArchTest.TestStructure.Interfaces;
-using NetArchTest.TestStructure.NameMatching.Namespace1;
 using NetArchTest.UnitTests.TestDoubles;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests
+    public class ConditionTests(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "HaveCustomAttribute")]
         public void HaveCustomAttribute()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.CustomAttributes")
                 .And()
@@ -30,8 +27,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "NotHaveCustomAttribute")]
         public void NotHaveCustomAttribute()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.CustomAttributes")
                 .And()
@@ -45,8 +41,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "HaveCustomAttributeOrInherit")]
         public void HaveCustomAttributeOrInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.CustomAttributes")
                 .And()
@@ -60,8 +55,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "NotHaveCustomAttributeOrInherit")]
         public void NotHaveCustomAttributeOrInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.CustomAttributes")
                 .And()
@@ -75,8 +69,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "Inherit")]
         public void Inherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -90,8 +83,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "NotInherit")]
         public void NotInherit()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Inheritance")
                 .And()
@@ -105,8 +97,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "ImplementInterface")]
         public void ImplementInterface()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -120,8 +111,7 @@ namespace NetArchTest.UnitTests
         [Fact(DisplayName = "NotImplementInterface")]
         public void NotImplementInterface()
         {
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .ResideInNamespace("NetArchTest.TestStructure.Interfaces")
                 .And()
@@ -139,8 +129,7 @@ namespace NetArchTest.UnitTests
             var rule = new CustomRuleTestDouble(t => t.Name.Equals("ClassA2", StringComparison.InvariantCultureIgnoreCase));
 
             // This rule uses the custom rule to confirm that "ClassA1" has been selected
-            var result = Types
-                .InAssembly(Assembly.GetAssembly(typeof(ClassA1)))
+            var result = fixture.Types
                 .That()
                 .HaveName("ClassA2")
                 .Should()

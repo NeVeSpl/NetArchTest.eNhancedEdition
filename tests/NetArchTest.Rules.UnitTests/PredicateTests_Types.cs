@@ -1,28 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.Types;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class TypesFixture
+    public class PredicateTests_Types(TypesFixture fixture) : IClassFixture<TypesFixture> 
     {
-        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(ExampleClass)));
-    }
-
-
-    public class PredicateTests_Types : IClassFixture<TypesFixture> 
-    {
-        TypesFixture fixture;
-
-        public PredicateTests_Types(TypesFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
         private Predicate GetTypesThat()
         {
             return fixture.Types

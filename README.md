@@ -129,7 +129,7 @@ public class SampleApp_ModuleOmega_Tests
 
 The fluent API should direct you in building up a rule, based on a combination of [predicates](documentation/api.md#predicate), [conditions](documentation/api.md#condition) and conjunctions. 
 
-The starting point for any rule is the static [`Types`](documentation/api.md#types) class, where you load a set of types from an assembly, domain or path.
+The starting point for any rule is one of the static methods on [`Types`](documentation/api.md#types) class, where you load a set of types from an assembly, domain or path.
 
 ```csharp
 var types = Types.InAssembly(typeof(MyClass).Assembly);
@@ -155,6 +155,8 @@ var isValid = result.IsSuccessful;
 var types = result.FailingTypes;
 ```
 
+> **Tip**
+Loading types is time time-consuming, since `Type` class is immutable, it can be shared between tests.
 
 ## Rules for dependency analysis
 

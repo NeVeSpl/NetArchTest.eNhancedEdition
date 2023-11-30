@@ -9,29 +9,30 @@
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using NetArchTest.TestStructure.Dependencies.Search;
     using NetArchTest.TestStructure.FalsePositives.NamespaceMatch;
+    using NetArchTest.UnitTests.TestFixtures;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - various tests")]
-    public class DependencySearch_VariousTests
+    public class DependencySearchTests_Various(AllTypesFixture fixture) : IClassFixture<AllTypesFixture>
     {
         [Fact(DisplayName = "Does not find a dependency in an indirect reference.")]
         public void DependencySearch_IndirectReference_NotFound()
         {
             // NB: We only look for dependencies in the types being searched 
-            Utils.RunDependencyTest(typeof(IndirectReference), false);
+            Utils.RunDependencyTest(fixture, typeof(IndirectReference), false);
         }
 
         [Fact(DisplayName = "Does not find things that are not dependency at all")]
         public void DependencySearch_Garbage_NotFound()
         {
-            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)), new List<string> { "System.Object::.ctor()", "T", "T1", "T2", "ctor()", "!1)", "::.ctor(!0", "T1&", "T2&", "T1[]", "T2[]" }, false);            
+            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(fixture, typeof(IndirectReference)), new List<string> { "System.Object::.ctor()", "T", "T1", "T2", "ctor()", "!1)", "::.ctor(!0", "T1&", "T2&", "T1[]", "T2[]" }, false);            
         }
 
         [Fact(DisplayName = "Does not find a dependency that only partially matches actually referenced type.")]       
         public void DependencySearch_PartiallyMatchingDependency_NotFound()
         {
-            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference), typeof(GenericMethodGenericParameter));
-            Utils.RunDependencyTest(subjects,
+            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(fixture, typeof(IndirectReference), typeof(GenericMethodGenericParameter));
+            Utils.RunDependencyTest(fixture, subjects,
                                     dependencyToSearch: typeof(ExampleDep),
                                     expectToFindClass: false,
                                     expectToFindNamespace: true);
@@ -40,7 +41,7 @@
         [Fact(DisplayName = "Does not find a dependency from the namespace matching partially to the namespace of actually referenced type.")]       
         public void DependencySearch_PartiallyMatchingNamespace_NotFound()
         {
-            Utils.RunDependencyTest(Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference)),
+            Utils.RunDependencyTest(fixture, Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(fixture, typeof(IndirectReference)),
                                     dependencyToSearch: typeof(ExampleDependencyInPartiallyMatchingNamespace),
                                     expectToFindClass: false,
                                     expectToFindNamespace: false);
@@ -49,8 +50,8 @@
         [Fact(DisplayName = "Does not find a dependency that differs only in case from actually referenced type.")]       
         public void DependencySearch_DependencyWithDifferentCaseOfCharacters_NotFound()
         {
-            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(typeof(IndirectReference), typeof(GenericMethodGenericParameter));
-            Utils.RunDependencyTest(subjects,
+            var subjects = Utils.GetTypesThatResideInTheSameNamespaceButWithoutGivenType(fixture, typeof(IndirectReference), typeof(GenericMethodGenericParameter));
+            Utils.RunDependencyTest(fixture, subjects,
                                     dependencyToSearch: typeof(ExampleDEPENDENCY),
                                     expectToFindClass: false,
                                     expectToFindNamespace: true);
@@ -63,8 +64,7 @@
 
             // Arrange
             var search = new global::NetArchTest.Dependencies.DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            var typeList = fixture.Types
                 .That()
                 .HaveName("ClassMatchingExample")
                 .GetTypeSpecifications();
@@ -83,8 +83,7 @@
 
             // Arrange
             var search = new global::NetArchTest.Dependencies.DependencySearch(false);
-            var typeList = Types
-                .InAssembly(Assembly.GetAssembly(typeof(HasDependency)))
+            var typeList = fixture.Types
                 .That()
                 .HaveName("NamespaceMatchingExample")
                 .GetTypeSpecifications();

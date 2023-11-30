@@ -1,18 +1,11 @@
 ﻿using NetArchTest.Rules;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 
 namespace NetArchTest.UnitTests
 {
-    public class ConditionTests_AccessModifiers : IClassFixture<AccessModifiersFixture>
+    public class ConditionTests_AccessModifiers(AccessModifiersFixture fixture) : IClassFixture<AccessModifiersFixture>
     {
-        AccessModifiersFixture fixture;
-
-        public ConditionTests_AccessModifiers(AccessModifiersFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
         private Predicate GetTypesThat()
         {
             return fixture.Types

@@ -7,6 +7,7 @@
     using NetArchTest.Assemblies;
     using NetArchTest.Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
+    using NetArchTest.UnitTests.TestFixtures;
     using Xunit;
 
     internal static class Utils
@@ -16,28 +17,28 @@
         /// </summary>
         /// <param name="input"></param>
         /// <param name="expectToFind"></param>
-        public static void RunDependencyTest(Type input, bool expectToFind = true)
+        public static void RunDependencyTest(AllTypesFixture fixture, Type input, bool expectToFind = true)
         {
-            RunDependencyTest(input, typeof(ExampleDependency), expectToFind, expectToFind);
+            RunDependencyTest(fixture, input, typeof(ExampleDependency), expectToFind, expectToFind);
         }
 
-        public static void RunDependencyTest(Type input, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
+        public static void RunDependencyTest(AllTypesFixture fixture, Type input, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
         {
-            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeSpecifications();
+            var subject = fixture.Types.That().HaveName(input.Name).GetTypeSpecifications();
 
-            RunDependencyTest(subject, dependencyToSearch, expectToFindClass, expectToFindNamespace);
+            RunDependencyTest(fixture, subject, dependencyToSearch, expectToFindClass, expectToFindNamespace);
         }
 
-        public static void RunDependencyTest(IEnumerable<TypeSpec> inputs, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
+        public static void RunDependencyTest(AllTypesFixture fixture, IEnumerable<TypeSpec> inputs, Type dependencyToSearch, bool expectToFindClass, bool expectToFindNamespace)
         {
             // Search against the type name and its namespace - this demonstrates that namespace based searches also work
             FindTypesWithAnyDependencies(inputs, new List<string> { dependencyToSearch.FullName }, expectToFindClass);
             FindTypesWithAnyDependencies(inputs, new List<string> { dependencyToSearch.Namespace }, expectToFindNamespace);
         }
 
-        public static void RunDependencyTest(Type input, IEnumerable<string> dependenciesToSearch, bool expectToFind)
+        public static void RunDependencyTest(AllTypesFixture fixture, Type input, IEnumerable<string> dependenciesToSearch, bool expectToFind)
         {
-            var subject = Types.InAssembly(Assembly.GetAssembly(input)).That().HaveName(input.Name).GetTypeSpecifications();
+            var subject = fixture.Types.That().HaveName(input.Name).GetTypeSpecifications();
 
             RunDependencyTest(subject, dependenciesToSearch, expectToFind);
         }
@@ -47,9 +48,9 @@
             FindTypesWithAnyDependencies(inputs, dependenciesToSearch, expectToFind);
         }
                 
-        public static IEnumerable<TypeSpec> GetTypesThatResideInTheSameNamespaceButWithoutGivenType(params Type[] type)
+        public static IEnumerable<TypeSpec> GetTypesThatResideInTheSameNamespaceButWithoutGivenType(AllTypesFixture fixture, params Type[] type)
         {
-            var types = Types.InAssembly(Assembly.GetAssembly(type.First()))
+            var types = fixture.Types
                      .That()
                      .ResideInNamespace(type.First().Namespace);
             foreach (var item in type)

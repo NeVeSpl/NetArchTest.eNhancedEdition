@@ -1,29 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.TestStructure.AccessModifiers;
+using NetArchTest.UnitTests.TestFixtures;
 using Xunit;
 using static NetArchTest.Utils;
 
 namespace NetArchTest.UnitTests
 {
-    public class AccessModifiersFixture
+    public class PredicateTests_AccessModifiers(AccessModifiersFixture fixture) : IClassFixture<AccessModifiersFixture>
     {
-        public Types Types { get; } = Types.InAssembly(Assembly.GetAssembly(typeof(PublicClass)));
-    }
-
-
-    public class PredicateTests_AccessModifiers : IClassFixture<AccessModifiersFixture>
-    {
-        AccessModifiersFixture fixture;
-
-        public PredicateTests_AccessModifiers(AccessModifiersFixture fixture)
-        {
-            this.fixture = fixture;
-        }
-
-
         private Predicate GetTypesThat()
         {
             return fixture.Types
