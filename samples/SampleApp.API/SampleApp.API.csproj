@@ -7,4 +7,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SampleApp.ModuleAlpha\SampleApp.ModuleAlpha.csproj" />
+    <ProjectReference Include="..\SampleApp.ModuleOmega\SampleApp.ModuleOmega.csproj" />
+  </ItemGroup>
+
 </Project>

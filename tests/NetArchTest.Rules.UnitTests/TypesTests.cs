@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
+using NetArchTest.CrossAssemblyTest.A;
 using NetArchTest.Rules;
 using Xunit;
 
@@ -97,6 +98,32 @@ namespace NetArchTest.UnitTests
 
             // Assert
             Assert.Empty(result);
+        }
+
+
+        [Fact(DisplayName = "InAssembly can load types from referenced assemblies")]
+        public void InAssembly_LoadReferencedAssemblies_True()
+        {
+            // Act
+            var result = Types.InAssembly(typeof(TypesTests).Assembly, loadReferencedAssemblies: true)
+                              .GetTypes()
+                              .Select(x => x.ReflectionType)
+                              .ToArray();
+
+            // Assert
+            Assert.Contains(typeof(BaseClassFromA), result);
+        }
+        [Fact(DisplayName = "InAssembly can not load types from referenced assemblies")]
+        public void InAssembly_LoadReferencedAssemblies_False()
+        {
+            // Act
+            var result = Types.InAssembly(typeof(TypesTests).Assembly, loadReferencedAssemblies: false)
+                              .GetTypes()
+                              .Select(x => x.ReflectionType)
+                              .ToArray();
+
+            // Assert
+            Assert.DoesNotContain(typeof(BaseClassFromA), result);
         }
     }
 }

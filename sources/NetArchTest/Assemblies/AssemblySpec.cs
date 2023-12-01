@@ -10,6 +10,10 @@ namespace NetArchTest.Assemblies
     {
         private AssemblyDefinition assemblyDefinition;
         private IReadOnlyList<TypeDefinition> typeDefinitions;
+        private List<AssemblySpec> referenced = new List<AssemblySpec>();
+
+        public string FullName => assemblyDefinition.FullName;
+
 
 
         public AssemblySpec(AssemblyDefinition assemblyDefinition, IEnumerable<TypeDefinition> typeDefinitions)
@@ -18,11 +22,16 @@ namespace NetArchTest.Assemblies
             this.typeDefinitions = typeDefinitions.ToArray();
         }
 
+        public void AddRef(AssemblySpec assemblySpec)
+        {
+            referenced.Add(assemblySpec);
+        }
 
         public IEnumerable<TypeSpec> GetTypes() 
         {
             return typeDefinitions.Select(x => new TypeSpec(x));
         }
+
 
 
         public IAssembly CreateWrapper()

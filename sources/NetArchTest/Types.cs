@@ -41,9 +41,9 @@ namespace NetArchTest.Rules
         /// <param name="assembly">The assembly to base the list on.</param>
         /// <param name="searchDirectories">An optional list of search directories to allow resolution of referenced assemblies.</param>
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
-        public static Types InAssembly(Assembly assembly, IEnumerable<string> searchDirectories = null)
+        public static Types InAssembly(Assembly assembly, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
         {
-            return Types.InAssemblies(new List<Assembly> { assembly }, searchDirectories);
+            return Types.InAssemblies(new List<Assembly> { assembly }, searchDirectories, loadReferencedAssemblies);
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace NetArchTest.Rules
         /// <param name="assemblies">The assemblies to base the list on.</param>
         /// <param name="searchDirectories">An optional list of search directories to allow resolution of referenced assemblies.</param>
         /// <returns>A list of types that can have predicates and conditions applied to it.</returns>
-        public static Types InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
+        public static Types InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
         {
-            return new Types(DataLoader.LoadFromAssemblies(assemblies, searchDirectories));
+            return new Types(DataLoader.LoadFromAssemblies(assemblies, searchDirectories, loadReferencedAssemblies));
         }
 
         /// <summary>

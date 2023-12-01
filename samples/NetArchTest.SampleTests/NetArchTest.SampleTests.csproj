@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\sources\NetArchTest\NetArchTest.csproj" />
+    <ProjectReference Include="..\SampleApp.API\SampleApp.API.csproj" />
     <ProjectReference Include="..\SampleApp.ModuleAlpha\SampleApp.ModuleAlpha.csproj" />
     <ProjectReference Include="..\SampleApp.ModuleOmega\SampleApp.ModuleOmega.csproj" />
   </ItemGroup>

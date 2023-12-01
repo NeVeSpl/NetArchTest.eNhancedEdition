@@ -17,7 +17,7 @@ namespace NetArchTest.Assemblies
             "netstandard", 
             "NuGet", 
             "Newtonsoft",
-            "Xunit", 
+            "xunit", 
             "Internal.Microsoft",
             "Mono.Cecil",
             "NetArchTest.Assemblies",
@@ -38,36 +38,65 @@ namespace NetArchTest.Assemblies
 
             return LoadFromAssemblies(selectedAssemblies);
         }
-        public static LoadedData LoadFromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
+        public static LoadedData LoadFromAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
         {
             var files = assemblies.Select(x => x.Location);
 
-            return LoadFromFiles(files, searchDirectories);
+            return LoadFromFiles(files, searchDirectories, loadReferencedAssemblies);
         }
-        public static LoadedData LoadFromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
+        public static LoadedData LoadFromFiles(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
         {
-            var assemblies = Load(fileNames, searchDirectories);
+            var assemblies = Load(fileNames, searchDirectories, loadReferencedAssemblies);
 
             return new LoadedData(assemblies);
         }
 
 
-        private static IEnumerable<AssemblySpec> Load(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories = null)
+        private static IEnumerable<AssemblySpec> Load(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories, bool loadReferencedAssemblies)
         {
             var readerParameters = CreateReaderParameters(searchDirectories);
+            var definitions = new Dictionary<string, AssemblySpec>();
 
             foreach (var fileName in fileNames)
             {
                 var assemblyDefinition = ReadAssemblyDefinition(fileName, readerParameters);
-                if (assemblyDefinition == null) continue;
+                ProcessAssemblyDefinition(null, assemblyDefinition);
+            }
 
-                if (exclusionTree.GetAllMatchingNames(assemblyDefinition.Name.Name).Any() == true) continue;
+            void ProcessAssemblyDefinition(AssemblySpec parent, AssemblyDefinition assemblyDefinition)
+            {
+                if (assemblyDefinition == null) return;
+                if (exclusionTree.GetAllMatchingNames(assemblyDefinition.Name.Name).Any() == true) return;
+                if (definitions.TryGetValue(assemblyDefinition.FullName, out var existingSpec))
+                {
+                    parent?.AddRef(existingSpec);
+                    return;
+                }
 
                 var typeDefinitions = ReadTypes(assemblyDefinition);
+                var spec = new AssemblySpec(assemblyDefinition, typeDefinitions);
 
-                yield return new AssemblySpec(assemblyDefinition, typeDefinitions);
+                definitions.Add(assemblyDefinition.FullName, spec);
+                parent?.AddRef(spec);
+
+                if (loadReferencedAssemblies == false) return;
+
+                foreach (var module in assemblyDefinition.Modules)
+                {
+                    if (module.HasAssemblyReferences)
+                    {
+                        foreach (var reference in module.AssemblyReferences)
+                        {
+                            var refAssembly = module.AssemblyResolver.Resolve(reference);
+                            ProcessAssemblyDefinition(spec, refAssembly);
+                        }
+                    }
+                }
             }
+
+            return definitions.Values;
         }
+       
         private static ReaderParameters CreateReaderParameters(IEnumerable<string> searchDirectories, bool readSymbols = true)
         {
             DefaultAssemblyResolver assemblyResolver = null;
