@@ -123,5 +123,26 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveMatchingTypeWithName(context, inputTypes, getMatchingTypeName, true));
             return CreateConditionList();
         }
+
+
+        /// <summary>
+        /// Selects types that have at least one public constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HavePublicConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, true));
+            return CreateConditionList();
+        }
+
+        /// <summary>
+        /// Selects types that do not have a public constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotHavePublicConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, false));
+            return CreateConditionList();
+        }
     }
 }

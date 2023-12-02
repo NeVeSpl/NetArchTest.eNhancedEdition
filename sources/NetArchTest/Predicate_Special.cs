@@ -83,5 +83,26 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.OnlyHaveNonNullableMembers(x, true));
             return CreatePredicateList();
         }
+
+
+        /// <summary>
+        /// Selects types that have at least one public instance constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList HavePublicConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that do not have public instance constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList DoNotHavePublicConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, false));
+            return CreatePredicateList();
+        }
     }
 }

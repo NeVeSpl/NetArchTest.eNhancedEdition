@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NetArchTest.TestStructure.Constructors;
 using NetArchTest.TestStructure.Mutability;
 using NetArchTest.TestStructure.Nullable;
 using NetArchTest.TestStructure.Stateless;
@@ -147,6 +148,36 @@ namespace NetArchTest.UnitTests
             Assert.Equal(2, result.Count());
             Assert.Contains<Type>(typeof(NonNullableClass3), result);
             Assert.Contains<Type>(typeof(NonNullableClass4), result);
+        }
+
+
+        [Fact(DisplayName = "HavePublicConstructor")]
+        public void HavePublicConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(namespaceof<PublicConstructor>())
+                .And()
+                .HavePublicConstructor().GetReflectionTypes();
+
+            Assert.Equal(3, result.Count());
+            Assert.Contains<Type>(typeof(DefaultConstructor), result);
+            Assert.Contains<Type>(typeof(PublicConstructor), result);
+            Assert.Contains<Type>(typeof(PublicConstructorOneArgument), result);          
+        }
+
+        [Fact(DisplayName = "DoNotHavePublicConstructor")]
+        public void DoNotHavePublicConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(namespaceof<PublicConstructor>())
+                .And()
+                .DoNotHavePublicConstructor().GetReflectionTypes();
+
+            Assert.Equal(2, result.Count());
+            Assert.Contains<Type>(typeof(InternalConstructor), result);
+            Assert.Contains<Type>(typeof(PrivateConstructor), result);           
         }
     }
 }

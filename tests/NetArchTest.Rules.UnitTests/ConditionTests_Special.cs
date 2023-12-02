@@ -197,5 +197,33 @@ namespace NetArchTest.UnitTests
 
             Assert.True(result.IsSuccessful);
         }
+
+        [Fact(DisplayName = "HavePublicConstructor")]
+        public void HavePublicConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Constructors")
+                .And()
+                .HaveNameStartingWith("Public", "Default")
+                .Should()
+                .HavePublicConstructor().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "DoNotHavePublicConstructor")]
+        public void NotHavePublicConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Constructors")
+                .And()
+                .DoNotHaveNameStartingWith("Public", "Default")
+                .Should()
+                .NotHavePublicConstructor().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
     }
 }

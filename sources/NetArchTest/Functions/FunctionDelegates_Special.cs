@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Mono.Cecil;
+using Mono.Cecil.Rocks;
 using NetArchTest.Assemblies;
 using NetArchTest.RuleEngine;
 
@@ -135,6 +136,24 @@ namespace NetArchTest.Functions
             else
             {
                 return input.Where(c => !exisitingTypes.Contains(getMatchingTypeName(c.Definition)));
+            }
+        }
+
+
+        internal static IEnumerable<TypeSpec> HavePublicConstructor(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => PublicConstructorExists(c.Definition));
+            }
+            else
+            {
+                return input.Where(c => !PublicConstructorExists(c.Definition));
+            }
+
+            static bool PublicConstructorExists(TypeDefinition definition)
+            {
+                return definition.GetConstructors().Any(c => c.IsPublic);
             }
         }
     }
