@@ -126,7 +126,7 @@ namespace NetArchTest.Rules
 
 
         /// <summary>
-        /// Selects types that have at least one public constructor.
+        /// Selects types that have at least one instance public constructor.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HavePublicConstructor()
@@ -136,12 +136,32 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that do not have a public constructor.
+        /// Selects types that do not have a instance public constructor.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHavePublicConstructor()
         {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, false));
+            return CreateConditionList();
+        }
+
+        /// <summary>
+        /// Selects types that have at least one instance parameterless  constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList HaveParameterlessConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveParameterlessConstructor(context, inputTypes, true));
+            return CreateConditionList();
+        }
+
+        /// <summary>
+        /// Selects types that do not have a instance parameterless constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList NotHaveParameterlessConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveParameterlessConstructor(context, inputTypes, false));
             return CreateConditionList();
         }
     }

@@ -225,5 +225,33 @@ namespace NetArchTest.UnitTests
 
             Assert.True(result.IsSuccessful);
         }
+
+        [Fact(DisplayName = "HaveParameterlessConstructor")]
+        public void HaveParameterlessConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Constructors")
+                .And()
+                .DoNotHaveNameEndingWith("Argument")
+                .Should()
+                .HaveParameterlessConstructor().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
+
+        [Fact(DisplayName = "NotHaveParameterlessConstructor")]
+        public void NotHaveParameterlessConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace("NetArchTest.TestStructure.Constructors")
+                .And()
+                .HaveNameEndingWith("Argument")
+                .Should()
+                .NotHaveParameterlessConstructor().GetResult();
+
+            Assert.True(result.IsSuccessful);
+        }
     }
 }

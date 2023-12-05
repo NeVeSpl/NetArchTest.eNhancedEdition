@@ -175,9 +175,40 @@ namespace NetArchTest.UnitTests
                 .And()
                 .DoNotHavePublicConstructor().GetReflectionTypes();
 
-            Assert.Equal(2, result.Count());
+            Assert.Equal(3, result.Count());
             Assert.Contains<Type>(typeof(InternalConstructor), result);
-            Assert.Contains<Type>(typeof(PrivateConstructor), result);           
+            Assert.Contains<Type>(typeof(PrivateConstructor), result);
+            Assert.Contains<Type>(typeof(StaticConstructor), result);
+        }
+
+        [Fact(DisplayName = "HaveParameterlessConstructor")]
+        public void HaveParameterlessConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(namespaceof<PublicConstructor>())
+                .And()
+                .HaveParameterlessConstructor().GetReflectionTypes();
+
+            Assert.Equal(5, result.Count());
+            Assert.Contains<Type>(typeof(DefaultConstructor), result);
+            Assert.Contains<Type>(typeof(InternalConstructor), result);
+            Assert.Contains<Type>(typeof(PrivateConstructor), result);
+            Assert.Contains<Type>(typeof(PublicConstructor), result);
+            Assert.Contains<Type>(typeof(StaticConstructor), result);
+        }
+
+        [Fact(DisplayName = "DoNotHaveParameterlessConstructor")]
+        public void DoNotHaveParameterlessConstructor()
+        {
+            var result = fixture.Types
+                .That()
+                .ResideInNamespace(namespaceof<PublicConstructor>())
+                .And()
+                .DoNotHaveParameterlessConstructor().GetReflectionTypes();
+
+            Assert.Equal(1, result.Count());
+            Assert.Contains<Type>(typeof(PublicConstructorOneArgument), result);            
         }
     }
 }

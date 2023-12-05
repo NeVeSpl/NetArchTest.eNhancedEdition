@@ -153,7 +153,24 @@ namespace NetArchTest.Functions
 
             static bool PublicConstructorExists(TypeDefinition definition)
             {
-                return definition.GetConstructors().Any(c => c.IsPublic);
+                return definition.GetConstructors().Any(c => c.IsPublic && !c.IsStatic);
+            }
+        }
+
+        internal static IEnumerable<TypeSpec> HaveParameterlessConstructor(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
+        {
+            if (condition)
+            {
+                return input.Where(c => ParameterlessConstructorExists(c.Definition));
+            }
+            else
+            {
+                return input.Where(c => !ParameterlessConstructorExists(c.Definition));
+            }
+
+            static bool ParameterlessConstructorExists(TypeDefinition definition)
+            {
+                return definition.GetConstructors().Any(c => c.HasParameters == false && !c.IsStatic);
             }
         }
     }

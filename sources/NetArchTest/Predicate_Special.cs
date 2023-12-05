@@ -104,5 +104,26 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, false));
             return CreatePredicateList();
         }
+
+
+        /// <summary>
+        /// Selects types that have at least one instance parameterless constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList HaveParameterlessConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveParameterlessConstructor(context, inputTypes, true));
+            return CreatePredicateList();
+        }
+
+        /// <summary>
+        /// Selects types that do not have public instance parameterless constructor.
+        /// </summary>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public PredicateList DoNotHaveParameterlessConstructor()
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveParameterlessConstructor(context, inputTypes, false));
+            return CreatePredicateList();
+        }
     }
 }
