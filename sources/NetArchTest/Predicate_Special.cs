@@ -35,7 +35,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that are stateless, they do not have instance state
+        /// Selects types that are stateless, they do not have instance state`
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList AreStateless()
@@ -86,7 +86,7 @@ namespace NetArchTest.Rules
 
 
         /// <summary>
-        /// Selects types that have at least one public instance constructor.
+        /// Selects types that have at least one instance public constructor.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList HavePublicConstructor()
@@ -96,7 +96,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that do not have public instance constructor.
+        /// Selects types that do not have any instance public constructors.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList DoNotHavePublicConstructor()
@@ -117,7 +117,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that do not have public instance parameterless constructor.
+        /// Selects types that do not have any instance parameterless constructors.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveParameterlessConstructor()

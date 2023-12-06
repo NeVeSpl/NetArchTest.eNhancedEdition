@@ -67,6 +67,8 @@
 * [DoNotHaveNameEndingWith](#PredicateDoNotHaveNameEndingWith)
 * [DoNotHaveNameMatching](#PredicateDoNotHaveNameMatching)
 * [DoNotHaveNameStartingWith](#PredicateDoNotHaveNameStartingWith)
+* [DoNotHaveParameterlessConstructor](#PredicateDoNotHaveParameterlessConstructor)
+* [DoNotHavePublicConstructor](#PredicateDoNotHavePublicConstructor)
 * [DoNotImplementInterface](#PredicateDoNotImplementInterface)
 * [DoNotImplementInterface<T>](#PredicateDoNotImplementInterface)
 * [DoNotInherit](#PredicateDoNotInherit)
@@ -86,6 +88,8 @@
 * [HaveNameEndingWith](#PredicateHaveNameEndingWith)
 * [HaveNameMatching](#PredicateHaveNameMatching)
 * [HaveNameStartingWith](#PredicateHaveNameStartingWith)
+* [HaveParameterlessConstructor](#PredicateHaveParameterlessConstructor)
+* [HavePublicConstructor](#PredicateHavePublicConstructor)
 * [HaveSomeNonNullableMembers](#PredicateHaveSomeNonNullableMembers)
 * [ImplementInterface](#PredicateImplementInterface)
 * [ImplementInterface<T>](#PredicateImplementInterface)
@@ -147,6 +151,8 @@
 * [HaveNameEndingWith](#ConditionHaveNameEndingWith)
 * [HaveNameMatching](#ConditionHaveNameMatching)
 * [HaveNameStartingWith](#ConditionHaveNameStartingWith)
+* [HaveParameterlessConstructor](#ConditionHaveParameterlessConstructor)
+* [HavePublicConstructor](#ConditionHavePublicConstructor)
 * [HaveSomeNonNullableMembers](#ConditionHaveSomeNonNullableMembers)
 * [HaveSourceFileNameMatchingName](#ConditionHaveSourceFileNameMatchingName)
 * [HaveSourceFilePathMatchingNamespace](#ConditionHaveSourceFilePathMatchingNamespace)
@@ -184,6 +190,8 @@
 * [NotHaveNameEndingWith](#ConditionNotHaveNameEndingWith)
 * [NotHaveNameMatching](#ConditionNotHaveNameMatching)
 * [NotHaveNameStartingWith](#ConditionNotHaveNameStartingWith)
+* [NotHaveParameterlessConstructor](#ConditionNotHaveParameterlessConstructor)
+* [NotHavePublicConstructor](#ConditionNotHavePublicConstructor)
 * [NotImplementInterface](#ConditionNotImplementInterface)
 * [NotImplementInterface<T>](#ConditionNotImplementInterface)
 * [NotInherit](#ConditionNotInherit)
@@ -249,12 +257,12 @@ IEnumerable<IType> Types.GetTypes(Options options = null)
 Returns the list of <see cref="T:System.Type"/> objects describing the types in this list.
 ### Types.InAssemblies
 ```csharp
-Types Types.InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null)
+Types Types.InAssemblies(IEnumerable<Assembly> assemblies, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
 ```
 Creates a list of types based on a list of assemblies.
 ### Types.InAssembly
 ```csharp
-Types Types.InAssembly(Assembly assembly, IEnumerable<string> searchDirectories = null)
+Types Types.InAssembly(Assembly assembly, IEnumerable<string> searchDirectories = null, bool loadReferencedAssemblies = false)
 ```
 Creates a list of types based on a particular assembly.
 ### Types.InCurrentDomain
@@ -478,7 +486,7 @@ Selects types according that are marked as sealed.
 ```csharp
 PredicateList Predicate.AreStateless()
 ```
-Selects types that are stateless, they do not have instance state
+Selects types that are stateless, they do not have instance state`
 ### Predicate.AreStatic
 ```csharp
 PredicateList Predicate.AreStatic()
@@ -549,6 +557,16 @@ Selects types according to a regular expression that does not match their name.
 PredicateList Predicate.DoNotHaveNameStartingWith(params string[] start)
 ```
 Selects types whose names do not start with the specified text.
+### Predicate.DoNotHaveParameterlessConstructor
+```csharp
+PredicateList Predicate.DoNotHaveParameterlessConstructor()
+```
+Selects types that do not have any instance parameterless constructors.
+### Predicate.DoNotHavePublicConstructor
+```csharp
+PredicateList Predicate.DoNotHavePublicConstructor()
+```
+Selects types that do not have any instance public constructors.
 ### Predicate.DoNotImplementInterface
 ```csharp
 PredicateList Predicate.DoNotImplementInterface(Type interfaceType)
@@ -644,6 +662,16 @@ Selects types according to a regular expression matching their name.
 PredicateList Predicate.HaveNameStartingWith(params string[] start)
 ```
 Selects types whose names start with the specified text.
+### Predicate.HaveParameterlessConstructor
+```csharp
+PredicateList Predicate.HaveParameterlessConstructor()
+```
+Selects types that have at least one instance parameterless constructor.
+### Predicate.HavePublicConstructor
+```csharp
+PredicateList Predicate.HavePublicConstructor()
+```
+Selects types that have at least one instance public constructor.
 ### Predicate.HaveSomeNonNullableMembers
 ```csharp
 PredicateList Predicate.HaveSomeNonNullableMembers()
@@ -923,6 +951,16 @@ Selects types according to a regular expression matching their name.
 ConditionList Condition.HaveNameStartingWith(string start)
 ```
 Selects types whose names start with the specified text.
+### Condition.HaveParameterlessConstructor
+```csharp
+ConditionList Condition.HaveParameterlessConstructor()
+```
+Selects types that have at least one instance parameterless constructor.
+### Condition.HavePublicConstructor
+```csharp
+ConditionList Condition.HavePublicConstructor()
+```
+Selects types that have at least one instance public constructor.
 ### Condition.HaveSomeNonNullableMembers
 ```csharp
 ConditionList Condition.HaveSomeNonNullableMembers()
@@ -1108,6 +1146,16 @@ Selects types according to a regular expression that does not match their name.
 ConditionList Condition.NotHaveNameStartingWith(string start)
 ```
 Selects types whose names do not start with the specified text.
+### Condition.NotHaveParameterlessConstructor
+```csharp
+ConditionList Condition.NotHaveParameterlessConstructor()
+```
+Selects types that do not have any instance parameterless constructors.
+### Condition.NotHavePublicConstructor
+```csharp
+ConditionList Condition.NotHavePublicConstructor()
+```
+Selects types that do not have any instance public constructors.
 ### Condition.NotImplementInterface
 ```csharp
 ConditionList Condition.NotImplementInterface(Type interfaceType)

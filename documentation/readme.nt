@@ -34,7 +34,12 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
      - BenMorris/NetArchTest#131 - added rules for all access modifiers: public, internal, private, protected, private protected, protected internal
      - BenMorris/NetArchTest#133 - added rules: AreInheritedByAnyType, AreNotInheritedByAnyType
      - added rules : AreUsedByAny, AreNotUsedByAny
+  - at the end, you get more information which should make reasoning about tests easier:
  
+
+![revit-database-scripting-update-query](documentation/result.printscreen.png)
+
+
 
 ## Index
 
@@ -160,6 +165,18 @@ A Type is considered as externally immutable when its state (instance and static
 #### BeStateless
 
 A Type is considered as stateless when it does not have an instance state (fields, properties and events).
+
+#### BeStaticless
+
+A Type is considered as stateless when it does not have a static state.
+
+#### HaveParameterlessConstructor
+
+A type should have a parameterless instance constructor. 
+
+#### DoNotHavePublicConstructor
+
+A type should not have any instance public constructors. 
 
 #### HaveSourceFileNameMatchingName
 

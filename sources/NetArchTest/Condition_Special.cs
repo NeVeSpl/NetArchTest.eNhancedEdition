@@ -136,7 +136,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that do not have a instance public constructor.
+        /// Selects types that do not have any instance public constructors.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHavePublicConstructor()
@@ -146,7 +146,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that have at least one instance parameterless  constructor.
+        /// Selects types that have at least one instance parameterless constructor.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveParameterlessConstructor()
@@ -156,7 +156,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that do not have a instance parameterless constructor.
+        /// Selects types that do not have any instance parameterless constructors.
         /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveParameterlessConstructor()
