@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Mono.Cecil
 {
-    static internal class TypeDefinitionExtensions
+    static internal partial class TypeDefinitionExtensions
     {
         public static bool IsSubclassOf(this TypeReference child, TypeReference parent)
         {

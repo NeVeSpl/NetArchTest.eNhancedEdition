@@ -34,7 +34,7 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
   - at the end, you get more information which should make reasoning about tests easier:
  
 
-![revit-database-scripting-update-query](documentation/result.printscreen.png)
+![revit-database-scripting-update-query](https://raw.githubusercontent.com/NeVeSpl/NetArchTest.eNhancedEdition/main/documentation/result.printscreen.png)
 
 
 
