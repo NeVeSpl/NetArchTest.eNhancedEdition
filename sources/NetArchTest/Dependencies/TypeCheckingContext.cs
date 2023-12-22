@@ -105,7 +105,7 @@ namespace NetArchTest.Dependencies
                 {
                     CheckCustomAttributes(field);
                     CheckTypeReference(field.FieldType);
-                    if (_serachForDependencyInFieldConstant && field.HasConstant && field.FieldType.FullName == typeof(string).FullName)
+                    if (_serachForDependencyInFieldConstant && field.HasConstant && field.FieldType.FullName == typeof(string).FullName && field.Constant != null)
                     {
                         _result.CheckType(field.Constant.ToString());
                     }
