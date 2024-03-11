@@ -6,15 +6,15 @@ using System.Runtime.CompilerServices;
 
 namespace Mono.Cecil
 {
-    static internal partial class TypeDefinitionExtensions
+    public static partial class TypeDefinitionExtensions
     {
-        public static bool IsSubclassOf(this TypeReference child, TypeReference parent)
+        internal static bool IsSubclassOf(this TypeReference child, TypeReference parent)
         {
             var typeDef = child.Resolve();
             return typeDef.IsSubclassOf(parent);
         }
 
-        public static bool IsSubclassOf(this TypeDefinition child, TypeReference parent)
+        internal static bool IsSubclassOf(this TypeDefinition child, TypeReference parent)
         {
             if (parent != null)
             {
@@ -33,7 +33,7 @@ namespace Mono.Cecil
             }
         }
 
-        public static bool IsAlmostEqualTo(this TypeReference child, TypeDefinition parent)
+        internal static bool IsAlmostEqualTo(this TypeReference child, TypeDefinition parent)
         {            
             if (child is GenericInstanceType genericInstanceTypeB)
             {
@@ -63,7 +63,7 @@ namespace Mono.Cecil
             var fullName = typeDefinition.FullName.RuntimeNameToReflectionName();
             return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
         }
-       
+
 
 
 
@@ -71,7 +71,7 @@ namespace Mono.Cecil
         /// <summary>
         /// Tests whether a class is immutable, i.e. all public fields are readonly and properties have no set method
         /// </summary>      
-        public static bool IsImmutable(this TypeDefinition typeDefinition)
+        internal static bool IsImmutable(this TypeDefinition typeDefinition)
         {
             var propertiesAreReadonly = typeDefinition.Properties.All(p => p.IsReadonly());
             var fieldsAreReadonly = typeDefinition.Fields.All(f => f.IsReadonly());
@@ -79,7 +79,7 @@ namespace Mono.Cecil
             return propertiesAreReadonly && fieldsAreReadonly && eventsAreReadonly;
         }
 
-        public static bool IsImmutableExternally(this TypeDefinition typeDefinition)
+        internal static bool IsImmutableExternally(this TypeDefinition typeDefinition)
         {
             var propertiesAreReadonly = typeDefinition.Properties.All(p => p.IsReadonlyExternally());
             var fieldsAreReadonly = typeDefinition.Fields.All(f => f.IsReadonlyExternally());
@@ -89,21 +89,21 @@ namespace Mono.Cecil
 
 
 
-        public static bool OnlyHasNullableMembers(this TypeDefinition typeDefinition)
+        internal static bool OnlyHasNullableMembers(this TypeDefinition typeDefinition)
         {
             var propertiesAreNullable = typeDefinition.Properties.All(p => p.IsNullable());
             var fieldsAreNullable = typeDefinition.Fields.All(f => f.IsNullable());
             return propertiesAreNullable && fieldsAreNullable;
         }
 
-        public static bool OnlyHasNonNullableMembers(this TypeDefinition typeDefinition)
+        internal static bool OnlyHasNonNullableMembers(this TypeDefinition typeDefinition)
         {
             var propertiesAreNonNullable = typeDefinition.Properties.All(p => p.IsNullable() == false);
             var fieldsAreNonNullable = typeDefinition.Fields.All(f => f.IsNullable() == false);
             return propertiesAreNonNullable && fieldsAreNonNullable;
         }
 
-        public static bool IsCompilerGenerated(this TypeDefinition typeDefinition)
+        internal static bool IsCompilerGenerated(this TypeDefinition typeDefinition)
         {
             return typeDefinition.CustomAttributes.Any(x => x?.AttributeType?.FullName == typeof(CompilerGeneratedAttribute).FullName || x?.AttributeType?.FullName == typeof(GeneratedCodeAttribute).FullName);
         }
@@ -114,7 +114,7 @@ namespace Mono.Cecil
         /// <remarks>
         /// For nested classes this will take the name of the declaring class. See https://github.com/BenMorris/NetArchTest/issues/73
         /// </remarks>
-        public static string GetNamespace(this TypeDefinition typeDefinition)
+        internal static string GetNamespace(this TypeDefinition typeDefinition)
         {
             if (typeDefinition.IsNested)
             {
@@ -125,7 +125,7 @@ namespace Mono.Cecil
 
 
 
-        public static string GetNameWithoutGenericPart(this TypeDefinition typeDefinition)
+        internal static string GetNameWithoutGenericPart(this TypeDefinition typeDefinition)
         {
             if (typeDefinition.HasGenericParameters == false)
             {
@@ -135,21 +135,21 @@ namespace Mono.Cecil
         }
 
 
-        
 
 
-        public static bool IsDelegate(this TypeDefinition typeDefinition)
+
+        internal static bool IsDelegate(this TypeDefinition typeDefinition)
         {
             return typeDefinition.IsClass && typeDefinition.BaseType?.FullName == "System.MulticastDelegate";
         }
-        public static bool IsStruct(this TypeDefinition typeDefinition)
+        internal static bool IsStruct(this TypeDefinition typeDefinition)
         {
             return typeDefinition.IsValueType && typeDefinition.BaseType?.FullName == "System.ValueType";
         }
 
 
 
-        public static string GetFilePath(this TypeDefinition typeDefinition)
+        internal static string GetFilePath(this TypeDefinition typeDefinition)
         {
             if (typeDefinition.HasMethods)
             {
@@ -167,7 +167,7 @@ namespace Mono.Cecil
             return null;
         }
 
-        public static bool IsStateless(this TypeDefinition type)
+        internal static bool IsStateless(this TypeDefinition type)
         {            
             if (type.HasFields)
             {
@@ -182,7 +182,7 @@ namespace Mono.Cecil
             }
             return true;
         }
-        public static bool IsStaticless(this TypeDefinition type)
+        internal static bool IsStaticless(this TypeDefinition type)
         {           
             if (type.HasFields)
             {

@@ -2,9 +2,9 @@
 
 namespace NetArchTest.Extensions.Mono.Cecil
 {
-    static internal partial class TypeDefinitionExtensions
+    public static partial class TypeDefinitionExtensions
     {
-        public static int GetNumberOfLogicalLinesOfCode(this TypeDefinition type)
+        internal static int GetNumberOfLogicalLinesOfCode(this TypeDefinition type)
         {
             int count = 0; 
 

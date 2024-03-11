@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.4.1</Version>
+    <Version>1.4.2</Version>
     <Authors>NeVeSpl</Authors>
     <Product>NetArchTest.eNhancedEdition </Product>
     <Description>A fluent API for .Net Standard that can enforce architectural rules in unit tests. Improved version, built upon NetArchTest.Rules v1.3.2.</Description>
