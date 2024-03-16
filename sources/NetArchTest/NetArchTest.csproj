@@ -16,7 +16,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>    
     <PackageId>NetArchTest.eNhancedEdition </PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	  <LangVersion>10</LangVersion>
+	  <LangVersion>11</LangVersion>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Mono.Cecil;
 using NetArchTest.CrossAssemblyTest.A;
 using NetArchTest.CrossAssemblyTest.B;
 using NetArchTest.Rules;
@@ -283,6 +284,30 @@ namespace NetArchTest.UnitTests
 
             // The custom rule was executed at least once
             Assert.True(rule.TestMethodCalled);
+        }
+
+        [Fact(DisplayName = "MeetCustomRule2")]
+        public void MeetCustomRule2()
+        {
+            // Create a custom rule that selects "ClassA1"
+            Func <TypeDefinition, CustomRuleResult> rule = t => new CustomRuleResult(t.Name.Equals("ClassA3", StringComparison.InvariantCultureIgnoreCase), "yup");
+
+            // Use the custom rule
+            var result = fixture.Types
+                .That()
+                .MeetCustomRule(rule)
+                .GetTypes();
+               
+
+            // ClassA1 has been returned
+            Assert.Single(result);
+
+            var first = result.First();
+
+            Assert.Equal<Type>(typeof(ClassA3), first.ReflectionType);
+            Assert.Equal("yup", first.Explanation);
+
+            
         }
     }
 }

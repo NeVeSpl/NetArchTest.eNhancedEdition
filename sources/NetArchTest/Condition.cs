@@ -214,5 +214,24 @@ namespace NetArchTest.Rules
             AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
             return CreateConditionList();
         }
+        /// <summary>
+        /// Selects types that meet a custom rule.
+        /// </summary>
+        /// <param name="rule">An instance of the custom rule.</param>
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList MeetCustomRule(ICustomRule2 rule)
+        {
+            AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
+            return CreateConditionList();
+        }
+        /// <summary>
+        /// Selects types that meet a custom rule.
+        /// </summary>        
+        /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
+        public ConditionList MeetCustomRule(Func<TypeDefinition, CustomRuleResult> rule)
+        {
+            AddFunctionCall(x => FunctionDelegates.MeetCustomRule(x, rule, true));
+            return CreateConditionList();
+        }
     }
 }
