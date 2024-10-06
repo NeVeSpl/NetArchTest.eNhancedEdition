@@ -88,6 +88,8 @@
 * [HaveNameEndingWith](#PredicateHaveNameEndingWith)
 * [HaveNameMatching](#PredicateHaveNameMatching)
 * [HaveNameStartingWith](#PredicateHaveNameStartingWith)
+* [HaveNumberOfLinesOfCodeGreaterThan](#PredicateHaveNumberOfLinesOfCodeGreaterThan)
+* [HaveNumberOfLinesOfCodeLowerThan](#PredicateHaveNumberOfLinesOfCodeLowerThan)
 * [HaveParameterlessConstructor](#PredicateHaveParameterlessConstructor)
 * [HavePublicConstructor](#PredicateHavePublicConstructor)
 * [HaveSomeNonNullableMembers](#PredicateHaveSomeNonNullableMembers)
@@ -95,6 +97,8 @@
 * [ImplementInterface<T>](#PredicateImplementInterface)
 * [Inherit](#PredicateInherit)
 * [Inherit<T>](#PredicateInherit)
+* [MeetCustomRule](#PredicateMeetCustomRule)
+* [MeetCustomRule](#PredicateMeetCustomRule)
 * [MeetCustomRule](#PredicateMeetCustomRule)
 * [MeetCustomRule](#PredicateMeetCustomRule)
 * [OnlyHaveDependencyOn](#PredicateOnlyHaveDependencyOn)
@@ -151,6 +155,8 @@
 * [HaveNameEndingWith](#ConditionHaveNameEndingWith)
 * [HaveNameMatching](#ConditionHaveNameMatching)
 * [HaveNameStartingWith](#ConditionHaveNameStartingWith)
+* [HaveNumberOfLinesOfCodeGreaterThan](#ConditionHaveNumberOfLinesOfCodeGreaterThan)
+* [HaveNumberOfLinesOfCodeLowerThan](#ConditionHaveNumberOfLinesOfCodeLowerThan)
 * [HaveParameterlessConstructor](#ConditionHaveParameterlessConstructor)
 * [HavePublicConstructor](#ConditionHavePublicConstructor)
 * [HaveSomeNonNullableMembers](#ConditionHaveSomeNonNullableMembers)
@@ -160,6 +166,8 @@
 * [ImplementInterface<T>](#ConditionImplementInterface)
 * [Inherit](#ConditionInherit)
 * [Inherit<T>](#ConditionInherit)
+* [MeetCustomRule](#ConditionMeetCustomRule)
+* [MeetCustomRule](#ConditionMeetCustomRule)
 * [MeetCustomRule](#ConditionMeetCustomRule)
 * [MeetCustomRule](#ConditionMeetCustomRule)
 * [NotBeAbstract](#ConditionNotBeAbstract)
@@ -238,6 +246,7 @@
 ## Options
 
 * [Comparer](#OptionsComparer)
+* [SerachForDependencyInFieldConstant](#OptionsSerachForDependencyInFieldConstant)
 
 ## Types
 ### Types.FromFile
@@ -662,6 +671,16 @@ Selects types according to a regular expression matching their name.
 PredicateList Predicate.HaveNameStartingWith(params string[] start)
 ```
 Selects types whose names start with the specified text.
+### Predicate.HaveNumberOfLinesOfCodeGreaterThan
+```csharp
+PredicateList Predicate.HaveNumberOfLinesOfCodeGreaterThan(int number)
+```
+Selects types that have more logical lines of code than a given number
+### Predicate.HaveNumberOfLinesOfCodeLowerThan
+```csharp
+PredicateList Predicate.HaveNumberOfLinesOfCodeLowerThan(int number)
+```
+Selects types that have fewer logical lines of code than a given number
 ### Predicate.HaveParameterlessConstructor
 ```csharp
 PredicateList Predicate.HaveParameterlessConstructor()
@@ -705,6 +724,16 @@ Selects types that meet a custom rule.
 ### Predicate.MeetCustomRule
 ```csharp
 PredicateList Predicate.MeetCustomRule(Func<TypeDefinition, bool> rule)
+```
+Selects types that meet a custom rule.
+### Predicate.MeetCustomRule
+```csharp
+PredicateList Predicate.MeetCustomRule(ICustomRule2 rule)
+```
+Selects types that meet a custom rule.
+### Predicate.MeetCustomRule
+```csharp
+PredicateList Predicate.MeetCustomRule(Func<TypeDefinition, CustomRuleResult> rule)
 ```
 Selects types that meet a custom rule.
 ### Predicate.OnlyHaveDependencyOn
@@ -951,6 +980,16 @@ Selects types according to a regular expression matching their name.
 ConditionList Condition.HaveNameStartingWith(string start)
 ```
 Selects types whose names start with the specified text.
+### Condition.HaveNumberOfLinesOfCodeGreaterThan
+```csharp
+ConditionList Condition.HaveNumberOfLinesOfCodeGreaterThan(int number)
+```
+Selects types that have more logical lines of code than a given number
+### Condition.HaveNumberOfLinesOfCodeLowerThan
+```csharp
+ConditionList Condition.HaveNumberOfLinesOfCodeLowerThan(int number)
+```
+Selects types that have fewer logical lines of code than a given number
 ### Condition.HaveParameterlessConstructor
 ```csharp
 ConditionList Condition.HaveParameterlessConstructor()
@@ -1004,6 +1043,16 @@ Selects types that meet a custom rule.
 ### Condition.MeetCustomRule
 ```csharp
 ConditionList Condition.MeetCustomRule(Func<TypeDefinition, bool> rule)
+```
+Selects types that meet a custom rule.
+### Condition.MeetCustomRule
+```csharp
+ConditionList Condition.MeetCustomRule(ICustomRule2 rule)
+```
+Selects types that meet a custom rule.
+### Condition.MeetCustomRule
+```csharp
+ConditionList Condition.MeetCustomRule(Func<TypeDefinition, CustomRuleResult> rule)
 ```
 Selects types that meet a custom rule.
 ### Condition.NotBeAbstract
@@ -1320,7 +1369,12 @@ FullName of the assembly
 ```csharp
 Comparer
 ```
-
+Allows to specify how strings will be compared, default: InvariantCultureIgnoreCase
+### Options.SerachForDependencyInFieldConstant
+```csharp
+SerachForDependencyInFieldConstant
+```
+Determines if dependency analysis should look for dependency in string field constant, default: false
 
 
  

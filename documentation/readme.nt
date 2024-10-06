@@ -12,10 +12,10 @@ NetArchTest.eNhancedEdition is based on [NetArchTest v1.3.2](https://github.com/
 
 ### Rationale
 
-NetArchTest is well established mature library, but in order to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backward compatible, and it will never be. 
+NetArchTest is a well-established mature library, but to push things forward, a few breaking changes had to be made, and that is how  **eNhancedEdition** was born. eNhancedEdition uses almost identical Fluent API as a base library, but it is not 100% backwards compatible, and it will never be. 
 
 What **eNhancedEdition** has to offer, that is not available in the NetArchTest v1.3.2:
- - fixed all know bugs present in v1.3.2 :
+ - fixed all known bugs present in v1.3.2 :
      - BenMorris/NetArchTest#98,
      - BenMorris/NetArchTest#101,
      - BenMorris/NetArchTest#120,
@@ -33,11 +33,11 @@ What **eNhancedEdition** has to offer, that is not available in the NetArchTest 
      - BenMorris/NetArchTest#126 - added rules for structs, enums and delegates
      - BenMorris/NetArchTest#131 - added rules for all access modifiers: public, internal, private, protected, private protected, protected internal
      - BenMorris/NetArchTest#133 - added rules: AreInheritedByAnyType, AreNotInheritedByAnyType
-     - added rules : AreUsedByAny, AreNotUsedByAny
+     - added rules: AreUsedByAny, AreNotUsedByAny
   - at the end, you get more information which should make reasoning about tests easier:
  
 
-![revit-database-scripting-update-query](documentation/result.printscreen.png)
+![revit-database-scripting-update-query](https://raw.githubusercontent.com/NeVeSpl/NetArchTest.eNhancedEdition/main/documentation/result.printscreen.png)
 
 
 
@@ -94,14 +94,14 @@ Once you have loaded the types, you can filter them using one or more predicates
 ```csharp
 types.That().ResideInNamespace("MyProject.Data");
 ```
-Once the set of  types have been filtered, you can apply a set of conditions using the `Should()` or `ShouldNot()` methods, e.g.
+Once the set of  types has been filtered, you can apply a set of conditions using the `Should()` or `ShouldNot()` methods, e.g.
 ```csharp
 types.That().ResideInNamespace("MyProject.Data").Should().BeSealed();
 ```
 Finally, you obtain a result from the rule by using an executor, i.e. use `GetTypes()` to return the types that match the rule or `GetResult()` to determine whether the rule has been met.
 
 Note that `GetResult()` returns [`TestResult`](documentation/api.md#testresult) which contains a few lists of types:
-- `LoadedTypes` - all types loded by [`Types`](documentation/api.md#types)
+- `LoadedTypes` - all types loaded by [`Types`](documentation/api.md#types)
 - `SelectedTypesForTesting` - types that passed [predicates](documentation/api.md#predicate)
 - `FailingTypes`- types that failed to meet the [conditions](documentation/api.md#condition)
 
@@ -141,7 +141,7 @@ Dependency matrix:
 | 2N | [NotHaveDependencyOnAll(D1, D2)](documentation/api.md#conditionnothavedependencyonall)  | not all  |  yes | a, b, c, d, e, f |  g, h   |
 | 3N | [HaveDependencyOtherThan(D1, D2)](documentation/api.md#conditionhavedependencyotherthan)  |  >=0 |  yes |  b, d, f, h, |  a, c, e, g  |
 
-Explnation why a type fails dependecy search test is available on the failing type: [IType.Explanation](documentation/api.md#itypeexplanation)
+An explanation of why a type fails the dependency search test is available on the failing type: [IType.Explanation](documentation/api.md#itypeexplanation)
 
 
 #### Reverse dependency search
@@ -200,14 +200,14 @@ var result = Types.InAssembly(typeof(ExampleDependency).Assembly)
 
 There is only one way, at least for now, to divide types into slices `ByNamespacePrefix(string prefix)` and it works as follows:
 
-1) Selects types which namespace starts with a given prefix, rest of the types are ignored.
+1) Select types which namespace starts with a given prefix, rest of the types are ignored.
 2) Slices are defined by the first part of the namespace that comes right after the prefix:
 `namespacePrefix.(sliceName).restOfNamespace`
-3) Types with the same `sliceName` part will be placed in the same slice. If `sliceName` is empty for a given type, the type will be also ignored (`BaseFeature` class from folowing image)
+3) Types with the same `sliceName` part will be placed in the same slice. If `sliceName` is empty for a given type, the type will also be ignored (`BaseFeature` class from the following image)
 
 ![Slices](https://raw.githubusercontent.com/NeVeSpl/NetArchTest.eNhancedEdition/main/documentation/slices/slices.png)
 
-When we already have our types divided into slices, we can apply condition: `NotHaveDependenciesBetweenSlices()`. As the name suggest it detects if any dependency exists between slices. Dependency from slice to type that is not part of any other slice is allowed.
+When our types are divided into slices, we can apply the condition: `NotHaveDependenciesBetweenSlices()`. As the name suggests it detects if any dependency exists between slices. Dependency from slice to type that is not part of any other slice is allowed.
 
 passing | failing
 --|---
@@ -248,12 +248,13 @@ Assert.True(result.IsSuccessful);
 ```
 
 Available options:
-- [Comparer](documentation/api.md#optionscomparer) - allows to specify how strings will be compared (right now it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
+- [Comparer](documentation/api.md#optionscomparer) - allows to specify how strings will be compared, default: InvariantCultureIgnoreCase (it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
 
+- [SerachForDependencyInFieldConstant](documentation/api.md#optionsserachfordependencyinfieldconstant) - determines if dependency analysis should look for dependency in string field constant, default: false
 
 ## Limitations
 
-NetArchTest is build on top of [jbevain/cecil](https://github.com/jbevain/cecil) thus it works on CLI level. Unfortunately not every feature of C# language is represented in CLI, thus some things will never be available in NetArchTest, e.g.:
+NetArchTest is built on top of [jbevain/cecil](https://github.com/jbevain/cecil) thus it works on CIL level. Unfortunately, not every feature of C# language is represented in CIL, thus some things will never be available in NetArchTest, e.g.:
 - BenMorris/NetArchTest#81 - NetArchTest ignores a nameof expression 
 
 {{   
