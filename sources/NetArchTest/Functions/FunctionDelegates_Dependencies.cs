@@ -12,7 +12,7 @@ namespace NetArchTest.Functions
         internal static IEnumerable<TypeSpec> HaveDependencyOnAny(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
-            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
             var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);
             return input.Where(t => t.IsPassing == condition);
         }
@@ -21,7 +21,7 @@ namespace NetArchTest.Functions
         internal static IEnumerable<TypeSpec> HaveDependencyOnAll(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             // Get the types that contain the dependencies
-            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
             var results = search.FindTypesThatHaveDependencyOnAll(input, dependencies);
 
             return input.Where(t => t.IsPassing == condition);
@@ -30,7 +30,7 @@ namespace NetArchTest.Functions
         /// <summary> Function for finding types that have a dependency on type other than one of the supplied types.</summary>
         internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
-            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
             var results = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
 
             return input.Where(t => t.IsPassing == condition);
@@ -40,7 +40,7 @@ namespace NetArchTest.Functions
 
         internal static IEnumerable<TypeSpec> AreUsedByAny(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
-            var search = new DependencySearch(context.IsFailPathRun, context.DependencyFilter);
+            var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
             var results = search.FindTypesThatAreUsedByAny(input, dependencies, context.AllTypes);
             return input.Where(t => t.IsPassing == condition);
         }

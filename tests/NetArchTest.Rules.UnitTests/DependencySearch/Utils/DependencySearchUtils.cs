@@ -63,7 +63,7 @@
         private static void FindTypesWithAnyDependencies(IEnumerable<TypeSpec> subjects, IEnumerable<string> dependencies, bool expectToFind)
         {
             // Arrange
-            var search = new global::NetArchTest.Dependencies.DependencySearch(false);
+            var search = new global::NetArchTest.Dependencies.DependencySearch(false, true);
 
             // Act
             // Search against the dependencies

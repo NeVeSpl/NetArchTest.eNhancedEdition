@@ -9,7 +9,7 @@ namespace NetArchTest.Slices.Model
     {
         public IEnumerable<TypeTestResult> Execute(SlicedTypes slicedTypes)
         {
-            var dependencySearch = new DependencySearch(false);
+            var dependencySearch = new DependencySearch(false, false);
             var result = new List<TypeTestResult>(slicedTypes.TypeCount);
 
             for (int i = 0; i < slicedTypes.Slices.Count; i++)

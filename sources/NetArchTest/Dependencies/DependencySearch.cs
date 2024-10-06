@@ -14,12 +14,14 @@ namespace NetArchTest.Dependencies
     {
         private readonly bool explainYourself;
         private readonly IDependencyFilter dependencyFilter;
+        private readonly bool serachForDependencyInFieldConstant;
 
 
-        public DependencySearch(bool explainYourself, IDependencyFilter dependencyFilter = null)
+        public DependencySearch(bool explainYourself, bool serachForDependencyInFieldConstant = false, IDependencyFilter dependencyFilter = null)
         {
             this.explainYourself = explainYourself;
             this.dependencyFilter = dependencyFilter;
+            this.serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
         }
 
 
@@ -28,7 +30,7 @@ namespace NetArchTest.Dependencies
         /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatHaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {  
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAny, dependencies, true);           
+            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAny, dependencies);           
         }
 
         /// <summary>
@@ -36,7 +38,7 @@ namespace NetArchTest.Dependencies
         /// </summary>      
         public IEnumerable<TypeSpec> FindTypesThatHaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {  
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAll, dependencies, true);         
+            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAll, dependencies);         
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace NetArchTest.Dependencies
         /// </summary>             
         public IEnumerable<TypeSpec> FindTypesThatOnlyHaveDependencyOnAnyOrNone(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {           
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone, dependencies, false);
+            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone, dependencies);
         }
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace NetArchTest.Dependencies
         /// </summary>      
         public IEnumerable<TypeSpec> FindTypesThatOnlyHaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAny, dependencies, false);
+            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAny, dependencies);
         }
 
         /// <summary>
@@ -60,10 +62,10 @@ namespace NetArchTest.Dependencies
         /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatOnlyOnlyHaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAll, dependencies, false);
+            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAll, dependencies);
         }
 
-        private IEnumerable<TypeSpec> FindTypes(IEnumerable<TypeSpec> input, HaveDependency_CheckingStrategy.TypeOfCheck typeOfCheck, IEnumerable<string> dependencies, bool serachForDependencyInFieldConstant)
+        private IEnumerable<TypeSpec> FindTypes(IEnumerable<TypeSpec> input, HaveDependency_CheckingStrategy.TypeOfCheck typeOfCheck, IEnumerable<string> dependencies)
         {           
             var searchTree = new CachedNamespaceTree(dependencies);
             var context = new TypeCheckingContext(serachForDependencyInFieldConstant, explainYourself, dependencyFilter);
@@ -82,7 +84,7 @@ namespace NetArchTest.Dependencies
         public IEnumerable<TypeSpec> FindTypesThatAreUsedByAny(IEnumerable<TypeSpec> input, IEnumerable<string> users, IEnumerable<TypeSpec> allTypes)
         {
             var filterTree = new CachedNamespaceTree(users);
-            var context = new TypeCheckingContext(false, explainYourself, dependencyFilter);
+            var context = new TypeCheckingContext(serachForDependencyInFieldConstant, explainYourself, dependencyFilter);
             var strategy = new AreUsedBy_CheckingStrategy();
 
 
