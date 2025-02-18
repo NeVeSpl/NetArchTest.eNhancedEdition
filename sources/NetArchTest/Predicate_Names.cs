@@ -133,7 +133,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ResideInNamespace(string name)
         {
-            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
+            AddFunctionCall((context, x) => FunctionDelegates.ResideInNamespace(context, x, name, true));
             return CreatePredicateList();
         }
 
@@ -144,7 +144,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotResideInNamespace(string name)
         {
-            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
+            AddFunctionCall((context, x) => FunctionDelegates.ResideInNamespace(context, x, name, false));
             return CreatePredicateList();
         }
 

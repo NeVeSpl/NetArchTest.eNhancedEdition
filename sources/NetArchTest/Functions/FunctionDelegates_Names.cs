@@ -83,15 +83,15 @@ namespace NetArchTest.Functions
         }
 
         
-        internal static IEnumerable<TypeSpec> ResideInNamespace(IEnumerable<TypeSpec> input, string name, bool condition)
+        internal static IEnumerable<TypeSpec> ResideInNamespace(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
             {
-                return input.Where(c => c.Definition.GetNamespace().StartsWith(name, StringComparison.InvariantCultureIgnoreCase));
+                return input.Where(c => c.Definition.GetNamespace().StartsWith(name, context.UserOptions.Comparer));
             }
             else
             {
-                return input.Where(c => !c.Definition.GetNamespace().StartsWith(name, StringComparison.InvariantCultureIgnoreCase));
+                return input.Where(c => !c.Definition.GetNamespace().StartsWith(name, context.UserOptions.Comparer));
             }
         }
         

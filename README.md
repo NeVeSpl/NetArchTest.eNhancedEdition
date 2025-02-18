@@ -297,7 +297,7 @@ Assert.True(result.IsSuccessful);
 ```
 
 Available options:
-- [Comparer](documentation/api.md#optionscomparer) - allows to specify how strings will be compared, default: InvariantCultureIgnoreCase (it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith)
+- [Comparer](documentation/api.md#optionscomparer) - allows to specify how strings will be compared, default: InvariantCultureIgnoreCase (it only affects: Predicate.HaveName, Predicate.HaveNameStartingWith, Predicate.HaveNameEndingWith, Predicate.ResideInNamespace)
 
 - [SerachForDependencyInFieldConstant](documentation/api.md#optionsserachfordependencyinfieldconstant) - determines if dependency analysis should look for dependency in string field constant, default: false
 

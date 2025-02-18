@@ -133,7 +133,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ResideInNamespace(string name)
         {
-            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, true));
+            AddFunctionCall((context, x) => FunctionDelegates.ResideInNamespace(context, x, name, true));
             return CreateConditionList();
         }
 
@@ -144,7 +144,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotResideInNamespace(string name)
         {
-            AddFunctionCall(x => FunctionDelegates.ResideInNamespace(x, name, false));
+            AddFunctionCall((context, x) => FunctionDelegates.ResideInNamespace(context, x, name, false));
             return CreateConditionList();
         }
 
