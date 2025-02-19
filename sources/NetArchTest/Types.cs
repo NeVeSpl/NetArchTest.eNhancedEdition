@@ -7,7 +7,7 @@ using NetArchTest.Assemblies;
 using NetArchTest.RuleEngine;
 using NetArchTest.Slices;
 
-[assembly: InternalsVisibleTo("NetArchTest.UnitTests")]
+[assembly: InternalsVisibleTo("NetArchTest.UnitTests, PublicKey=002400000480000094000000060200000024000052534131000400000100010059bad09197268099d3d5177d912c250c29764641430e313f3991f5115bd5fb04fb667c802e97b3167394f9e8222d843565eb5403a55bb563e7787d78f9ff2543ddb97405d787148835ebdaf77e7db3043c6d1895c2f2a2bbaabf787d066f8298871ac55c7549648fb0267c4a14f761d438700d1bcba40e9d01dff16a326c55d3")]
 
 namespace NetArchTest.Rules
 {
