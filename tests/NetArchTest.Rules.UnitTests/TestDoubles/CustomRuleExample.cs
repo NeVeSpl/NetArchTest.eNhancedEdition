@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.UnitTests.TestDoubles
 {
     using Mono.Cecil;
-    using NetArchTest.Rules;
+    using Rules;
     using System;
 
     /// <summary>

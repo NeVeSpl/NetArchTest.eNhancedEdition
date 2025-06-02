@@ -3,8 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NetArchTest.Rules;
-
+    using Rules;
 
     /// <summary>
     /// An aggregate of rules and results that can be used for reporting.
@@ -41,7 +40,7 @@
         /// Adds a rule to the policy that can optionally be marked with a name and description.
         /// </summary>
         public PolicyDefinition Add(Func<Types, ConditionList> definition, string name, string description)
-        { 
+        {
             if(definition == null)
             {
                 throw new ArgumentNullException(nameof(definition));

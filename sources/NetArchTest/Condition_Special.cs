@@ -36,7 +36,6 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
-
         /// <summary>
         /// Selects types that are stateless, they do not have instance state
         /// </summary>
@@ -87,7 +86,6 @@ namespace NetArchTest.Rules
             return CreateConditionList();
         }
 
-
         /// <summary>
         /// For each type, check if the name is consistent with its source file name.
         /// </summary>
@@ -113,7 +111,7 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveFilePathMatchingTypeNamespace(context, inputTypes, true));
             return CreateConditionList();
         }
-               
+
         /// <summary>
         /// For each type, check if a matching type with the given name exists.
         /// </summary>
@@ -123,7 +121,6 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveMatchingTypeWithName(context, inputTypes, getMatchingTypeName, true));
             return CreateConditionList();
         }
-
 
         /// <summary>
         /// Selects types that have at least one instance public constructor.

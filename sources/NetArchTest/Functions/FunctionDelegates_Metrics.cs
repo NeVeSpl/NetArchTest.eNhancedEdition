@@ -8,7 +8,6 @@ namespace NetArchTest.Functions
 {
     internal static partial class FunctionDelegates
     {
-
         internal static IEnumerable<TypeSpec> HaveNumberOfLinesOfCodeFewerThan(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, int number, bool condition)
         {
             if (condition)

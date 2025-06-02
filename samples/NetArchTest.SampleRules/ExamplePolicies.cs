@@ -4,10 +4,10 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using NetArchTest.Rules;
-    using NetArchTest.Policies;
-    using NetArchTest.SampleLibrary.Data;
-    using NetArchTest.SampleLibrary.Services;
+    using Rules;
+    using Policies;
+    using SampleLibrary.Data;
+    using SampleLibrary.Services;
 
     /// <summary>
     /// Examples of how rules can be aggregated into policies that are executed in a group.

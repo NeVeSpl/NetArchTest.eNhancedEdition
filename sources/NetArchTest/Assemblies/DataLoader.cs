@@ -10,14 +10,14 @@ namespace NetArchTest.Assemblies
 {
     internal static class DataLoader
     {
-        private static readonly List<string> exclusionList = new List<string> 
-        { 
+        private static readonly List<string> ExclusionList =
+        [
             "System",
-            "Microsoft", 
-            "netstandard", 
-            "NuGet", 
+            "Microsoft",
+            "netstandard",
+            "NuGet",
             "Newtonsoft",
-            "xunit", 
+            "xunit",
             "Internal.Microsoft",
             "Mono.Cecil",
             "NetArchTest.Assemblies",
@@ -26,10 +26,9 @@ namespace NetArchTest.Assemblies
             "NetArchTest.Policies",
             "NetArchTest.RuleEngine",
             "NetArchTest.Rules",
-            "NetArchTest.Slices",
-        };
-        private static readonly NamespaceTree exclusionTree = new NamespaceTree(exclusionList);
-
+            "NetArchTest.Slices"
+        ];
+        private static readonly NamespaceTree ExclusionTree = new NamespaceTree(ExclusionList);
 
         public static LoadedData LoadFromCurrentDomain()
         {
@@ -51,7 +50,6 @@ namespace NetArchTest.Assemblies
             return new LoadedData(assemblies);
         }
 
-
         private static IEnumerable<AssemblySpec> Load(IEnumerable<string> fileNames, IEnumerable<string> searchDirectories, bool loadReferencedAssemblies)
         {
             var readerParameters = CreateReaderParameters(searchDirectories);
@@ -66,7 +64,7 @@ namespace NetArchTest.Assemblies
             void ProcessAssemblyDefinition(AssemblySpec parent, AssemblyDefinition assemblyDefinition)
             {
                 if (assemblyDefinition == null) return;
-                if (exclusionTree.GetAllMatchingNames(assemblyDefinition.Name.Name).Any() == true) return;
+                if (ExclusionTree.GetAllMatchingNames(assemblyDefinition.Name.Name).Any() == true) return;
                 if (definitions.TryGetValue(assemblyDefinition.FullName, out var existingSpec))
                 {
                     parent?.AddRef(existingSpec);
@@ -96,7 +94,7 @@ namespace NetArchTest.Assemblies
 
             return definitions.Values;
         }
-       
+
         private static ReaderParameters CreateReaderParameters(IEnumerable<string> searchDirectories, bool readSymbols = true)
         {
             DefaultAssemblyResolver assemblyResolver = null;
@@ -123,37 +121,33 @@ namespace NetArchTest.Assemblies
             }
         }
 
-
         private static IEnumerable<TypeDefinition> ReadTypes(AssemblyDefinition assemblyDefinition)
         {
             foreach (var module in assemblyDefinition.Modules)
             {
                 foreach (var type in module.GetTypes())
-                {                   
+                {
                     if (type.FullName.Equals("<Module>")) continue;
                     if (type.FullName.StartsWith("<>")) continue;
                     if (type.FullName.StartsWith("<PrivateImplementationDetails>")) continue;
 
-                    if (exclusionTree.GetAllMatchingNames(type.FullName).Any()) continue;
+                    if (ExclusionTree.GetAllMatchingNames(type.FullName).Any()) continue;
                     if (type.IsCompilerGenerated()) continue;
 
                     yield return type;
                 }
             }
         }
-    }       
-
+    }
 
     internal sealed class LoadedData
     {
         public IReadOnlyList<AssemblySpec> Assemblies { get; }
 
-
         public LoadedData(IEnumerable<AssemblySpec> assemblies)
         {
             Assemblies = assemblies.ToArray();
         }
-
 
         public IEnumerable<TypeSpec> GetTypes()
         {

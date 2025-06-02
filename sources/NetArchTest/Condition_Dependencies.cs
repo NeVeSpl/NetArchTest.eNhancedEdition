@@ -27,7 +27,7 @@ namespace NetArchTest.Rules
         }
 
         /// <summary>
-        /// Selects types that have a dependency on any of the supplied types and cannot have any other dependency. 
+        /// Selects types that have a dependency on any of the supplied types and cannot have any other dependency.
         /// </summary>
         /// <param name="dependencies">The dependencies to match against. These can be namespaces or specific types.</param>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
@@ -69,7 +69,6 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.OnlyHaveDependenciesOnAnyOrNone(context, inputTypes, dependencies, false));
             return CreateConditionList();
         }
-
 
         /// <summary>
         /// Selects types that are used by any of the supplied types.

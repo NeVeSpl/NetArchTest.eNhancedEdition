@@ -7,7 +7,7 @@ namespace NetArchTest.Rules
     {
         /// <summary>
         /// Selects types that are exactly of given type. (inheritance is not considered)
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreOfType(params Type[] type)
         {
@@ -17,7 +17,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not exactly of given type. (inheritance is not considered)
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotOfType(params Type[] type)
         {
@@ -33,8 +33,8 @@ namespace NetArchTest.Rules
         /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveName(params string[] name)
-        {            
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, true));            
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, true));
             return CreatePredicateList();
         }
 
@@ -47,7 +47,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveName(params string[] name)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, false));            
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, name, false));
             return CreatePredicateList();
         }
 
@@ -81,8 +81,8 @@ namespace NetArchTest.Rules
         /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameStartingWith(params string[] start)
-        {           
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, true));            
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, true));
             return CreatePredicateList();
         }
 
@@ -94,8 +94,8 @@ namespace NetArchTest.Rules
         /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameStartingWith(params string[] start)
-        {            
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, false));            
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, start, false));
             return CreatePredicateList();
         }
 
@@ -107,8 +107,8 @@ namespace NetArchTest.Rules
         /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveNameEndingWith(params string[] end)
-        {            
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));            
+        {
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, true));
             return CreatePredicateList();
         }
 
@@ -120,11 +120,10 @@ namespace NetArchTest.Rules
         /// </remarks>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveNameEndingWith(params string[] end)
-        {          
+        {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, end, false));
             return CreatePredicateList();
         }
-               
 
         /// <summary>
         /// Selects types that reside in a particular namespace.

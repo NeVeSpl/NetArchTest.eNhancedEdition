@@ -10,10 +10,10 @@
     {
         namespace FeatureA
         {
-            using NetArchTest.TestStructure.Slices.ValidTree.FeatureA.App;
+            using App;
             namespace App
             {
-                using NetArchTest.TestStructure.Slices.ValidTree.FeatureA.Domain;
+                using Domain;
 
                 class AppService { AggregateRoot root; }
             }
@@ -26,7 +26,7 @@
             {
                 namespace Persistence 
                 {
-                    using NetArchTest.TestStructure.Slices.ValidTree.FeatureA.Domain;
+                    using Domain;
                     class Repository {  AggregateRoot root; }
                 }
             }

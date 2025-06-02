@@ -43,6 +43,5 @@
         /// Gets the detailed description associated with the policy.
         /// </summary>
         public string Description { get; private set; }
-
     }
 }

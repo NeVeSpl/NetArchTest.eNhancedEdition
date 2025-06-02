@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.Policies
 {
     using System;
-    using NetArchTest.Rules;
+    using Rules;
 
     /// <summary>
     /// An aggregate of rules and results that can be used for reporting.
@@ -58,6 +58,5 @@
 
             return new PolicyDefinition(func, _name, _description);
         }
-
     }
 }

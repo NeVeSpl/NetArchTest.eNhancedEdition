@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.SampleLibrary.Services
 {
-    using NetArchTest.SampleLibrary.Data;
-    using NetArchTest.SampleLibrary.Model;
+    using Data;
+    using Model;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

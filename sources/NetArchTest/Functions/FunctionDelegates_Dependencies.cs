@@ -13,7 +13,8 @@ namespace NetArchTest.Functions
         {
             // Get the types that contain the dependencies
             var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
-            var results = search.FindTypesThatHaveDependencyOnAny(input, dependencies);
+            search.FindTypesThatHaveDependencyOnAny(input, dependencies);
+            
             return input.Where(t => t.IsPassing == condition);
         }
 
@@ -22,7 +23,7 @@ namespace NetArchTest.Functions
         {
             // Get the types that contain the dependencies
             var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
-            var results = search.FindTypesThatHaveDependencyOnAll(input, dependencies);
+            search.FindTypesThatHaveDependencyOnAll(input, dependencies);
 
             return input.Where(t => t.IsPassing == condition);
         }
@@ -31,17 +32,16 @@ namespace NetArchTest.Functions
         internal static IEnumerable<TypeSpec> OnlyHaveDependenciesOnAnyOrNone(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
-            var results = search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
+            search.FindTypesThatOnlyHaveDependencyOnAnyOrNone(input, dependencies);
 
             return input.Where(t => t.IsPassing == condition);
         }
 
-
-
         internal static IEnumerable<TypeSpec> AreUsedByAny(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, IEnumerable<string> dependencies, bool condition)
         {
             var search = new DependencySearch(context.IsFailPathRun, context.UserOptions.SerachForDependencyInFieldConstant, context.DependencyFilter);
-            var results = search.FindTypesThatAreUsedByAny(input, dependencies, context.AllTypes);
+            search.FindTypesThatAreUsedByAny(input, dependencies, context.AllTypes);
+            
             return input.Where(t => t.IsPassing == condition);
         }
     }

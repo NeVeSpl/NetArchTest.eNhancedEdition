@@ -62,7 +62,7 @@ namespace NetArchTest.Rules
         {
             AddFunctionCall(x => FunctionDelegates.OnlyHaveNullableMembers(x, true));
             return CreatePredicateList();
-        }  
+        }
 
         /// <summary>
         /// Selects types that have some non-nullable members.
@@ -84,7 +84,6 @@ namespace NetArchTest.Rules
             return CreatePredicateList();
         }
 
-
         /// <summary>
         /// Selects types that have at least one instance public constructor.
         /// </summary>
@@ -104,7 +103,6 @@ namespace NetArchTest.Rules
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HavePublicConstructor(context, inputTypes, false));
             return CreatePredicateList();
         }
-
 
         /// <summary>
         /// Selects types that have at least one instance parameterless constructor.

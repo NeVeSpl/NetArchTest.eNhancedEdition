@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using NetArchTest.SampleLibrary.Model;
+    using Model;
 
     public interface IWidgetService 
     {

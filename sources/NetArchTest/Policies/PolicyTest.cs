@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.Policies
 {
     using System;
-    using NetArchTest.Rules;
+    using Rules;
 
     /// <summary>
     /// A single test that has been added to a policy.

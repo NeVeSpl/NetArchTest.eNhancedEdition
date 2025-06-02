@@ -23,9 +23,9 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => a.AttributeType.IsAlmostEqualTo(target)));
             }
         }
-        
+
         internal static IEnumerable<TypeSpec> HaveCustomAttributeOrInherit(IEnumerable<TypeSpec> input, Type attribute, bool condition)
-        {            
+        {
             var target = attribute.ToTypeDefinition();
 
             if (condition)
@@ -37,14 +37,14 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.CustomAttributes.Any(a => a.AttributeType.IsSubclassOf(target) || a.AttributeType.IsAlmostEqualTo(target)));
             }
         }
-        
+
         internal static IEnumerable<TypeSpec> Inherit(IEnumerable<TypeSpec> input, Type type, bool condition)
         {
             if (type.IsInterface)
             {
                 throw new ArgumentException($"The type {type.FullName} is an interface. interfaces are implemented not inherited, please use ImplementInterface instead.");
             }
-            
+
             var target = type.ToTypeDefinition();
 
             if (condition)
@@ -59,15 +59,15 @@ namespace NetArchTest.Functions
 
         internal static IEnumerable<TypeSpec> BeInherited(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
         {
-            var InheritedTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.BaseType?.GetFullNameWithoutGenericParameters()).Where(x => x is not null));
-            
+            var inheritedTypes = new HashSet<string>(context.AllTypes.Select(x => x.Definition.BaseType?.GetFullNameWithoutGenericParameters()).Where(x => x is not null));
+
             if (condition)
             {
-                return input.Where(c => InheritedTypes.Contains(c.Definition.FullName));
+                return input.Where(c => inheritedTypes.Contains(c.Definition.FullName));
             }
             else
             {
-                return input.Where(c => !InheritedTypes.Contains(c.Definition.FullName));
+                return input.Where(c => !inheritedTypes.Contains(c.Definition.FullName));
             }
         }
 
@@ -88,7 +88,7 @@ namespace NetArchTest.Functions
             {
                 return input.Where(c => !c.Definition.Interfaces.Any(i => i.InterfaceType.IsAlmostEqualTo(target)));
             }
-        } 
+        }
 
         internal static IEnumerable<TypeSpec> MeetCustomRule(IEnumerable<TypeSpec> input, ICustomRule rule, bool condition)
         {
@@ -139,7 +139,6 @@ namespace NetArchTest.Functions
                 return input.Where(t => !ExecuteCustomRule(t, rule));
             }
         }
-
 
         private static bool ExecuteCustomRule(TypeSpec inputType, Func<TypeDefinition, CustomRuleResult> rule)
         {

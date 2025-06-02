@@ -11,22 +11,20 @@ namespace NetArchTest.Assemblies.PublicUse
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly TypeDefinition _monoTypeDefinition;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<Type> _reflactionType;
+        private readonly Lazy<Type> _reflectionType;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<string> _sourceFilePath;
 
-
-        public Type ReflectionType => _reflactionType.Value;
+        public Type ReflectionType => _reflectionType.Value;
         public string FullName => _monoTypeDefinition.FullName;
         public string Name => _monoTypeDefinition.Name;
         public string Explanation { get; }
         public string SourceFilePath => _sourceFilePath.Value;
 
-
         internal TypeContainer(TypeDefinition monoTypeDefinition, string explanation)
         {
             _monoTypeDefinition = monoTypeDefinition;
-            _reflactionType = new Lazy<Type>(() =>
+            _reflectionType = new Lazy<Type>(() =>
             {
                 try
                 {
@@ -37,10 +35,9 @@ namespace NetArchTest.Assemblies.PublicUse
                 }
                 return null;
             });
-            _sourceFilePath = new Lazy<string>(() => _monoTypeDefinition.GetFilePath());
+            _sourceFilePath = new Lazy<string>(_monoTypeDefinition.GetFilePath);
             Explanation = explanation;
-        }       
-
+        }
 
         public static implicit operator Type(TypeContainer type)
         {

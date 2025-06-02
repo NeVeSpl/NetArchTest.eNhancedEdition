@@ -1,7 +1,7 @@
 namespace Mono.Cecil
 {
-    static internal class PropertyDefinitionExtensions
-    {        
+    internal static class PropertyDefinitionExtensions
+    {
         public static bool IsReadonly(this PropertyDefinition propertyDefinition)
         {
             if (propertyDefinition.SetMethod == null)
@@ -9,7 +9,7 @@ namespace Mono.Cecil
                 return true;
             }
             else
-            {                
+            {
                 if (propertyDefinition.IsInitOnly())
                 {
                     return true;
@@ -32,7 +32,6 @@ namespace Mono.Cecil
             return propertyDefinition.SetMethod?.ReturnType.FullName == "System.Void modreq(System.Runtime.CompilerServices.IsExternalInit)";
         }
 
-       
         public static bool IsNullable(this PropertyDefinition propertyDefinition)
         {
             return propertyDefinition.PropertyType.IsNullable();

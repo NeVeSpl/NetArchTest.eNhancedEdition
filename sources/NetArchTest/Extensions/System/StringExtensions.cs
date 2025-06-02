@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System
+﻿namespace System
 {
     internal static class StringExtensions
     {
         public static string RemoveGenericPart(this string name)
         {
-            if (string.IsNullOrEmpty(name)) 
+            if (string.IsNullOrEmpty(name))
                 return name;
 
             int index = name.LastIndexOf('`');
@@ -19,12 +15,11 @@ namespace System
             return name;
         }
 
-
         public static string RuntimeNameToReflectionName(this string cliName)
         {
             // Nested types have a forward slash that should be replaced with "+"
             // C++ template instantiations contain comma separator for template arguments,
-            // getting address operators and pointer type designations which should be prefixed by backslash
+            // getting address operators and pointer type designations which backslash should prefix
             var fullName = cliName.Replace("/", "+")
                 .Replace(",", "\\,")
                 .Replace("&", "\\&")
@@ -34,7 +29,7 @@ namespace System
 
         public static string ReflectionNameToRuntimeName(this string typeName)
         {
-            var fullName = typeName.Replace("+", "/");                
+            var fullName = typeName.Replace("+", "/");
             return fullName;
         }
     }

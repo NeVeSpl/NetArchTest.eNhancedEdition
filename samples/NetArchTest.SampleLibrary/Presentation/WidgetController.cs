@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using NetArchTest.SampleLibrary.Services;
+    using Services;
 
     public class WidgetController
     {

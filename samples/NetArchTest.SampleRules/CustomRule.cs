@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.SampleRules
 {
     using Mono.Cecil;
-    using NetArchTest.Rules;
+    using Rules;
 
     /// <summary>
     /// A custom rule that can be used to extend NetArchTest.

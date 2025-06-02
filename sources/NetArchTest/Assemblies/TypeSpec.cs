@@ -19,14 +19,11 @@ namespace NetArchTest.Assemblies
         public string Explanation { get; set; }
         public string SourceFilePath => _sourceFilePath.Value;
 
-
         public TypeSpec(TypeDefinition definition)
         {
             Definition = definition;
             _sourceFilePath = new Lazy<string>(() => Definition.GetFilePath());
         }
-
-
 
         public TypeContainer CreateWrapper()
         {

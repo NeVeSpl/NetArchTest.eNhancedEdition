@@ -9,12 +9,10 @@ namespace NetArchTest.Rules
     {
         public static readonly Options Default = new Options();
 
-
         /// <summary>
         /// Allows to specify how strings will be compared, default: InvariantCultureIgnoreCase
         /// </summary>
         public StringComparison Comparer { get; init; } = StringComparison.InvariantCultureIgnoreCase;
-
 
         /// <summary>
         /// Determines if dependency analysis should look for dependency in string field constant, default: false

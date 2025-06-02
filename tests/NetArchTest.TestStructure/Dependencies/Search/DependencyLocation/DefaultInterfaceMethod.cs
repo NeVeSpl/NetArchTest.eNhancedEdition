@@ -1,6 +1,6 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Search.DependencyLocation
 {   
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     /// <summary>
     /// Example interface that includes a dependency in default method.    

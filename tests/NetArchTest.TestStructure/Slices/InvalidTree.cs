@@ -26,7 +26,7 @@
             {
                 namespace Persistence 
                 {
-                    using NetArchTest.TestStructure.Slices.InvalidTree.FeatureB;
+                    using FeatureB;
                     using NetArchTest.TestStructure.Slices.ValidTree.FeatureA.Domain;
                     class Repository {  DAO dao; }
                 }

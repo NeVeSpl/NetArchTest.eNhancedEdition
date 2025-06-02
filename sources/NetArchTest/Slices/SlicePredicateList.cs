@@ -1,5 +1,4 @@
-﻿using NetArchTest.Assemblies;
-using NetArchTest.Slices.Model;
+﻿using NetArchTest.Slices.Model;
 
 namespace NetArchTest.Slices
 {
@@ -8,21 +7,19 @@ namespace NetArchTest.Slices
     /// </summary>
     public sealed class SlicePredicateList
     {
-        private readonly SliceContext sliceContext;      
-
+        private readonly SliceContext _sliceContext;
 
         internal SlicePredicateList(SliceContext sliceContext)
         {
-            this.sliceContext = sliceContext;           
+            _sliceContext = sliceContext;
         }
-
-
+        
         /// <summary>
         /// Links a predicate defining a set of classes to a condition that tests them.
         /// </summary>
         public SliceCondition Should()
         {
-            return new SliceCondition(sliceContext, true);
+            return new SliceCondition(_sliceContext, true);
         }
 
         /// <summary>
@@ -30,13 +27,12 @@ namespace NetArchTest.Slices
         /// </summary>
         public SliceCondition ShouldNot()
         {
-            return new SliceCondition(sliceContext, false);
+            return new SliceCondition(_sliceContext, false);
         }
-
 
         internal SlicedTypes GetSlicedTypes()
         {
-            return sliceContext.GetTypes();
+            return _sliceContext.GetTypes();
         }
     }
 }

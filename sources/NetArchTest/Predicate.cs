@@ -12,35 +12,31 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed partial class Predicate
     {
-        private readonly RuleContext rule;
-        private readonly PredicateContext context;
-
+        private readonly RuleContext _rule;
+        private readonly PredicateContext _context;
 
         internal Predicate(RuleContext rule)
         {
-            this.rule = rule;
-            this.context = rule.PredicateContext;
+            _rule = rule;
+            _context = rule.PredicateContext;
         }
-
 
         private PredicateList CreatePredicateList()
         {
-            return new PredicateList(rule);
+            return new PredicateList(_rule);
         }
         private void AddFunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
         {
-            context.Sequence.AddFunctionCall(func);
+            _context.Sequence.AddFunctionCall(func);
         }
         private void AddFunctionCall(Func<FunctionSequenceExecutionContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
         {
-            context.Sequence.AddFunctionCall(func);
+            _context.Sequence.AddFunctionCall(func);
         }
-
-
 
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttribute(Type attribute)
         {
@@ -49,7 +45,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttribute<T>()
         {
@@ -68,7 +64,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are not decorated with a specific custom attribute.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveCustomAttribute<T>()
         {
@@ -87,7 +83,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute or derived one.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList HaveCustomAttributeOrInherit<T>()
         {
@@ -106,13 +102,12 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are not decorated with a specific custom attribute or derived one.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotHaveCustomAttributeOrInherit<T>()
         {
             return DoNotHaveCustomAttributeOrInherit(typeof(T));
         }
-
 
         /// <summary>
         /// Selects types that inherit a particular type.
@@ -126,7 +121,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that inherit a particular type.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList Inherit<T>()
         {
@@ -135,7 +130,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are inherited by any type
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreInheritedByAnyType()
         {
@@ -145,14 +140,13 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not inherited by any type
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotInheritedByAnyType()
         {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.BeInherited(context, inputTypes, false));
             return CreatePredicateList();
         }
-
 
         /// <summary>
         /// Selects types that do not inherit a particular type.
@@ -166,13 +160,12 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that do not inherit a particular type.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotInherit<T>()
-        { 
+        {
             return DoNotInherit(typeof(T));
         }
-
 
         /// <summary>
         /// Selects types that implement a particular interface.
@@ -186,7 +179,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that implement a particular interface.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ImplementInterface<T>()
         {
@@ -205,13 +198,12 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that do not implement a particular interface.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList DoNotImplementInterface<T>()
         {
             return DoNotImplementInterface(typeof(T));
         }
-
 
         /// <summary>
         /// Selects types that meet a custom rule.
@@ -225,7 +217,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that meet a custom rule.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList MeetCustomRule(Func<TypeDefinition, bool> rule)
         {
@@ -245,7 +237,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that meet a custom rule.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public PredicateList MeetCustomRule(Func<TypeDefinition, CustomRuleResult> rule)
         {

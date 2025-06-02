@@ -11,12 +11,11 @@ namespace NetArchTest.RuleEngine
         public IDependencyFilter DependencyFilter { get; }
         public Options UserOptions { get; }
 
-
         public FunctionSequenceExecutionContext(IEnumerable<TypeSpec> allTypes, bool isFailPathRun, Options options = null)
         {
             AllTypes = allTypes;
-            UserOptions = options ?? Options.Default; 
-            IsFailPathRun = isFailPathRun;            
+            UserOptions = options ?? Options.Default;
+            IsFailPathRun = isFailPathRun;
         }
     }
 }

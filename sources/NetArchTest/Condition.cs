@@ -12,35 +12,31 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed partial class Condition
     {
-        private readonly RuleContext rule;
-        private readonly ConditionContext context;
-
+        private readonly RuleContext _rule;
+        private readonly ConditionContext _context;
 
         internal Condition(RuleContext rule)
         {
-            this.rule = rule;
-            this.context = rule.ConditionContext;
+            _rule = rule;
+            _context = rule.ConditionContext;
         }
         internal Condition(RuleContext rule, bool should) : this(rule)
-        {           
+        {
             rule.ConditionContext.Should = should;
         }
-       
 
         private ConditionList CreateConditionList()
         {
-            return new ConditionList(rule);
+            return new ConditionList(_rule);
         }
         private void AddFunctionCall(Func<IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
         {
-            context.Sequence.AddFunctionCall(func);
+            _context.Sequence.AddFunctionCall(func);
         }
         private void AddFunctionCall(Func<FunctionSequenceExecutionContext, IEnumerable<TypeSpec>, IEnumerable<TypeSpec>> func)
         {
-            context.Sequence.AddFunctionCall(func);
+            _context.Sequence.AddFunctionCall(func);
         }
-
-
 
         /// <summary>
         /// Selects types are decorated with a specific custom attribut.
@@ -54,7 +50,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types are decorated with a specific custom attribut.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveCustomAttribute<T>()
         {
@@ -73,7 +69,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are not decorated with a specific custom attribute.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveCustomAttribute<T>()
         {
@@ -92,7 +88,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that are decorated with a specific custom attribute or derived one.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveCustomAttributeOrInherit<T>()
         {
@@ -111,7 +107,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types are not decorated with a specific custom attribute or derived one.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveCustomAttributeOrInherit<T>()
         {
@@ -130,7 +126,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that inherit a particular type.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList Inherit<T>()
         {
@@ -149,7 +145,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that do not inherit a particular type.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotInherit<T>()
         {
@@ -168,7 +164,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that implement a particular interface.
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList ImplementInterface<T>()
         {
@@ -187,13 +183,12 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that do not implement a particular interface.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotImplementInterface<T>()
         {
             return NotImplementInterface(typeof(T));
         }
-
 
         /// <summary>
         /// Selects types that meet a custom rule.
@@ -207,7 +202,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that meet a custom rule.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList MeetCustomRule(Func<TypeDefinition, bool> rule)
         {
@@ -226,7 +221,7 @@ namespace NetArchTest.Rules
         }
         /// <summary>
         /// Selects types that meet a custom rule.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList MeetCustomRule(Func<TypeDefinition, CustomRuleResult> rule)
         {

@@ -23,7 +23,7 @@ namespace NetArchTest.Slices.Model
                 foreach (var type in slice.Types)
                 {
                     bool isPassing = lookup.Contains(type);
-                    var typeResult = new TypeTestResult(type, isPassing);                    
+                    var typeResult = new TypeTestResult(type, isPassing);
                     result.Add(typeResult);
                 }
             }

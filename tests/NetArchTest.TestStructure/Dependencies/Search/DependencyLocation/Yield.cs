@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     /// <summary>
     /// Example class that includes a dependency in a yield return statement.    

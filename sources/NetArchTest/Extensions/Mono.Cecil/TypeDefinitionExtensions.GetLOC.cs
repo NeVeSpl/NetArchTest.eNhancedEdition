@@ -6,7 +6,7 @@ namespace NetArchTest.Extensions.Mono.Cecil
     {
         internal static int GetNumberOfLogicalLinesOfCode(this TypeDefinition type)
         {
-            int count = 0; 
+            int count = 0;
 
             if (type.HasMethods)
             {
@@ -16,14 +16,13 @@ namespace NetArchTest.Extensions.Mono.Cecil
                     if (method.IsGeneratedCode()) continue;
                     if (method.DeclaringType.Module.HasSymbols == false) continue;
 
-                    var methodLLOC = CountLogicalLinesOfCode(method);
-                    count += methodLLOC;
+                    var methodLloc = CountLogicalLinesOfCode(method);
+                    count += methodLloc;
                 }
             }
 
             return count;
         }
-
 
         private static int CountLogicalLinesOfCode(MethodDefinition method)
         {
@@ -40,7 +39,7 @@ namespace NetArchTest.Extensions.Mono.Cecil
                 // special value for PDB (so that debuggers can ignore a line)
                 if (line == 0xFEEFEE)
                     continue;
-                
+
                 if (line > lastLine)
                     count++;
 

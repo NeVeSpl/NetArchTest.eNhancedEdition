@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NetArchTest.Assemblies;
 using NetArchTest.Dependencies.DataStructures;
@@ -12,49 +11,47 @@ namespace NetArchTest.Dependencies
     /// </summary>
     internal class DependencySearch
     {
-        private readonly bool explainYourself;
-        private readonly IDependencyFilter dependencyFilter;
-        private readonly bool serachForDependencyInFieldConstant;
+        private readonly bool _explainYourself;
+        private readonly IDependencyFilter _dependencyFilter;
+        private readonly bool _searchForDependencyInFieldConstant;
 
-
-        public DependencySearch(bool explainYourself, bool serachForDependencyInFieldConstant = false, IDependencyFilter dependencyFilter = null)
+        public DependencySearch(bool explainYourself, bool searchForDependencyInFieldConstant = false, IDependencyFilter dependencyFilter = null)
         {
-            this.explainYourself = explainYourself;
-            this.dependencyFilter = dependencyFilter;
-            this.serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
+            _explainYourself = explainYourself;
+            _dependencyFilter = dependencyFilter;
+            _searchForDependencyInFieldConstant = searchForDependencyInFieldConstant;
         }
-
 
         /// <summary>
         /// Finds types that have a dependency on any item in the given list of dependencies.
         /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatHaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
-        {  
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAny, dependencies);           
+        {
+            return FindTypes(input, HaveDependencyCheckingStrategy.TypeOfCheck.HaveDependencyOnAny, dependencies);
         }
 
         /// <summary>
         /// Finds types that have a dependency on every item in the given list of dependencies.
-        /// </summary>      
+        /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatHaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
-        {  
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.HaveDependencyOnAll, dependencies);         
+        {
+            return FindTypes(input, HaveDependencyCheckingStrategy.TypeOfCheck.HaveDependencyOnAll, dependencies);
         }
 
         /// <summary>
         /// Finds types that may have a dependency on any item in the given list of dependencies, but cannot have a dependency that is not in the list.
-        /// </summary>             
+        /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatOnlyHaveDependencyOnAnyOrNone(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
-        {           
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone, dependencies);
+        {
+            return FindTypes(input, HaveDependencyCheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAnyOrNone, dependencies);
         }
 
         /// <summary>
         /// Finds types that have a dependency on any item in the given list of dependencies, but cannot have a dependency that is not in the list.
-        /// </summary>      
+        /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatOnlyHaveDependencyOnAny(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAny, dependencies);
+            return FindTypes(input, HaveDependencyCheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAny, dependencies);
         }
 
         /// <summary>
@@ -62,31 +59,29 @@ namespace NetArchTest.Dependencies
         /// </summary>
         public IEnumerable<TypeSpec> FindTypesThatOnlyOnlyHaveDependencyOnAll(IEnumerable<TypeSpec> input, IEnumerable<string> dependencies)
         {
-            return FindTypes(input, HaveDependency_CheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAll, dependencies);
+            return FindTypes(input, HaveDependencyCheckingStrategy.TypeOfCheck.OnlyHaveDependenciesOnAll, dependencies);
         }
 
-        private IEnumerable<TypeSpec> FindTypes(IEnumerable<TypeSpec> input, HaveDependency_CheckingStrategy.TypeOfCheck typeOfCheck, IEnumerable<string> dependencies)
-        {           
+        private IEnumerable<TypeSpec> FindTypes(IEnumerable<TypeSpec> input, HaveDependencyCheckingStrategy.TypeOfCheck typeOfCheck, IEnumerable<string> dependencies)
+        {
             var searchTree = new CachedNamespaceTree(dependencies);
-            var context = new TypeCheckingContext(serachForDependencyInFieldConstant, explainYourself, dependencyFilter);
+            var context = new TypeCheckingContext(_searchForDependencyInFieldConstant, _explainYourself, _dependencyFilter);
 
             foreach (var type in input)
             {
-                var strategy = new HaveDependency_CheckingStrategy(typeOfCheck, searchTree);                
+                var strategy = new HaveDependencyCheckingStrategy(typeOfCheck, searchTree);
                 context.PerformCheck(type, strategy);
-                type.IsPassing = strategy.DoesTypePassCheck();                
+                type.IsPassing = strategy.DoesTypePassCheck();
             }
 
             return input;
         }
 
-
         public IEnumerable<TypeSpec> FindTypesThatAreUsedByAny(IEnumerable<TypeSpec> input, IEnumerable<string> users, IEnumerable<TypeSpec> allTypes)
         {
             var filterTree = new CachedNamespaceTree(users);
-            var context = new TypeCheckingContext(serachForDependencyInFieldConstant, explainYourself, dependencyFilter);
-            var strategy = new AreUsedBy_CheckingStrategy();
-
+            var context = new TypeCheckingContext(_searchForDependencyInFieldConstant, _explainYourself, _dependencyFilter);
+            var strategy = new AreUsedByCheckingStrategy();
 
             foreach (var type in allTypes)
             {
@@ -97,8 +92,8 @@ namespace NetArchTest.Dependencies
                     context.PerformCheck(type, strategy);
                 }
             }
-            
-            foreach (var type in input) 
+
+            foreach (var type in input)
             {
                 type.IsPassing = strategy.IsTypeUsed(type.Definition);
             }

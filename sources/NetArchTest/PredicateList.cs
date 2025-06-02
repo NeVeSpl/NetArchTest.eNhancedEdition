@@ -11,14 +11,12 @@ namespace NetArchTest.Rules
     /// </summary>
     public sealed class PredicateList
     {
-        private readonly RuleContext rule;       
+        private readonly RuleContext _rule;
 
-
-        internal PredicateList(RuleContext rule) 
+        internal PredicateList(RuleContext rule)
         {
-            this.rule = rule;          
+            _rule = rule;
         }
-
 
         /// <summary>
         /// Links a predicate defining a set of classes to a condition that tests them.
@@ -26,7 +24,7 @@ namespace NetArchTest.Rules
         /// <returns>A condition that tests classes against a given criteria.</returns>
         public Condition Should()
         {
-            return new Condition(rule, true);
+            return new Condition(_rule, true);
         }
 
         /// <summary>
@@ -35,7 +33,7 @@ namespace NetArchTest.Rules
         /// <returns>A condition that tests classes against a given criteria.</returns>
         public Condition ShouldNot()
         {
-            return new Condition(rule, false);
+            return new Condition(_rule, false);
         }
 
         /// <summary>
@@ -44,9 +42,8 @@ namespace NetArchTest.Rules
         /// <returns></returns>
         public SlicePredicate Slice()
         {
-            return new SlicePredicate(rule);
+            return new SlicePredicate(_rule);
         }
-
 
         /// <summary>
         /// Specifies that any subsequent predicates should be treated as "and" conditions.
@@ -55,7 +52,7 @@ namespace NetArchTest.Rules
         /// <remarks>And() has higher priority than Or() and it is computed first.</remarks>
         public Predicate And()
         {
-            return new Predicate(rule);
+            return new Predicate(_rule);
         }
 
         /// <summary>
@@ -65,8 +62,8 @@ namespace NetArchTest.Rules
         public Predicate Or()
         {
             // Create a new group of functions - this has the effect of creating an "or" condition
-            rule.PredicateContext.Sequence.CreateGroup();
-            return new Predicate(rule);
+            _rule.PredicateContext.Sequence.CreateGroup();
+            return new Predicate(_rule);
         }
 
         /// <summary>
@@ -75,17 +72,16 @@ namespace NetArchTest.Rules
         /// <returns>A list of types.</returns>
         public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return rule.GetTypes(options);
+            return _rule.GetTypes(options);
         }
 
-
         internal IEnumerable<TypeSpec> GetTypeSpecifications(Options options = null)
-        { 
-            return rule.Execute(options);
+        {
+            return _rule.Execute(options);
         }
         internal IEnumerable<Type> GetReflectionTypes(Options options = null)
         {
-            return rule.GetReflectionTypes(options);
+            return _rule.GetReflectionTypes(options);
         }
     }
 }

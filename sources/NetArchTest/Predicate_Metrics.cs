@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NetArchTest.Functions;
+﻿using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {
@@ -25,6 +22,6 @@ namespace NetArchTest.Rules
         {
             AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNumberOfLinesOfCodeFewerThan(context, inputTypes, number, true));
             return CreatePredicateList();
-        }       
+        }
     }
 }

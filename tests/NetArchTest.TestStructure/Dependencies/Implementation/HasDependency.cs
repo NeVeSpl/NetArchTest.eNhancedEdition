@@ -1,6 +1,6 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Implementation
 {
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     public class HasDependency
     {

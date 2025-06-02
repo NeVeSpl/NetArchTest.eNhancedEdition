@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Search.DependencyLocation
 {
     using System;
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     /// <summary>
     /// Example class that includes a dependency in an event add accessor.    

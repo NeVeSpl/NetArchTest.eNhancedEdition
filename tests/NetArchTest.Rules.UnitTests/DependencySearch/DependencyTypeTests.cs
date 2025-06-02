@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Search.DependencyType;
-    using NetArchTest.UnitTests.TestFixtures;
+    using TestFixtures;
     using Xunit;
     using Array = TestStructure.Dependencies.Search.DependencyType.Array;
     using Pointer = TestStructure.Dependencies.Search.DependencyType.Pointer;
@@ -303,7 +303,7 @@
         [Fact(DisplayName = "Finds a dependency ExampleDependency<int> in ExampleDependency<int>, specified as string (GenericDependency<int>)")]
         public void DependencySearch_VariableGenericAsString_Found()
         {
-            Utils.RunDependencyTest(fixture, typeof(VariableGeneric), new[] { typeof(ExampleDependency<int>).ToString() }, true);
+            Utils.RunDependencyTest(fixture, typeof(VariableGeneric), [typeof(ExampleDependency<int>).ToString()], true);
         }
 
         [Fact(DisplayName = "Does not find dependency ExampleDependency<string> in ExampleDependency<int>.")]

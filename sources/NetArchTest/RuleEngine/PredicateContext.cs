@@ -4,10 +4,8 @@
     {
         public FunctionSequence Sequence { get; } = new FunctionSequence();
 
-
         public PredicateContext()
         {
-           
         }
     }
 }

@@ -17,7 +17,7 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that are not declared as internal.
         /// </summary>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>       
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotInternal()
         {
             AddFunctionCall(x => FunctionDelegates.BeInternal(x, false));
@@ -57,7 +57,7 @@ namespace NetArchTest.Rules
         /// <summary>
         /// Selects types that are not declared as private.
         /// </summary>
-        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>     
+        /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotPrivate()
         {
             AddFunctionCall(x => FunctionDelegates.BePrivate(x, false));
@@ -66,7 +66,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are declared as private protected.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ArePrivateProtected()
         {
@@ -76,7 +76,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not declared as private protected.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotPrivateProtected()
         {
@@ -86,7 +86,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are declared as protected.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreProtected()
         {
@@ -96,7 +96,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not declared as protected.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotProtected()
         {
@@ -106,7 +106,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are declared as protected internal.
-        /// </summary>     
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreProtectedInternal()
         {
@@ -116,7 +116,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not declared as protected internal.
-        /// </summary>      
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotProtectedInternal()
         {
@@ -126,7 +126,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that have public scope.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList ArePublic()
         {
@@ -136,7 +136,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that do not have public scope.
-        /// </summary>        
+        /// </summary>
         /// <returns>An updated set of predicates that can be applied to a list of types.</returns>
         public PredicateList AreNotPublic()
         {

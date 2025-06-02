@@ -4,7 +4,7 @@ using NetArchTest.Dependencies;
 
 namespace System
 {
-    static internal class TypeExtensions
+    internal static class TypeExtensions
     {
         public static TypeDefinition ToTypeDefinition(this Type type)
         {
@@ -23,14 +23,9 @@ namespace System
 
         public static string GetNormalizedFullName(this Type type)
         {
-            var name = type.Name;
-            var fullName = type.FullName;
-            var toString = type.ToString();
-            var assemblyQualifiedName = type.AssemblyQualifiedName;
-
             var monoName = TypeParser.ParseReflectionNameToRuntimeName(type.FullName);
 
-            if (type.IsGenericType && type.ContainsGenericParameters == false)
+            if (type.IsGenericType && !type.ContainsGenericParameters)
             {
                 //return toString.ReflectionNameToRuntimeName();
             }

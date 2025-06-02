@@ -5,19 +5,17 @@ using NetArchTest.RuleEngine;
 namespace NetArchTest.Rules
 {
     /// <summary>
-    /// A set of conditions and types that have have conjunctions (i.e. "and", "or") and executors (i.e. Types(), GetResult()) applied to them.
+    /// A set of conditions and types that have conjunctions (i.e. "and", "or") and executors (i.e. Types(), GetResult()) applied to them.
     /// </summary>
     public sealed class ConditionList
     {
-        private readonly RuleContext rule;       
-
+        private readonly RuleContext _rule;
 
         internal ConditionList(RuleContext rule)
         {
-            this.rule = rule;          
+            _rule = rule;
         }
-
-
+        
         /// <summary>
         /// Specifies that any subsequent condition should be treated as an "and" condition.
         /// </summary>
@@ -25,7 +23,7 @@ namespace NetArchTest.Rules
         /// <remarks>And() has higher priority than Or() and it is computed first.</remarks>
         public Condition And()
         {
-            return new Condition(rule);
+            return new Condition(_rule);
         }
 
         /// <summary>
@@ -35,10 +33,9 @@ namespace NetArchTest.Rules
         public Condition Or()
         {
             // Create a new group of functions - this has the effect of creating an "or" condition
-            rule.ConditionContext.Sequence.CreateGroup();
-            return new Condition(rule);
+            _rule.ConditionContext.Sequence.CreateGroup();
+            return new Condition(_rule);
         }
-
 
         /// <summary>
         /// Returns an indication of whether all the selected types satisfy the conditions.
@@ -46,7 +43,7 @@ namespace NetArchTest.Rules
         /// <returns>An indication of whether the conditions are true, along with a list of types failing the check if they are not.</returns>
         public TestResult GetResult(Options options = null)
         {
-            return rule.GetResult(options);
+            return _rule.GetResult(options);
         }
 
         /// <summary>
@@ -55,13 +52,12 @@ namespace NetArchTest.Rules
         /// <returns>A list of types.</returns>
         public IEnumerable<IType> GetTypes(Options options = null)
         {
-            return rule.GetTypes(options);
+            return _rule.GetTypes(options);
         }
 
-                
         internal IEnumerable<Type> GetReflectionTypes(Options options = null)
         {
-            return rule.GetReflectionTypes(options);
+            return _rule.GetReflectionTypes(options);
         }
     }
 }

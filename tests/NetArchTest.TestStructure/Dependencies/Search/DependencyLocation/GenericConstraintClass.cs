@@ -1,6 +1,6 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Search.DependencyLocation
 {
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

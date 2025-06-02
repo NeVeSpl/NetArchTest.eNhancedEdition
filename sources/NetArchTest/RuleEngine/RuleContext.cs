@@ -9,22 +9,20 @@ namespace NetArchTest.RuleEngine
 {
     internal class RuleContext
     {
-        internal readonly LoadedData loadedData;
+        internal readonly LoadedData LoadedData;
         public PredicateContext PredicateContext { get; } = new PredicateContext();
         public ConditionContext ConditionContext { get; } = new ConditionContext();
 
-
         public RuleContext(LoadedData loadedData)
         {
-            this.loadedData = loadedData;
-        }   
-
+            LoadedData = loadedData;
+        }
 
         public IReadOnlyList<TypeSpec> Execute(Options options)
         {
-            var lodedTypes = loadedData.GetTypes().ToArray();           
+            var lodedTypes = LoadedData.GetTypes().ToArray();
             var selectedTypes = PredicateContext.Sequence.Execute(lodedTypes, options, lodedTypes);
-            var passingTypes = ConditionContext.Sequence.Execute(selectedTypes, options, lodedTypes); 
+            var passingTypes = ConditionContext.Sequence.Execute(selectedTypes, options, lodedTypes);
             return passingTypes;
         }
 
@@ -32,7 +30,7 @@ namespace NetArchTest.RuleEngine
         {
             bool success;
 
-            var lodedTypes = loadedData.GetTypes().ToArray();
+            var lodedTypes = LoadedData.GetTypes().ToArray();
             var selectedTypes = PredicateContext.Sequence.Execute(lodedTypes, options, lodedTypes);
             var passingTypes = ConditionContext.Sequence.Execute(selectedTypes, options, lodedTypes);
 
@@ -49,14 +47,13 @@ namespace NetArchTest.RuleEngine
 
             if (success)
             {
-                return new TestResult(loadedData.Assemblies, lodedTypes, selectedTypes, Array.Empty<TypeSpec>(), true);
+                return new TestResult(LoadedData.Assemblies, lodedTypes, selectedTypes, [], true);
             }
 
             // If we've failed, get a collection of failing types so these can be reported in a failing test.
             var failedTypes = ConditionContext.Sequence.ExecuteToGetFailingTypes(selectedTypes, selected: !ConditionContext.Should, options, lodedTypes);
-            return new TestResult(loadedData.Assemblies, lodedTypes, selectedTypes, failedTypes, false);
+            return new TestResult(LoadedData.Assemblies, lodedTypes, selectedTypes, failedTypes, false);
         }
-
 
         public IEnumerable<IType> GetTypes(Options options)
         {

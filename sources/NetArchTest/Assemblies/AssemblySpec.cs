@@ -8,35 +8,31 @@ namespace NetArchTest.Assemblies
 {
     internal sealed class AssemblySpec
     {
-        private AssemblyDefinition assemblyDefinition;
-        private IReadOnlyList<TypeDefinition> typeDefinitions;
-        private List<AssemblySpec> referenced = new List<AssemblySpec>();
+        private readonly AssemblyDefinition _assemblyDefinition;
+        private readonly TypeDefinition[] _typeDefinitions;
+        private readonly List<AssemblySpec> _referenced = [];
 
-        public string FullName => assemblyDefinition.FullName;
-
-
+        public string FullName => _assemblyDefinition.FullName;
 
         public AssemblySpec(AssemblyDefinition assemblyDefinition, IEnumerable<TypeDefinition> typeDefinitions)
         {
-            this.assemblyDefinition = assemblyDefinition;
-            this.typeDefinitions = typeDefinitions.ToArray();
+            _assemblyDefinition = assemblyDefinition;
+            _typeDefinitions = typeDefinitions.ToArray();
         }
 
         public void AddRef(AssemblySpec assemblySpec)
         {
-            referenced.Add(assemblySpec);
+            _referenced.Add(assemblySpec);
         }
 
-        public IEnumerable<TypeSpec> GetTypes() 
+        public IEnumerable<TypeSpec> GetTypes()
         {
-            return typeDefinitions.Select(x => new TypeSpec(x));
+            return _typeDefinitions.Select(x => new TypeSpec(x));
         }
-
-
 
         public IAssembly CreateWrapper()
         {
-            return new AssemblyContainer(assemblyDefinition);
+            return new AssemblyContainer(_assemblyDefinition);
         }
     }
 }

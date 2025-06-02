@@ -4,9 +4,8 @@ namespace NetArchTest.Slices.Model
 {
     internal sealed class SlicedTypes
     {
-        public int TypeCount { get; }       
+        public int TypeCount { get; }
         public IReadOnlyList<Slice> Slices { get; }
-
 
         public SlicedTypes(int typeCount, List<Slice> slices)
         {

@@ -1,9 +1,9 @@
 ﻿namespace NetArchTest.UnitTests.DependencySearch
 {
     using Mono.Cecil;
-    using NetArchTest.Assemblies;
-    using NetArchTest.Dependencies;
-    using NetArchTest.Rules;
+    using Assemblies;
+    using Dependencies;
+    using Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using System;

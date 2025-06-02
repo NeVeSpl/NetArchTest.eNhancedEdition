@@ -2,7 +2,7 @@ using System;
 
 namespace Mono.Cecil
 {
-    static internal class TypeReferenceExtensions
+    internal static class TypeReferenceExtensions
     {
         /// <summary>
         /// Tests whether a Type is a non-nullable value type
@@ -16,7 +16,7 @@ namespace Mono.Cecil
 
         /// <summary>
         /// Returns namespace of the given type, if the type is nested, namespace of containing type is returned instead
-        /// </summary>        
+        /// </summary>
         public static string GetNamespace(this TypeReference typeReference)
         {
             if (typeReference.IsNested)
@@ -25,7 +25,6 @@ namespace Mono.Cecil
             }
             return typeReference.Namespace;
         }
-
 
         public static string GetFullNameWithoutGenericParameters(this TypeReference typeReference)
         {

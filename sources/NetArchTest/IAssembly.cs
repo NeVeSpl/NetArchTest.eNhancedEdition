@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NetArchTest.Rules
+﻿namespace NetArchTest.Rules
 {
     /// <summary>
     /// Assembly wrapper.
@@ -11,7 +7,7 @@ namespace NetArchTest.Rules
     {
         /// <summary>
         /// FullName of the assembly
-        /// </summary>       
+        /// </summary>
         string FullName { get; }
     }
 }

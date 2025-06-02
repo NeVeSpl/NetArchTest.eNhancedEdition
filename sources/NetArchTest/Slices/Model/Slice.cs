@@ -8,7 +8,6 @@ namespace NetArchTest.Slices.Model
         public string Name { get;  }
         public IEnumerable<TypeSpec> Types { get;  }
 
-
         public Slice(string sliceName, List<TypeSpec> types)
         {
             Name = sliceName;

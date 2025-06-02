@@ -82,7 +82,6 @@ namespace NetArchTest.Functions
             static bool EndsWith(string typeName, string[] lookigFor, StringComparison comparer) => lookigFor.Any(x => typeName.EndsWith(x, comparer));
         }
 
-        
         internal static IEnumerable<TypeSpec> ResideInNamespace(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, string name, bool condition)
         {
             if (condition)
@@ -94,7 +93,7 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.GetNamespace().StartsWith(name, context.UserOptions.Comparer));
             }
         }
-        
+
         internal static IEnumerable<TypeSpec> ResideInNamespaceMatching(IEnumerable<TypeSpec> input, string pattern, bool condition)
         {
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);

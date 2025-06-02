@@ -1,8 +1,8 @@
 ﻿namespace NetArchTest.SampleRules
 {
-    using NetArchTest.Rules;
-    using NetArchTest.SampleLibrary.Data;
-    using NetArchTest.SampleLibrary.Services;
+    using Rules;
+    using SampleLibrary.Data;
+    using SampleLibrary.Services;
 
     /// <summary>
     /// Examples of rule definitions.

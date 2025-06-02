@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;   
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     /// <summary>
     /// Example class that includes a dependency in variable declaration.     

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using NetArchTest.SampleLibrary.Model;
+    using Model;
 
     public class WidgetRepository : IRepository<Widget>, IDisposable
     {

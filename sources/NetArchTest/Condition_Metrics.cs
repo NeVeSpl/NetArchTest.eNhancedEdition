@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NetArchTest.Functions;
+﻿using NetArchTest.Functions;
 
 namespace NetArchTest.Rules
 {

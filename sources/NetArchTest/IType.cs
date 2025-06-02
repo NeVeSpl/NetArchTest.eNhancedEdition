@@ -6,7 +6,7 @@ namespace NetArchTest.Rules
     /// Type wrapper.
     /// </summary>
     public interface IType
-    { 
+    {
         /// <summary>
         /// System.Type
         /// </summary>
@@ -17,12 +17,12 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// FullName of the type
-        /// </summary>       
+        /// </summary>
         string FullName { get; }
 
         /// <summary>
         /// Name of the type
-        /// </summary>       
+        /// </summary>
         string Name { get; }
 
         /// <summary>

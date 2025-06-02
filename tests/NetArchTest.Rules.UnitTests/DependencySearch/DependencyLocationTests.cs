@@ -3,7 +3,7 @@
     using System;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Search.DependencyLocation;
-    using NetArchTest.UnitTests.TestFixtures;
+    using TestFixtures;
     using Xunit;
 
     /// <summary>

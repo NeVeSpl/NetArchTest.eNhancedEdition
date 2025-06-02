@@ -3,13 +3,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using NetArchTest.Rules;
+    using Rules;
     using NetArchTest.TestStructure.Dependencies.Example;
     using NetArchTest.TestStructure.Dependencies.Examples;
     using NetArchTest.TestStructure.Dependencies.Implementation;
     using NetArchTest.TestStructure.Dependencies.Search;
-    using NetArchTest.TestStructure.FalsePositives.NamespaceMatch;
-    using NetArchTest.UnitTests.TestFixtures;
+    using TestStructure.FalsePositives.NamespaceMatch;
+    using TestFixtures;
     using Xunit;
 
     [CollectionDefinition("Dependency Search - various tests")]

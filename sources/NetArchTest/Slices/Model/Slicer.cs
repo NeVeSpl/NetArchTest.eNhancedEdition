@@ -3,7 +3,6 @@ using System.Linq;
 using Mono.Cecil;
 using NetArchTest.Assemblies;
 
-
 namespace NetArchTest.Slices.Model
 {
     internal sealed class Slicer
@@ -30,9 +29,8 @@ namespace NetArchTest.Slices.Model
                 {
                     ++typeCount;
                     int nextDotIndex = typeNamespace.IndexOf('.', prefixWithDot.Length);
-                    int startIndex = prefixWithDot.Length;
                     int endIndex = nextDotIndex > -1 ? nextDotIndex : typeNamespace.Length;
-                    string sliceName = typeNamespace.Substring(0, endIndex);                                     
+                    string sliceName = typeNamespace.Substring(0, endIndex);
 
                     if (groupedTypes.TryGetValue(sliceName, out var list))
                     {
@@ -40,7 +38,7 @@ namespace NetArchTest.Slices.Model
                     }
                     else
                     {
-                        groupedTypes[sliceName] = new List<TypeSpec>() { type };
+                        groupedTypes[sliceName] = [type];
                     }
                 }
             }

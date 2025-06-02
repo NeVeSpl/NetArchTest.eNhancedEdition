@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using NetArchTest.Assemblies;
-    using NetArchTest.Rules;
+    using Assemblies;
+    using Rules;
     using NetArchTest.TestStructure.Dependencies.Examples;
-    using NetArchTest.UnitTests.TestFixtures;
+    using TestFixtures;
     using Xunit;
 
     internal static class Utils

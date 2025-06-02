@@ -15,8 +15,6 @@ namespace NetArchTest.Rules
         bool MeetsRule(TypeDefinition type);
     }
 
-
-
     /// <summary>
     /// An externally defined rule that can be applied as a condition or a predicate.
     /// </summary>
@@ -30,13 +28,11 @@ namespace NetArchTest.Rules
         CustomRuleResult MeetsRule(TypeDefinition type);
     }
 
-
     public class CustomRuleResult
     {
         public bool IsMet { get; init; }
 
         public string Explanation { get; init; }
-       
 
         public CustomRuleResult(bool isMet, string explanation = null)
         {

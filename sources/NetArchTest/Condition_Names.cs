@@ -7,7 +7,7 @@ namespace NetArchTest.Rules
     {
         /// <summary>
         /// Selects types that are exactly of given type. (inheritance is not considered)
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList BeOfType(params Type[] type)
         {
@@ -17,7 +17,7 @@ namespace NetArchTest.Rules
 
         /// <summary>
         /// Selects types that are not exactly of given type. (inheritance is not considered)
-        /// </summary>       
+        /// </summary>
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotBeOfType(params Type[] type)
         {
@@ -34,7 +34,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveName(string name)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, new[] { name }, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, [name], true));
             return CreateConditionList();
         }
 
@@ -47,7 +47,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveName(string name)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, new[] { name }, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveName(context, inputTypes, [name], false));
             return CreateConditionList();
         }
 
@@ -82,7 +82,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameStartingWith(string start)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, new[] { start }, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, [start
+            ], true));
             return CreateConditionList();
         }
 
@@ -95,7 +96,8 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameStartingWith(string start)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, new[] { start }, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameStartingWith(context, inputTypes, [start
+            ], false));
             return CreateConditionList();
         }
 
@@ -108,7 +110,7 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList HaveNameEndingWith(string end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, new[] { end }, true));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, [end], true));
             return CreateConditionList();
         }
 
@@ -121,10 +123,9 @@ namespace NetArchTest.Rules
         /// <returns>An updated set of conditions that can be applied to a list of types.</returns>
         public ConditionList NotHaveNameEndingWith(string end)
         {
-            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, new[] { end }, false));
+            AddFunctionCall((context, inputTypes) => FunctionDelegates.HaveNameEndingWith(context, inputTypes, [end], false));
             return CreateConditionList();
         }
-               
 
         /// <summary>
         /// Selects types that reside in a particular namespace.

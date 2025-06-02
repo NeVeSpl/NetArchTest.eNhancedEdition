@@ -7,7 +7,7 @@ using NetArchTest.Assemblies;
 namespace NetArchTest.Functions
 {
     internal static partial class FunctionDelegates
-    {  
+    {
         // Modifiers & Generic
 
         internal static IEnumerable<TypeSpec> BeAbstract(IEnumerable<TypeSpec> input, bool condition)
@@ -50,7 +50,7 @@ namespace NetArchTest.Functions
             }
 
             static bool ClassIsSealed(TypeDefinition c) => !c.IsAbstract && c.IsSealed;
-        }   
+        }
 
         internal static IEnumerable<TypeSpec> BeGeneric(IEnumerable<TypeSpec> input, bool condition)
         {
@@ -70,11 +70,11 @@ namespace NetArchTest.Functions
         {
             if (condition)
             {
-                return Enumerable.Empty<TypeSpec>();
+                return [];
             }
             else
             {
-                return Enumerable.Empty<TypeSpec>();
+                return [];
             }
         }
     }

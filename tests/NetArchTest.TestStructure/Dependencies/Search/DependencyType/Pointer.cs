@@ -1,7 +1,7 @@
 ﻿namespace NetArchTest.TestStructure.Dependencies.Search.DependencyType
 {
     using System.Threading.Tasks;
-    using NetArchTest.TestStructure.Dependencies.Examples;
+    using Examples;
 
     /// <summary>
     /// Example class that includes a dependency in pointer declaration.    

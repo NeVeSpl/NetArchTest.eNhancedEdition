@@ -5,25 +5,23 @@ namespace NetArchTest.Slices.Model
 {
     internal class SliceContext
     {
-        private readonly LoadedData loadedData;
-        private readonly SlicedTypes slicedTypes;
+        private readonly LoadedData _loadedData;
+        private readonly SlicedTypes _slicedTypes;
 
         public SliceContext(LoadedData loadedData, SlicedTypes slicedTypes)
         {
-            this.loadedData = loadedData;
-            this.slicedTypes = slicedTypes;
+            _loadedData = loadedData;
+            _slicedTypes = slicedTypes;
         }
-
-
 
         public IReadOnlyList<AssemblySpec> GetAssemblies()
         {
-            return loadedData.Assemblies;
+            return _loadedData.Assemblies;
         }
 
         public SlicedTypes GetTypes()
         {
-            return slicedTypes;
+            return _slicedTypes;
         }
     }
 }

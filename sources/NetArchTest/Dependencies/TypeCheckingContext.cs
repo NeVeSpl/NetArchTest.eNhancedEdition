@@ -5,21 +5,19 @@ using NetArchTest.Rules;
 namespace NetArchTest.Dependencies
 {
     internal class TypeCheckingContext
-    {      
-        private readonly bool _serachForDependencyInFieldConstant;
-        private readonly bool explainYourself;
-        private readonly IDependencyFilter dependencyFilter;
+    {
+        private readonly bool _searchForDependencyInFieldConstant;
+        private readonly bool _explainYourself;
+        private readonly IDependencyFilter _dependencyFilter;
         private TypeSpec _typeToCheck;
         private ITypeCheckingStrategy _result;
 
-
-        public TypeCheckingContext(bool serachForDependencyInFieldConstant = false, bool explainYourself = false, IDependencyFilter dependencyFilter = null)
-        {          
-            _serachForDependencyInFieldConstant = serachForDependencyInFieldConstant;
-            this.explainYourself = explainYourself;
-            this.dependencyFilter = dependencyFilter;
+        public TypeCheckingContext(bool searchForDependencyInFieldConstant = false, bool explainYourself = false, IDependencyFilter dependencyFilter = null)
+        {
+            _searchForDependencyInFieldConstant = searchForDependencyInFieldConstant;
+            _explainYourself = explainYourself;
+            _dependencyFilter = dependencyFilter;
         }
-
 
         public void PerformCheck(TypeSpec typeToCheck, ITypeCheckingStrategy checkingStrategy)
         {
@@ -27,12 +25,11 @@ namespace NetArchTest.Dependencies
             _result = checkingStrategy;
 
             CheckType(_typeToCheck.Definition);
-            if (explainYourself)
+            if (_explainYourself)
             {
                 _typeToCheck.Explanation = _result.ExplainWhy();
-            }            
+            }
         }
-
 
         /// <summary>
         /// Finds matching dependencies for a given type by walking through the type.
@@ -70,7 +67,7 @@ namespace NetArchTest.Dependencies
                     CheckTypeReference(customAttribute.AttributeType);
                 }
             }
-        }    
+        }
         private void CheckImplementedInterfaces(TypeDefinition typeToCheck)
         {
             if (typeToCheck.HasInterfaces)
@@ -105,7 +102,7 @@ namespace NetArchTest.Dependencies
                 {
                     CheckCustomAttributes(field);
                     CheckTypeReference(field.FieldType);
-                    if (_serachForDependencyInFieldConstant && field.HasConstant && field.FieldType.FullName == typeof(string).FullName && field.Constant != null)
+                    if (_searchForDependencyInFieldConstant && field.HasConstant && field.FieldType.FullName == typeof(string).FullName && field.Constant != null)
                     {
                         _result.CheckType(field.Constant.ToString());
                     }
@@ -178,7 +175,7 @@ namespace NetArchTest.Dependencies
                     if (nested.IsCompilerGenerated())
                     {
                         if (_result.CanWeSkipFurtherSearch()) return;
-                        this.CheckType(nested);
+                        CheckType(nested);
                     }
                 }
             }
@@ -259,42 +256,43 @@ namespace NetArchTest.Dependencies
         /// only List will be checked, T as a generic parameter will be skipped
         /// for arrays: int[][]
         /// it will check : int[][], int[], int
-        /// </example>         
-        /// </summary>      
+        /// </example>
+        /// </summary>
         private void CheckTypeReference(TypeReference reference)
-        {          
-            if (reference.IsGenericParameter == true) return;
-           
+        {
+            if (reference.IsGenericParameter)
+                return;
+
             if ((reference.IsArray) || (reference.IsPointer) || (reference.IsByReference))
             {
                 var referenceAsTypeSpecification = reference as TypeSpecification;
-                if (referenceAsTypeSpecification.ElementType?.IsGenericParameter == true) return;
+                if (referenceAsTypeSpecification?.ElementType?.IsGenericParameter == true) return;
 
-                CheckTypeReference(referenceAsTypeSpecification.ElementType);
+                CheckTypeReference(referenceAsTypeSpecification?.ElementType);
             }
 
             CheckDependency(reference);
 
-            if (reference.IsGenericInstance == true)
+            if (reference.IsGenericInstance)
             {
                 var referenceAsGenericInstance = reference as GenericInstanceType;
-                if (referenceAsGenericInstance.HasGenericArguments)
+                if (referenceAsGenericInstance?.HasGenericArguments is true)
                 {
                     foreach (var genericArgument in referenceAsGenericInstance.GenericArguments)
                     {
                         CheckTypeReference(genericArgument);
                     }
                 }
-            }            
+            }
         }
         private void CheckDependency(TypeReference dependency)
-        {            
-            if (dependencyFilter?.ShouldDependencyBeChecked(dependency) == false)
+        {
+            if (_dependencyFilter?.ShouldDependencyBeChecked(dependency) == false)
             {
                 return;
-            }      
-            
-            _result.CheckType(dependency);           
+            }
+
+            _result.CheckType(dependency);
         }
     }
 }

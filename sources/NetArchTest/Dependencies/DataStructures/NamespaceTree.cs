@@ -5,7 +5,6 @@
     using System.Diagnostics;
     using System.Text;
     using Mono.Cecil;
-   
 
     /// <summary>
     /// Holds tree structure of full names; child nodes of each parent are indexed for optimal time of search.
@@ -39,7 +38,7 @@
         {
             /// <summary> Maps child namespace to its root node. </summary>
             private Dictionary<string, Node> Nodes { get; } = new Dictionary<string, Node>();
-                        
+
             public bool IsTerminated
             {
                 get; private set;
@@ -59,8 +58,7 @@
             {
                 name = NormalizeString(name);
 
-                Node result;
-                if (!Nodes.TryGetValue(name, out result))
+                if (!Nodes.TryGetValue(name, out var result))
                 {
                     result = new Node();
                     Nodes.Add(name, result);
@@ -78,7 +76,7 @@
             {
                 return Nodes.TryGetValue(NormalizeString(name), out node) && node != null;
             }
-                       
+
             public void Terminate(string fullName)
             {
                 IsTerminated = true;
@@ -94,7 +92,7 @@
         /// <summary> Holds the root for the namespace tree. </summary>
         private readonly Node _root = new Node();
 
-        private static readonly char[] _namespaceSeparators = new char[] { '.', ':', '/', '+' };
+        private static readonly char[] NamespaceSeparators = ['.', ':', '/', '+'];
 
         /// <summary>
         /// Initially fills the tree with given names.
@@ -123,7 +121,7 @@
 
             var deepestNode = _root;
             foreach (var token in TypeParser.Parse(fullName, parseNames))
-            {              
+            {
                 int subnameEndIndex = -1;
                 while (subnameEndIndex != token.Length)
                 {
@@ -171,8 +169,8 @@
                 }
 
                 if (deepestNode.IsTerminated)
-                {                  
-                    yield return deepestNode.FullName;                    
+                {
+                    yield return deepestNode.FullName;
                 }
             }
         }
@@ -180,7 +178,7 @@
         public IEnumerable<string> GetAllMatchingNames(TypeReference reference)
         {
             var deepestNode = _root;
-           
+
             foreach (var token in GetTokens(reference))
             {
                 int subnameEndIndex = -1;
@@ -205,8 +203,8 @@
 
         /// <summary>
         /// Recursively extracts every part from type full name
-        /// </summary>      
-        private IEnumerable<string> GetTokens(TypeReference reference)
+        /// </summary>
+        private static IEnumerable<string> GetTokens(TypeReference reference)
         {
             if ((reference.IsArray == false) && (reference.IsByReference == false) && (reference.IsPointer == false))
             {
@@ -240,7 +238,7 @@
             }
 
             if (reference.IsGenericInstance)
-            {                
+            {
                 var referenceAsGenericInstance = reference as GenericInstanceType;
                 if (referenceAsGenericInstance.HasGenericArguments)
                 {
@@ -249,18 +247,17 @@
                     {
                         foreach (var token in GetTokens(referenceAsGenericInstance.GenericArguments[i]))
                         {
-                            yield return token;                            
+                            yield return token;
                         }
                         yield return ",";
                     }
                 }
             }
-            
         }
 
         private static int GetSubnameEndIndex(string namespaceFullName, int subnameStartIndex)
         {
-            int nextSeparatorIndex = namespaceFullName.IndexOfAny(_namespaceSeparators, subnameStartIndex);
+            int nextSeparatorIndex = namespaceFullName.IndexOfAny(NamespaceSeparators, subnameStartIndex);
             if (nextSeparatorIndex < 0)
             {
                 nextSeparatorIndex = namespaceFullName.Length;

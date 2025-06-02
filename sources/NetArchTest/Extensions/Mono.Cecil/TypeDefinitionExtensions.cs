@@ -23,7 +23,7 @@ namespace Mono.Cecil
             }
 
             return false;
-        }        
+        }
 
         private static IEnumerable<TypeDefinition> EnumerateBaseClasses(this TypeDefinition classType)
         {
@@ -34,7 +34,7 @@ namespace Mono.Cecil
         }
 
         internal static bool IsAlmostEqualTo(this TypeReference child, TypeDefinition parent)
-        {            
+        {
             if (child is GenericInstanceType genericInstanceTypeB)
             {
                 if (parent.IsSameTypeAs(genericInstanceTypeB.ElementType))
@@ -51,8 +51,6 @@ namespace Mono.Cecil
             return false;
         }
 
-
-
         /// <summary>
         /// Convert the definition to a <see cref="Type"/> object instance.
         /// </summary>
@@ -64,13 +62,9 @@ namespace Mono.Cecil
             return Type.GetType(string.Concat(fullName, ", ", typeDefinition.Module.Assembly.FullName), true);
         }
 
-
-
-
-
         /// <summary>
         /// Tests whether a class is immutable, i.e. all public fields are readonly and properties have no set method
-        /// </summary>      
+        /// </summary>
         internal static bool IsImmutable(this TypeDefinition typeDefinition)
         {
             var propertiesAreReadonly = typeDefinition.Properties.All(p => p.IsReadonly());
@@ -86,8 +80,6 @@ namespace Mono.Cecil
             var eventsAreReadonly = typeDefinition.Events.All(f => f.IsReadonlyExternally());
             return propertiesAreReadonly && fieldsAreReadonly && eventsAreReadonly;
         }
-
-
 
         internal static bool OnlyHasNullableMembers(this TypeDefinition typeDefinition)
         {
@@ -110,7 +102,7 @@ namespace Mono.Cecil
 
         /// <summary>
         /// Returns namespace of the given type, if the type is nested, namespace of containing type is returned instead
-        /// </summary>        
+        /// </summary>
         /// <remarks>
         /// For nested classes this will take the name of the declaring class. See https://github.com/BenMorris/NetArchTest/issues/73
         /// </remarks>
@@ -123,8 +115,6 @@ namespace Mono.Cecil
             return typeDefinition.Namespace;
         }
 
-
-
         internal static string GetNameWithoutGenericPart(this TypeDefinition typeDefinition)
         {
             if (typeDefinition.HasGenericParameters == false)
@@ -134,10 +124,6 @@ namespace Mono.Cecil
             return typeDefinition.Name.RemoveGenericPart();
         }
 
-
-
-
-
         internal static bool IsDelegate(this TypeDefinition typeDefinition)
         {
             return typeDefinition.IsClass && typeDefinition.BaseType?.FullName == "System.MulticastDelegate";
@@ -146,8 +132,6 @@ namespace Mono.Cecil
         {
             return typeDefinition.IsValueType && typeDefinition.BaseType?.FullName == "System.ValueType";
         }
-
-
 
         internal static string GetFilePath(this TypeDefinition typeDefinition)
         {
@@ -168,7 +152,7 @@ namespace Mono.Cecil
         }
 
         internal static bool IsStateless(this TypeDefinition type)
-        {            
+        {
             if (type.HasFields)
             {
                 foreach (var field in type.Fields)
@@ -183,11 +167,11 @@ namespace Mono.Cecil
             return true;
         }
         internal static bool IsStaticless(this TypeDefinition type)
-        {           
+        {
             if (type.HasFields)
             {
                 foreach (var field in type.Fields)
-                {                    
+                {
                     if (field.IsStatic && field.HasConstant == false)
                     {
                         return false;

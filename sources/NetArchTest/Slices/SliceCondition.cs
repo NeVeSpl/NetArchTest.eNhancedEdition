@@ -1,5 +1,4 @@
-﻿using NetArchTest.Assemblies;
-using NetArchTest.Slices.Model;
+﻿using NetArchTest.Slices.Model;
 
 namespace NetArchTest.Slices
 {
@@ -8,30 +7,29 @@ namespace NetArchTest.Slices
     /// </summary>
     public sealed class SliceCondition
     {
-        private readonly SliceContext sliceContext;       
-        private readonly bool should;
-
+        private readonly SliceContext _sliceContext;
+        private readonly bool _should;
 
         internal SliceCondition(SliceContext sliceContext, bool should)
         {
-            this.sliceContext = sliceContext;            
-            this.should = should;
+            _sliceContext = sliceContext;
+            _should = should;
         }
 
         /// <summary>
         /// Selects types that have some dependencies on types from other slices.
-        /// </summary>  
+        /// </summary>
         public SliceConditionList HaveDependenciesBetweenSlices()
         {
-            return new SliceConditionList(sliceContext, new HaveDependenciesBetweenSlices(), should);
+            return new SliceConditionList(_sliceContext, new HaveDependenciesBetweenSlices(), _should);
         }
 
         /// <summary>
         /// Selects types that do not have dependencies on types from other slices.
-        /// </summary>       
+        /// </summary>
         public SliceConditionList NotHaveDependenciesBetweenSlices()
         {
-            return new SliceConditionList(sliceContext, new HaveDependenciesBetweenSlices(), !should);
+            return new SliceConditionList(_sliceContext, new HaveDependenciesBetweenSlices(), !_should);
         }
     }
 }

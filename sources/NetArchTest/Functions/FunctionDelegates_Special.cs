@@ -34,7 +34,6 @@ namespace NetArchTest.Functions
             }
         }
 
-
         internal static IEnumerable<TypeSpec> OnlyHaveNullableMembers(IEnumerable<TypeSpec> input, bool condition)
         {
             if (condition)
@@ -58,7 +57,6 @@ namespace NetArchTest.Functions
                 return input.Where(c => !c.Definition.OnlyHasNonNullableMembers());
             }
         }
-
 
         internal static IEnumerable<TypeSpec> BeStateless(IEnumerable<TypeSpec> input, bool condition)
         {
@@ -119,7 +117,7 @@ namespace NetArchTest.Functions
                 if (string.IsNullOrEmpty(sourceFilePath)) return true;
 
                 var fullPath = Path.GetDirectoryName(sourceFilePath);
-                var pathAsNamespace = fullPath.Replace(Path.DirectorySeparatorChar, '.');                
+                var pathAsNamespace = fullPath.Replace(Path.DirectorySeparatorChar, '.');
 
                 return pathAsNamespace.EndsWith(@namespace, comparer);
             }
@@ -138,7 +136,6 @@ namespace NetArchTest.Functions
                 return input.Where(c => !exisitingTypes.Contains(getMatchingTypeName(c.Definition)));
             }
         }
-
 
         internal static IEnumerable<TypeSpec> HavePublicConstructor(FunctionSequenceExecutionContext context, IEnumerable<TypeSpec> input, bool condition)
         {

@@ -1,24 +1,19 @@
 ﻿namespace NetArchTest.Dependencies.DataStructures
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
     using Mono.Cecil;
-    
 
     /// <summary>
     /// Similar tree to <see cref="NamespaceTree"/>, but this is aware of the structure of type full name,
     /// which allows traversing tree without allocating new strings.
-    /// </summary>   
+    /// </summary>
     internal class TypeReferenceTree<T>
     {
         private readonly StartOfTypeNode _root = new StartOfTypeNode();
 
-        
         public NameNode GetNode(TypeReference reference)
-        {          
+        {
             return TraverseThroughReferenceName(reference, _root);
         }
 
@@ -29,7 +24,7 @@
             {
                 deepestNameNode = startOfTypeNode.GetNamespace(reference.GetNamespace()).GetName(reference.Name);
                 deepestNameNode = GoDeeperIntoGenericArgumentList(reference, deepestNameNode);
-            } 
+            }
             else
             {
                 var referenceAsTypeSpecification = reference as TypeSpecification;
@@ -51,42 +46,42 @@
                     {
                         deepestNameNode = TraverseThroughReferenceName(referenceAsGenericInstance.GenericArguments[i], startOfTypeNode);
                         if (i < referenceAsGenericInstance.GenericArguments.Count - 1) startOfTypeNode = deepestNameNode.AddAnotherArgument();
-                    }                    
+                    }
                 }
                 deepestNameNode = deepestNameNode.EndArgumentList();
             }
             return deepestNameNode;
         }
 
-        [DebuggerDisplay("StartOfTypeNode (namespaces : {namespaces.Count})")]
+        [DebuggerDisplay("StartOfTypeNode (namespaces : {Namespaces.Count})")]
         public sealed class StartOfTypeNode
         {
-            private Dictionary<string, NamespaceNode> namespaces { get; set; } = new Dictionary<string, NamespaceNode>();
+            private Dictionary<string, NamespaceNode> Namespaces { get; set; } = new Dictionary<string, NamespaceNode>();
 
             public NamespaceNode GetNamespace(string @namespace)
             {
                 NamespaceNode result;
-                if (!namespaces.TryGetValue(@namespace, out result))
+                if (!Namespaces.TryGetValue(@namespace, out result))
                 {
                     result = new NamespaceNode();
-                    namespaces.Add(@namespace, result);
+                    Namespaces.Add(@namespace, result);
                 }
                 return result;
             }
         }
 
-        [DebuggerDisplay("NamespaceNode (names : {names.Count})")]
+        [DebuggerDisplay("NamespaceNode (names : {Names.Count})")]
         public sealed class NamespaceNode
         {
-            private Dictionary<string, NameNode> names { get; set; } = new Dictionary<string, NameNode>();
+            private Dictionary<string, NameNode> Names { get; set; } = new Dictionary<string, NameNode>();
 
             public NameNode GetName(string name)
-            {                
+            {
                 NameNode result;
-                if (!names.TryGetValue(name, out result))
+                if (!Names.TryGetValue(name, out result))
                 {
                     result = new NameNode();
-                    names.Add(name, result);
+                    Names.Add(name, result);
                 }
                 return result;
             }
@@ -95,21 +90,20 @@
         [DebuggerDisplay("NameNode")]
         public sealed class NameNode
         {
-            public T value;
-            private StartOfTypeNode startNode;
-            private StartOfTypeNode andNode;
-            private Dictionary<int, NameNode> typeSpecifications { get; set; }
-
+            public T Value;
+            private StartOfTypeNode _startNode;
+            private StartOfTypeNode _andNode;
+            private Dictionary<int, NameNode> TypeSpecifications { get; set; }
 
             public StartOfTypeNode StartArgumentList()
             {
-                startNode = startNode ?? new StartOfTypeNode();
-                return startNode;
+                _startNode = _startNode ?? new StartOfTypeNode();
+                return _startNode;
             }
             public StartOfTypeNode AddAnotherArgument()
             {
-                andNode = andNode ?? new StartOfTypeNode();
-                return andNode;
+                _andNode = _andNode ?? new StartOfTypeNode();
+                return _andNode;
             }
             public NameNode EndArgumentList()
             {
@@ -119,7 +113,7 @@
             }
             public NameNode AddTypeSpecification(TypeSpecification typeSpecification)
             {
-                typeSpecifications = typeSpecifications ?? new Dictionary<int, NameNode>();
+                TypeSpecifications = TypeSpecifications ?? new Dictionary<int, NameNode>();
 
                 int specificationNumber = (int)typeSpecification.MetadataType;
                 if (typeSpecification.IsArray)
@@ -132,10 +126,10 @@
                 }
 
                 NameNode result;
-                if (!typeSpecifications.TryGetValue(specificationNumber, out result))
+                if (!TypeSpecifications.TryGetValue(specificationNumber, out result))
                 {
                     result = new NameNode();
-                    typeSpecifications.Add(specificationNumber, result);
+                    TypeSpecifications.Add(specificationNumber, result);
                 }
                 return result;
             }
